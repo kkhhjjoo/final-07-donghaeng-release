@@ -1,0 +1,258 @@
+/* 지도 CSS */
+
+/* 지도 전체 body */
+.map-body {
+  position: relative;
+  width: 100%;
+  height: 1084px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* 지도 */
+.map {
+  position: relative;
+  width: 100%;
+  min-width: 320px;
+}
+
+/* 마커 클릭 시 나타날 모임 div */
+.metting-div {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-sky);
+  width: 100%;
+  max-width: 400px;
+  min-height: 200px;
+  border: 5px solid var(--border-darksky);
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
+/* 모임 정보 div */
+.metting-information {
+  display: flex;
+  align-items: center;
+}
+
+.metting-information-img {
+  width: 140px;
+  height: 125px;
+}
+
+/* 모임 상세 정보 */
+.detail-information {
+  margin-left: 40px;
+  font-size: 14px;
+
+  h3 {
+    margin-bottom: 25px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
+
+/* 모임 리스트 - Desktop */
+.metting-list {
+  display: none;
+}
+
+/* 필터 div */
+.filter-div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  padding: 10px;
+  max-width: 500px;
+  margin-right: 20px;
+}
+
+/* 카카오맵 info-window 컴포넌트 CSS */
+.marker-info-window {
+  position: relative;
+  min-width: 200px;
+  max-width: 250px;
+  max-height: 150px;
+  padding: 10px;
+  border: 3px solid var(--border-darksky);
+  border-radius: 25px;
+  background-color: var(--bg-sky);
+}
+
+/* 마커 정보 div */
+.marker-info-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-left: 5%;
+
+  .marker-img {
+    border-radius: 20px;
+  }
+}
+
+/* X 닫기 버튼 */
+.btn-close {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+/* 모임 제목 */
+.marker-title {
+  font-size: 12px;
+  font-family: var(--main-font);
+  color: var(--text-navy);
+  margin-bottom: 5%;
+}
+
+/* 모임 정보 */
+.marker-info {
+  font-size: 10px;
+  font-family: var(--sub-font-medium);
+  color: var(--text-navy);
+  line-height: 1.2;
+  min-width: 150px;
+  white-space: wrap;
+
+  img {
+    margin-right: 2%;
+  }
+  p {
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* 화살표 버튼 */
+.btn-arrow {
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .filter-div {
+    position: relative;
+    max-width: 1470px;
+    margin: 0 auto;
+    padding-left: 10px;
+  }
+
+  .map-metting-div {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin-bottom: 2%;
+    padding-left: 10px;
+  }
+
+  .metting-list {
+    display: block;
+    border: 5px solid var(--border-navy);
+    border-radius: 25px;
+    margin-right: 2%;
+    padding: 10px;
+    width: 100%;
+    max-width: 400px;
+    min-width: 300px;
+    height: 700px;
+    overflow-y: scroll;
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 10px auto 15px;
+      padding: 10px 15px;
+      width: 100%;
+      max-width: 350px;
+      border: 3px solid var(--border-navy);
+      border-radius: 50px;
+      background: var(--bg-white);
+
+      input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        font-family: var(--sub-font-medium);
+        color: var(--text-navy);
+        background: transparent;
+
+        &::placeholder {
+          color: var(--text-gray);
+        }
+      }
+
+      svg {
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+    }
+
+    .meeting-info-li-div {
+      width: 350px;
+      margin-left: 2%;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-inline: auto;
+      margin-block: 5px;
+      padding-bottom: 10px;
+      width: 100%;
+      max-width: 350px;
+      height: 90px;
+      border-bottom: 3px solid var(--border-darksky);
+      cursor: pointer;
+
+      img {
+        border-radius: 25px;
+        margin-right: 1%;
+      }
+
+      dt {
+        font-size: 14px;
+        font-family: var(--main-font);
+        margin-bottom: 4%;
+      }
+
+      dd {
+        font-size: 12px;
+        font-family: var(--sub-font-medium);
+        color: var(--text-gray);
+      }
+    }
+  }
+
+  /* 지도 */
+  .map {
+    border: 5px solid var(--border-navy);
+    border-radius: 25px;
+    max-width: 1024px;
+  }
+
+  /* 마커 클릭 시 나타나는 창 */
+  .marker-info-window {
+    max-width: 300px;
+  }
+
+  .marker-title {
+    font-size: 14px;
+  }
+
+  .marker-info {
+    min-width: 200px;
+    font-size: 12px;
+  }
+}

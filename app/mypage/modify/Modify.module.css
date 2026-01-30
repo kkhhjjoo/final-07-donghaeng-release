@@ -1,0 +1,210 @@
+/* 수정 페이지 전체 div */
+.modify-div {
+  width: 100%;
+  max-width: 500px;
+  min-width: 320px;
+  height: 700px;
+  box-shadow: 0 0 15px var(--c-lavender-200);
+  border-radius: 25px;
+  margin: 0 auto;
+  margin-top: 50px;
+  padding: 20px;
+  font-size: 14px;
+  font-family: var(--sub-font-medium);
+  box-sizing: border-box;
+  margin-bottom: 25px;
+}
+
+/* 프로필, 버튼을 묶는 div */
+.profile-top {
+  display: flex;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+/* 프로필 이미지 */
+.profile-img {
+  width: 165px;
+  height: 165px;
+}
+
+/* 프로필 이미지와 카메라 버튼 묶는 div */
+.img-wrapper {
+  width: 165px;
+  height: 165px;
+  position: relative;
+}
+
+/* 카메라 버튼 */
+.btn-camera {
+  width: 50px;
+  height: 50px;
+  border: 3px solid var(--border-navy);
+  border-radius: 50%;
+  position: absolute;
+  background-color: var(--bg-white);
+  bottom: 0;
+  right: 0;
+  cursor: pointer;
+
+  img {
+    width: 29px;
+    height: 27px;
+    transform: translateY(2px);
+  }
+}
+
+/* 버튼 */
+.btn-div {
+  font-size: 16px;
+  font-family: var(--main-font);
+  display: flex;
+  justify-content: end;
+  gap: 15px;
+  margin-left: auto;
+}
+
+.btn-cancel,
+.btn-complete {
+  width: 88px;
+  height: 45px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  border: 3px solid var(--border-lavender);
+}
+
+.btn-complete {
+  background-color: var(--bg-lavender);
+}
+
+/* 닉네임 */
+.nickname-div {
+  display: flex;
+  align-items: center;
+  input {
+    max-width: 200px;
+    min-width: 120px;
+    font-size: 16px;
+    padding-block: 12px;
+    text-align: left;
+  }
+}
+
+/* 소개 */
+.introduce-div {
+  display: flex;
+  align-items: center;
+  margin-block: 30px;
+  textarea {
+    flex: 1;
+    padding-block: 20px;
+    max-width: 300px;
+    min-width: 150px;
+    height: 100px;
+  }
+}
+
+/* 공통 부분 */
+.nickname-div,
+.introduce-div,
+.address-div,
+.etc-div {
+  span {
+    display: inline-block;
+    font-size: 20px;
+    font-family: var(--main-font);
+    color: var(--text-gray);
+    width: 70px;
+  }
+
+  input,
+  textarea,
+  select {
+    cursor: pointer;
+    border: 3px solid var(--border-lavender);
+    border-radius: 25px;
+    color: var(--text-navy);
+    padding-left: 15px;
+    padding-right: 10px;
+  }
+}
+
+/* 시, 구, 나이, 성별 */
+.address-div,
+.etc-div {
+  display: flex;
+  align-items: center;
+  margin-block: 20px;
+  gap: 30px;
+
+  select {
+    flex: 1;
+    min-width: 120px;
+    height: 50px;
+    line-height: 45px;
+  }
+}
+
+.address-div > div,
+.etc-div > div {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 100px;
+}
+
+.address-div img,
+.etc-div img {
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 10px;
+  pointer-events: none;
+}
+
+/* 360px 이하일때 반응형 */
+@media (max-width: 360px) {
+  .btn-div {
+    flex-direction: column-reverse;
+    justify-content: start;
+    align-items: end;
+  }
+}
+
+/* 1024px 이상일때 반응형  */
+@media (min-width: 1024px) {
+  .modify-div {
+    max-width: 870px;
+    padding-block: 50px;
+  }
+
+  .img-wrapper {
+    margin-left: 100px;
+  }
+
+  .btn-div {
+    margin-left: auto;
+    margin-right: 30px;
+  }
+
+  .nickname-div,
+  .introduce-div,
+  .address-div,
+  .etc-div {
+    margin-left: 100px;
+  }
+
+  .introduce-div {
+    textarea {
+      max-width: 500px;
+      height: 150px;
+    }
+  }
+}

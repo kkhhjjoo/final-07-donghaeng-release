@@ -1,0 +1,82 @@
+/* 사이드바 열렸을 때 뒷배경을 검고 반투명 하게 할 장치 */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+  z-index: 998;
+}
+
+.overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.section-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 50vw; /* 화면의 반만 채우게 함*/
+  height: 100vh;
+  background-color: white;
+  display: inline-flex;
+  transform: translateX(100%); /* 화면 밖 오른쪽에 숨겨놓음 */
+  transition: transform 0.3s ease; /* 모달 클릭시 오른쪽에서 서서히 나옴*/
+  z-index: 999;
+  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+
+  .sidebar-wrapper {
+    margin: 35px 0 35px 25px;
+    display: inline-flex;
+    flex-direction: column;
+    font-family: var(--main-font);
+    font-size: 24px;
+
+    .logout-btn {
+      display: inline-flex;
+      margin-top: auto;
+    }
+
+    .menu-username-wrapper {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 50px;
+
+      .name-wrapper {
+        display: inline-flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .username {
+          color: var(--text-lavender);
+        }
+      }
+
+      ul {
+        display: inline-flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+    }
+  }
+
+  .menu-wrapper {
+    font-family: var(--main-font);
+    font-size: 24px;
+    margin: 35px 0 35px 25px;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+.section-wrapper.open {
+  transform: translateX(0);
+}

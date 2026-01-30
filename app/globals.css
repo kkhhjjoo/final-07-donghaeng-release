@@ -1,1 +1,29 @@
-@import "tailwindcss";
+@import './style/base.css';
+@import './style/reset.css';
+@import './style/style.css';
+
+@font-face {
+  font-family: 'Cafe24 Ssurround';
+  src:
+    url('/fonts/Cafe24Ssurround-v2.0.woff2') format('woff2'),
+    url('/fonts/Cafe24Ssurround-v2.0.woff') format('woff');
+}
+@font-face {
+  font-family: 'Gmarket Sans';
+  src: url('/fonts/GmarketSansTTFMedium.woff') format('woff');
+}
+@font-face {
+  font-family: 'Gmarket Sans Bold';
+  src: url('/fonts/GmarketSansTTFBold.woff') format('woff');
+  font-weight: 700;
+}
+@font-face {
+  font-family: 'Gmarket Sans Medium';
+  src: url('/fonts/GmarketSansTTFMedium.woff') format('woff');
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'Gmarket Sans Light';
+  src: url('/fonts/GmarketSansTTFLight.woff') format('woff');
+  font-weight: 300;
+}

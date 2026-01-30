@@ -1,0 +1,32 @@
+meta {
+  name: 모임 신청
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{url}}/orders
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{accessToken}}
+}
+
+body:json {
+  {
+    "products": [{
+      "_id": 68,
+      "quantity": 0
+    }],
+    "extra": {
+      "answer1": "test"
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

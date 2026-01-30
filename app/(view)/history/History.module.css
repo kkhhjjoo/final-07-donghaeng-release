@@ -1,0 +1,274 @@
+.container {
+  padding-bottom: 10rem;
+  width: 100%;
+}
+.title {
+  margin: 0 auto;
+  margin-top: 35px;
+  margin-left: 20px;
+  font-family: var(--main-font);
+  font-size: 24px;
+}
+.contentWrapper {
+  position: relative;
+  max-width: 767px;
+  margin: 0 auto;
+  margin-top: 60px; /* title과의 간격 */
+}
+.btnGroup {
+  margin-top: 60px;
+  margin-right: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+/* active 상태 스타일 통합 */
+.beforeBtn,
+.afterBtn {
+  width: 88px;
+  height: 45px;
+  border-radius: 25px;
+  font-family: var(--sub-font-medium);
+}
+.beforeBtn {
+  margin-right: 15px;
+  background-color: var(--bg-lightsky);
+}
+.afterBtn {
+  background-color: var(--bg-sky);
+}
+button.active {
+  font-family: var(--sub-font-bold);
+}
+
+/* Swiper 컨테이너 */
+.swiper {
+  width: 100%;
+  padding: 60px 20px 80px 20px !important;
+  overflow: hidden !important;
+  margin: 0 auto;
+}
+
+.swiperSlide {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  padding: 0;
+}
+
+.swiper :global(.swiper-pagination) {
+  bottom: 20px !important;
+}
+
+.card {
+  position: relative;
+  max-width: 767px;
+  background-color: var(--bg-sky);
+  border: 5px solid var(--border-darksky);
+  border-radius: 25px;
+  margin: 0 auto;
+  padding: 55px 20px 55px 44px;
+}
+
+.bookmarkIcon img {
+  position: absolute;
+  top: -4px;
+  right: 30px;
+  cursor: pointer;
+}
+
+.cardContent {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.imageWrapper {
+  flex-shrink: 0;
+  width: 240px;
+  height: 240px;
+  margin-right: 36px;
+}
+.characterImage {
+  width: 100%;
+  height: 100%;
+  background: url('/images/img.png') center/cover;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 36px;
+}
+
+.infoWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.cardTitle {
+  font-family: var(--main-font);
+  font-size: 24px;
+  color: var(--text-navy);
+  line-height: 1.4;
+  margin-right: 50px;
+}
+
+.infoList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.infoItem {
+  font-family: var(--sub-font-medium);
+  color: var(--text-black);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.infoItem p {
+  font-size: 14px;
+}
+.arrowIcon {
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.arrowIcon:hover {
+  transform: translateX(4px);
+}
+.mobileContentWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    width: 100%;
+    overflow-x: hidden; /* 추가 */
+  }
+  .contentWrapper {
+    width: 767px;
+    height: 350px;
+  }
+
+  .swiper {
+    padding: 50px 15px 70px 15px !important;
+  }
+  .cardContent {
+    width: 100%;
+  }
+
+  .card {
+    max-width: 767px;
+  }
+
+  .imageWrapper {
+    width: 150px;
+    height: 150px;
+  }
+
+  .cardTitle {
+    font-size: 17px;
+  }
+
+  .infoItem p {
+    font-size: 14px;
+  }
+}
+
+/* 반응형 - 768px 이하 (모바일) */
+@media (max-width: 768px) {
+  .title {
+    width: 80%; /* 가운데로 모이게 */
+    font-size: 22px;
+    margin-left: 8px;
+  }
+
+  /* 모바일 컨텐츠 래퍼 */
+  .mobileContentWrapper {
+    max-width: 460px; /* 컨텐츠를 가운데로 모음 */
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  /* 모바일 버튼 그룹 - 가운데 정렬 */
+  .btnGroup {
+    justify-content: flex-end;
+    margin-top: 40px;
+    margin-bottom: 30px;
+  }
+
+  .beforeBtn,
+  .afterBtn {
+    width: 80px;
+    height: 40px;
+    font-size: 13px;
+  }
+
+  /* 모바일 카드 리스트 */
+  .mobileCardList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 320px;
+  }
+
+  .card {
+    max-width: 460px;
+    height: auto;
+    padding: 30px 15px 30px 20px;
+    border-radius: 20px;
+  }
+
+  .cardContent {
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .infoWrapper {
+    gap: 12px;
+  }
+
+  .cardTitle {
+    height: 60px;
+    font-size: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .bookmarkIcon {
+    top: 0;
+    right: 20px;
+  }
+  .imageWrapper {
+    width: 40vw;
+    max-width: 170px;
+    margin-right: 20px;
+    height: auto;
+  }
+
+  .characterImage {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 170 / 162;
+    border-radius: 15px;
+  }
+  .infoItem p {
+    font-size: 14px;
+  }
+  .arrowIcon {
+    right: 15px;
+    bottom: 15px;
+  }
+}

@@ -1,0 +1,88 @@
+/* 모임 신청 전체 body */
+.apply-body {
+  width: 100%;
+  height: 875px;
+  max-width: 500px;
+  margin-top: 20px;
+  margin-inline: auto;
+  padding-inline: 75px;
+  margin-bottom: 25px;
+}
+
+/* 모임 신청 타이틀 */
+.apply-title {
+  font-size: 20px;
+  font-family: var(--main-font);
+}
+
+/* 질문지 div */
+.question-div {
+  font-family: var(--sub-font-medium);
+  h3 {
+    margin-block: 20px;
+    font-size: 16px;
+  }
+
+  /* 답변 작성하는 공간 */
+  textarea {
+    background-color: var(--bg-white);
+    border: 5px solid var(--border-lavender);
+    border-radius: 20px;
+    padding: 7px;
+    width: 100%;
+    min-height: 120px;
+    font-size: 14px;
+  }
+}
+
+/* 버튼 묶음 div */
+.btn-div {
+  margin-top: 40px;
+  font-size: 16px;
+  font-family: var(--sub-font-bold);
+  color: var(--text-navy);
+
+  button {
+    width: 100%;
+    height: 60px;
+    border-radius: 25px;
+  }
+}
+
+/* 신청하기 */
+.btn-apply {
+  background-color: var(--border-lavender);
+  margin-bottom: 35px;
+}
+
+/* 취소하기 */
+.btn-cancel {
+  background-color: var(--bg-white);
+  border: 5px solid var(--border-lavender);
+}
+
+/* 데스크톱 (1024이상) */
+@media (min-width: 1024px) {
+  .apply-body {
+    max-width: 860px;
+  }
+
+  .apply-title {
+    font-size: 24px;
+  }
+
+  .question-div {
+    h3 {
+      font-size: 20px;
+    }
+  }
+
+  .btn-div {
+    display: flex;
+    gap: 100px;
+  }
+
+  .btn-apply {
+    margin-bottom: 0;
+  }
+}

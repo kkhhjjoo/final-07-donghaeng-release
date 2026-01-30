@@ -1,0 +1,51 @@
+meta {
+  name: 상품 등록
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{url}}/seller/products/
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{accessToken}}
+}
+
+body:json {
+  {
+    "seller_id": 1,
+    "_id": 4,
+    "createdAt": "2024-02-27T10:00:00Z",
+    "updatedAt": "2024-02-27T10:00:00Z",
+    "name": "유유현현욱욱",
+    "content": "잘까 말까 고민중입니다 추천해주세요",
+    "quantity": 20,
+    "buyQuantity": 50,
+    "price": 0,
+    "mainImages": [
+      {
+        "path": "/images/sample.jpg",
+        "name": "좋아"
+      }
+    ],
+    "extra": {
+      "category": "운동",
+      "gender": "남",
+      "age": 10,
+      "date": "2024-02-27T15:00:00Z",
+      "region": "화성시",
+      "survey1": "설문1 답변",
+      "survey2": "설문2 답변",
+      "answer1":"",
+      "answer2":""
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
