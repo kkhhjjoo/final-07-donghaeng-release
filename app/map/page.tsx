@@ -2,7 +2,7 @@
 
 import tag from '@/public/icon/tag.svg';
 import calender from '@/public/icon/calendar.svg';
-import search from '@/public/icon/search.svg';
+// import search from '@/public/icon/search.svg';
 import logo from '@/public/logo/logo.svg';
 import styles from './Map.module.css';
 import Filter from '@/app/components/Filter';
