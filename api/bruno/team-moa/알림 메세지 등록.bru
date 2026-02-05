@@ -1,0 +1,28 @@
+meta {
+  name: 알림 메세지 등록
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{url}}/notifications
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "type": "apply", // 알림 종류 구분
+    "target_id": 13, // 참여자 관리한 유저 id
+    "channel": "toast", // 알림 전달 방법
+    "content": "메세지 테스트 3", // 알림 메세지
+    "extra": {
+    "etc": "기타 등등" // 기타 등등 적는 extra
+  }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

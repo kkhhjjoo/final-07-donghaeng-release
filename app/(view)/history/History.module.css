@@ -1,33 +1,54 @@
 .container {
-  padding-bottom: 10rem;
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+.contentWrapper {
+  padding: 25px 20px;
   width: 100%;
 }
-.title {
+
+.swiper {
+  width: 100%;
+  max-width: 100%;
+  min-width: 280px;
   margin: 0 auto;
-  margin-top: 35px;
-  margin-left: 20px;
-  font-family: var(--main-font);
-  font-size: 24px;
-}
-.contentWrapper {
   position: relative;
-  max-width: 767px;
-  margin: 0 auto;
-  margin-top: 60px; /* title과의 간격 */
 }
+
+.swiper :global(.swiper-pagination-bullet) {
+  background: var(--border-darksky);
+  opacity: 1;
+}
+
+.swiper :global(.swiper-pagination-bullet-active) {
+  background: var(--bg-navy);
+}
+
+.title {
+  font-family: var(--main-font);
+  font-size: 20px;
+  margin-left: 15px;
+  margin-bottom: 20px;
+}
+
 .btnGroup {
-  margin-top: 60px;
+  margin-top: 20px;
   margin-right: 20px;
+  margin-bottom: 30px;
   display: flex;
   justify-content: flex-end;
 }
-/* active 상태 스타일 통합 */
+
 .beforeBtn,
 .afterBtn {
-  width: 88px;
+  width: 75px;
   height: 45px;
   border-radius: 25px;
   font-family: var(--sub-font-medium);
+  font-weight: 700;
+  cursor: pointer;
 }
 .beforeBtn {
   margin-right: 15px;
@@ -36,84 +57,71 @@
 .afterBtn {
   background-color: var(--bg-sky);
 }
-button.active {
-  font-family: var(--sub-font-bold);
-}
 
-/* Swiper 컨테이너 */
-.swiper {
-  width: 100%;
-  padding: 60px 20px 80px 20px !important;
-  overflow: hidden !important;
-  margin: 0 auto;
-}
-
-.swiperSlide {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  height: auto;
-  padding: 0;
-}
-
-.swiper :global(.swiper-pagination) {
-  bottom: 20px !important;
-}
+/* 카드드드드드드 */
 
 .card {
   position: relative;
-  max-width: 767px;
+  width: calc(100% - 30px);
+  /* max-width: 740px; */
+  height: 225px;
   background-color: var(--bg-sky);
   border: 5px solid var(--border-darksky);
   border-radius: 25px;
   margin: 0 auto;
-  padding: 55px 20px 55px 44px;
-}
-
-.bookmarkIcon img {
-  position: absolute;
-  top: -4px;
-  right: 30px;
-  cursor: pointer;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
 }
 
 .cardContent {
   display: flex;
   align-items: center;
-  gap: 24px;
+  width: 100%;
+  overflow: hidden;
 }
 
 .imageWrapper {
+  width: 26vw;
+  max-width: 130px;
+  height: 130px;
+  margin-right: 20px;
   flex-shrink: 0;
-  width: 240px;
-  height: 240px;
-  margin-right: 36px;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
 }
+
 .characterImage {
   width: 100%;
   height: 100%;
-  background: url('/images/img.png') center/cover;
-  border-radius: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 36px;
+  object-fit: cover;
+  border-radius: 20px;
 }
 
 .infoWrapper {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 10px;
+  overflow: hidden;
 }
 
 .cardTitle {
   font-family: var(--main-font);
-  font-size: 24px;
-  color: var(--text-navy);
+  font-size: 20px;
+  color: var(--text-black);
   line-height: 1.4;
-  margin-right: 50px;
+  margin-right: 20px;
+  text-align: left;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 }
 
 .infoList {
@@ -123,21 +131,28 @@ button.active {
   display: flex;
   flex-direction: column;
 }
+
 .infoItem {
   font-family: var(--sub-font-medium);
   color: var(--text-black);
   display: flex;
   align-items: center;
   gap: 4px;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .infoItem p {
-  font-size: 14px;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
 .arrowIcon {
   position: absolute;
-  right: 30px;
-  bottom: 30px;
+  right: 20px;
+  bottom: 20px;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
@@ -145,130 +160,109 @@ button.active {
 .arrowIcon:hover {
   transform: translateX(4px);
 }
-.mobileContentWrapper {
+
+.empty {
   display: flex;
-  justify-content: center;
+  justify-self: center;
+  /* align-items: center; */
+  height: 300px;
+  padding: 20px 0 50px 0;
+  font-family: var(--danger-font);
 }
 
-@media (max-width: 1024px) {
-  .container {
-    width: 100%;
-    overflow-x: hidden; /* 추가 */
-  }
-  .contentWrapper {
-    width: 767px;
-    height: 350px;
-  }
+.past-meeting {
+  filter: grayscale(100%);
+}
 
-  .swiper {
-    padding: 50px 15px 70px 15px !important;
-  }
-  .cardContent {
-    width: 100%;
-  }
-
-  .card {
-    max-width: 767px;
-  }
-
-  .imageWrapper {
-    width: 150px;
-    height: 150px;
-  }
-
+/* 최소크기창을 위한 글씨체 줄임 */
+@media (max-width: 400px) {
   .cardTitle {
-    font-size: 17px;
-  }
-
-  .infoItem p {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
-/* 반응형 - 768px 이하 (모바일) */
-@media (max-width: 768px) {
-  .title {
-    width: 80%; /* 가운데로 모이게 */
-    font-size: 22px;
-    margin-left: 8px;
+@media (max-width: 1023px) {
+  .swiper {
+    overflow: visible;
+    padding-bottom: 40px;
   }
 
-  /* 모바일 컨텐츠 래퍼 */
-  .mobileContentWrapper {
-    max-width: 460px; /* 컨텐츠를 가운데로 모음 */
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-  /* 모바일 버튼 그룹 - 가운데 정렬 */
-  .btnGroup {
-    justify-content: flex-end;
-    margin-top: 40px;
-    margin-bottom: 30px;
-  }
-
-  .beforeBtn,
-  .afterBtn {
-    width: 80px;
-    height: 40px;
-    font-size: 13px;
-  }
-
-  /* 모바일 카드 리스트 */
-  .mobileCardList {
+  .swiper :global(.swiper-wrapper) {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    min-width: 320px;
+
+    transform: none !important;
+    height: auto !important;
+  }
+
+  .swiper :global(.swiper-slide) {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .swiper :global(.swiper-pagination) {
+    display: none;
+  }
+}
+
+/* 데스크탑 */
+@media (min-width: 1024px) {
+  .contentWrapper {
+    max-width: 827px;
+  }
+
+  .swiper {
+    overflow: visible;
+    padding: 0 20px 60px 20px;
+    margin-bottom: 50px;
+  }
+
+  .swiper :global(.swiper-wrapper) {
+    display: flex;
+    flex-direction: row;
+    gap: 0px;
+
+    height: 100%;
+  }
+
+  .swiper :global(.swiper-slide) {
+    width: auto;
+    height: 100%;
+  }
+
+  .title {
+    margin-top: 30px;
   }
 
   .card {
-    max-width: 460px;
-    height: auto;
-    padding: 30px 15px 30px 20px;
-    border-radius: 20px;
+    width: 767px;
+    max-width: 767px;
+    height: 350px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+    padding: 40px;
   }
 
-  .cardContent {
-    align-items: flex-start;
-    gap: 15px;
-  }
-
-  .infoWrapper {
-    gap: 12px;
+  .imageWrapper {
+    width: 26vw;
+    max-width: 240px;
+    height: 240px;
   }
 
   .cardTitle {
-    height: 60px;
-    font-size: 20px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 24px;
   }
 
-  .bookmarkIcon {
-    top: 0;
-    right: 20px;
-  }
-  .imageWrapper {
-    width: 40vw;
-    max-width: 170px;
-    margin-right: 20px;
-    height: auto;
-  }
-
-  .characterImage {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 170 / 162;
-    border-radius: 15px;
-  }
   .infoItem p {
     font-size: 14px;
   }
-  .arrowIcon {
-    right: 15px;
-    bottom: 15px;
+
+  .infoWrapper {
+    margin-left: 20px;
+  }
+
+  .swiper :global(.swiper-pagination) {
+    display: block;
   }
 }

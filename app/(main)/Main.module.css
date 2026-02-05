@@ -103,6 +103,10 @@
   border-radius: 20px;
   overflow: hidden;
 
+  .map {
+    height: 300px;
+  }
+
   .map-image {
     height: auto;
     aspect-ratio: 500 / 270;
@@ -220,6 +224,10 @@
     }
     .map-view {
       margin-bottom: 60px;
+
+      .map {
+        height: 500px;
+      }
     }
   }
   .section-meetings-wrapper {

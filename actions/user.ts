@@ -99,3 +99,50 @@ export async function createUser(state: UserActionState, formData: FormData): Pr
 
   return data;
 }
+
+/**
+ * 프로필 수정
+ * @param state - 이전 상태(사용하지 않음)
+ * @param formData - 프로필 수정 폼 데이터(FormData 객체)
+ * @returns 프로필 수정 결과 응답 객체
+ * @description
+ * 기존 유저 정보를 수정 후 완료 버튼을 누르면 마이 페이지로 리다이렉트
+ * 실패시 에러 메시지 반환
+ */
+export async function updateUser(state: UserActionState, formData: FormData): Promise<UserActionState> {
+  let res: Response;
+  let data: UserInfoRes | ErrorRes;
+  const accessToken = formData.get('accessToken');
+  const _id = formData.get('_id');
+  formData.delete('accessToken');
+  formData.delete('_id');
+
+  const body = {
+    email: formData.get('email'),
+    image: formData.get('image'),
+    name: formData.get('name'),
+    comment: formData.get('comment'),
+    region: formData.get('region'),
+    age: formData.get('age'),
+    gender: formData.get('gender'),
+  };
+
+  try {
+    res = await fetch(`${API_URL}/users/${_id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Client-Id': CLIENT_ID,
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(body),
+    });
+
+    data = await res.json();
+  } catch (err) {
+    console.error(err);
+    return { ok: 0, message: '일시적인 네트워크 문제로 프로필 수정에 실패했습니다.' };
+  }
+
+  return data;
+}

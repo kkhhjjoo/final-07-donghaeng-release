@@ -1,3 +1,5 @@
+'use client';
+
 import BookmarkButton from '@/app/components/BookmarkButton';
 import style from './MeetingList.module.css';
 import Link from 'next/link';
@@ -5,6 +7,7 @@ import { Meetings } from '@/types/meetings';
 import { formatDate } from '@/lib/common';
 
 export default function MeetingItem({ meeting }: { meeting: Meetings }) {
+  console.log('meeting', meeting);
   return (
     <>
       <li className={style.card}>
@@ -13,7 +16,7 @@ export default function MeetingItem({ meeting }: { meeting: Meetings }) {
             <div
               className={style.cardImage}
               style={{
-                backgroundImage: meeting.mainImages?.[0].path || 'none',
+                backgroundImage: meeting.mainImages?.[0]?.path ? `url(${meeting.mainImages[0].path})` : 'none',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
               }}
@@ -22,7 +25,7 @@ export default function MeetingItem({ meeting }: { meeting: Meetings }) {
               <div className={style.cardHeader}>
                 <h3 className={style.cardTitle}>{meeting.name}</h3>
                 <div className={style.bookmarkIcon}>
-                  <BookmarkButton meetingId={meeting._id} />
+                  <BookmarkButton width={27} height={35} meetingId={meeting._id} />
                 </div>
               </div>
               <div className={style.cardMetadata}>

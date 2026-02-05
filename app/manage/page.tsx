@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import style from './ManageAllPage.module.css';
 import Link from 'next/link';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
-import type { Swiper as SwiperType } from 'swiper';
 
 //Swiper 스타일 import
 import 'swiper/css';
@@ -14,7 +14,6 @@ import 'swiper/css/pagination';
 import DefaultLayout from '@/app/components/DefaultLayout';
 import Image from 'next/image';
 import { Meetings } from '@/types/meetings';
-import BookmarkButton from '@/app/components/BookmarkButton';
 import { getMyAddMeetings } from '@/lib/meetings';
 import useUserStore from '@/zustand/userStore';
 import { getAgeText, getGenderText } from '@/lib/common';
@@ -37,9 +36,6 @@ const formatDate = (dateString: string) => {
 function MeetingCard({ meeting }: { meeting: Meetings }) {
   return (
     <article className={style.card}>
-      <div className={style.bookmarkIcon} aria-label="북마크">
-        <BookmarkButton meetingId={meeting._id} width={23} height={29} />
-      </div>
       <div className={style.cardContent}>
         <figure className={style.imageWrapper}>
           <div
@@ -96,13 +92,21 @@ function MeetingCard({ meeting }: { meeting: Meetings }) {
 }
 
 export default function ManageAllPage() {
-  const [isDesktop, setIsDesktop] = useState(false);
-  const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
+  const router = useRouter();
+  const [isEmpty, setIsEmpty] = useState(false);
 
   const [meetings, setMeetings] = useState<Meetings[]>([]);
   const user = useUserStore((state) => state.user);
+  const hasHydrated = useUserStore((state) => state.hasHydrated);
   const userId = user?._id;
   const accessToken = user?.token?.accessToken;
+
+  // 비로그인 시 로그인 페이지로 이동
+  useEffect(() => {
+    if (hasHydrated && !accessToken) {
+      router.push('/login');
+    }
+  }, [hasHydrated, accessToken, router]);
 
   // API에서 모임 데이터 가져오기
   useEffect(() => {
@@ -112,6 +116,7 @@ export default function ManageAllPage() {
 
       if (response.ok === 1) {
         setMeetings(response.item);
+        setIsEmpty(response.item.length === 0);
       }
     };
 
@@ -119,81 +124,45 @@ export default function ManageAllPage() {
   }, [userId, accessToken]);
   console.log(meetings);
 
-  // 스케일 적용 함수
-  const applyScaleEffect = (swiper: SwiperType) => {
-    if (!swiper.slides) return;
-    swiper.slides.forEach((slide, index) => {
-      slide.style.transition = 'all 0.3s ease';
-      if (index === swiper.activeIndex) {
-        slide.style.transform = 'scale(1)';
-        slide.style.opacity = '1';
-      } else {
-        slide.style.transform = 'scale(0.8)';
-        slide.style.opacity = '0.7';
-      }
-    });
-  };
-
-  // 필터 변경 시 Swiper 업데이트
-  useEffect(() => {
-    if (swiperInstance) {
-      setTimeout(() => {
-        swiperInstance.slideTo(0, 0);
-        applyScaleEffect(swiperInstance);
-      }, 50);
-    }
-  }, [swiperInstance]);
-
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsDesktop(window.innerWidth >= 768);
-    };
-
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
-
   return (
     <>
       <DefaultLayout>
         <main className={style.container}>
-          {isDesktop ? (
+          {
             <div className={style.contentWrapper}>
               <h1 className={style.title}>등록 모임</h1>
-              <Swiper
-                className={style.swiper}
-                modules={[Pagination]}
-                spaceBetween={20}
-                slidesPerView="auto"
-                centeredSlides={true}
-                pagination={{ clickable: true }}
-                onSwiper={setSwiperInstance}
-                onSlideChange={(swiper) => {
-                  applyScaleEffect(swiper);
-                }}
-                onInit={(swiper) => {
-                  applyScaleEffect(swiper);
-                }}
-              >
-                {meetings.map((meeting) => (
-                  <SwiperSlide className={style.swiperSlide} key={meeting._id}>
-                    <MeetingCard meeting={meeting} />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+              {isEmpty ? (
+                <div className={style.empty}> 신청한 모임이 없습니다.</div>
+              ) : (
+                <Swiper
+                  modules={[Pagination]}
+                  spaceBetween={40}
+                  slidesPerView={'auto'}
+                  centeredSlides={true}
+                  pagination={{
+                    clickable: true,
+                  }}
+                  className={style.swiper}
+                  breakpoints={{
+                    0: {
+                      enabled: false, // 모바일
+                      centeredSlides: false,
+                    },
+                    1024: {
+                      enabled: true, // 웹
+                      centeredSlides: true,
+                    },
+                  }}
+                >
+                  {meetings.map((meeting) => (
+                    <SwiperSlide className={style.swiperSlide} key={meeting._id}>
+                      <MeetingCard meeting={meeting} />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              )}
             </div>
-          ) : (
-            <div className={style.mobileContentWrapper}>
-              <h1 className={style.title}>등록 모임</h1>
-              <div className={style.mobileCardList}>
-                {meetings.map((meeting) => (
-                  <MeetingCard key={meeting._id} meeting={meeting} />
-                ))}
-              </div>
-            </div>
-          )}
+          }
         </main>
       </DefaultLayout>
     </>

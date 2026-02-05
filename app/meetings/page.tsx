@@ -1,14 +1,17 @@
 import style from './MeetingList.module.css';
 import Link from 'next/link';
 import DefaultLayout from '@/app/components/DefaultLayout';
-
 import { getMeetings } from '@/lib/meetings';
 import Category from '@/app/meetings/Category';
 import MeetingItem from '@/app/meetings/MeetingItem';
 
-export default async function Meetinglist() {
-  const result = await getMeetings();
-  console.log(result);
+interface PageProps {
+  searchParams: Promise<{ keyword?: string; category?: string }>;
+}
+
+export default async function Meetinglist({ searchParams }: PageProps) {
+  const { keyword, category } = await searchParams;
+  const result = await getMeetings(keyword, category); // 키워드에 대한 모임리스트 조회
 
   return (
     <>
@@ -23,7 +26,7 @@ export default async function Meetinglist() {
             </div>
             <div className={style.headerSection}>
               <div className={style.titleSection}>
-                <h1 className={style.pageTitle}>{'모임 리스트'}</h1>
+                <h1 className={style.pageTitle}>{keyword ? `"${keyword}" 검색 결과` : '모임 리스트'}</h1>
               </div>
               <Link href="/meetings/add" className={style.registerButton}>
                 <span className={style.desktopText}>모임 등록하기</span>
@@ -37,8 +40,19 @@ export default async function Meetinglist() {
             <section className={style.mainContent}>
               <div className={style.meetingBorder}>
                 <div className={style.filterBar}></div>
-
-                <ul className={style.meetingGrid}>{result.ok ? result.item.map((meeting) => <MeetingItem key={meeting._id} meeting={meeting} />) : <p>에러발생</p>}</ul>
+                {result.ok ? (
+                  result.item.length > 0 ? (
+                    <ul className={style.meetingGrid}>
+                      {result.item.map((meeting) => (
+                        <MeetingItem key={meeting._id} meeting={meeting} />
+                      ))}
+                    </ul>
+                  ) : (
+                    <div className={style['none-data']}>검색 결과가 없습니다.</div>
+                  )
+                ) : (
+                  <p>에러발생</p>
+                )}
               </div>
             </section>
           </div>

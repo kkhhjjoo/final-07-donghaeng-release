@@ -2,14 +2,25 @@
 .filter-div {
   display: flex;
   flex-wrap: nowrap;
-  width: 100%;
+  width: 100vw;
+  /* 화면보다 넓은 경우 가로 스크롤 */
+  overflow-x: auto;
+  /* 터치로 스크롤 */
+  -webkit-overflow-scrolling: touch;
+  /* 스크롤바 숨김: 크기 none */
+  scrollbar-width: none;
+
+  /* 스크롤바 숨김: display none */
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* select를 감싸는 div */
 .wrapper {
   position: relative;
   display: inline-flex;
-  flex: 1 1 auto;
+  flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
   gap: 4px;
@@ -22,8 +33,7 @@
   font-family: var(--sub-font-medium);
   color: var(--text-navy);
   line-height: 20px;
-  max-width: 150px;
-  min-width: 0;
+  width: 120px;
   margin-right: 3px;
   margin-block: 10px;
   overflow: hidden;
@@ -39,6 +49,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     min-width: 0;
+    flex: 1;
   }
 
   /* 날짜 */
@@ -48,10 +59,6 @@
     white-space: nowrap;
     min-width: 0;
   }
-}
-
-.category-display {
-  display: none;
 }
 
 /* 실제 date input을 투명하게 만들고 wrapper 전체를 덮음 */

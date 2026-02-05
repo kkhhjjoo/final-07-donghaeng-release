@@ -1,3 +1,7 @@
+'use server';
+import { ErrorRes, ManageListRes } from '@/types/api';
+import { updateTag } from 'next/cache';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID || '';
 
@@ -14,6 +18,8 @@ export async function patchManage(prevState: ActionState, formData: FormData): P
   const state = formData.get('state');
   const memo = formData.get('memo');
 
+  let data: ManageListRes | ErrorRes;
+
   try {
     const res = await fetch(`${API_URL}/seller/orders/${_id}`, {
       method: 'PATCH',
@@ -27,7 +33,12 @@ export async function patchManage(prevState: ActionState, formData: FormData): P
         memo,
       }),
     });
-    return res.json();
+    data = await res.json();
+    if (data.ok) {
+      updateTag('seller/orders');
+      return { ok: 1, message: '처리가 완료되었습니다.' };
+    }
+    return { ok: 0, message: (data as ErrorRes).message };
   } catch (error) {
     // 네트워크 오류 처리
     console.error(error);

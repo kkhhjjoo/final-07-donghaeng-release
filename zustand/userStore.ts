@@ -1,3 +1,5 @@
+'use client';
+
 import { User } from '@/types/user';
 import { create, StateCreator } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
@@ -6,6 +8,8 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 interface UserStoreState {
   isLogin: boolean;
   user: User | null;
+  hasHydrated: boolean;
+  setHasHydrated: (state: boolean) => void;
   setUser: (user: User) => void;
   resetUser: () => void;
 }
@@ -16,6 +20,9 @@ interface UserStoreState {
 const UserStore: StateCreator<UserStoreState> = (set) => ({
   isLogin: false,
   user: null,
+  hasHydrated: false,
+
+  setHasHydrated: (hydrated) => set({ hasHydrated: hydrated }),
 
   setUser: (user: User) =>
     set({
@@ -30,6 +37,12 @@ const useUserStore = create<UserStoreState>()(
   persist(UserStore, {
     name: 'user',
     storage: createJSONStorage(() => localStorage),
+
+    onRehydrateStorage: () => (state) => {
+      if (state) {
+        state?.setHasHydrated(true);
+      }
+    },
   })
 );
 

@@ -1,0 +1,15 @@
+meta {
+  name: 알림 전체 읽음 상태 수정
+  type: http
+  seq: 17
+}
+
+patch {
+  url: {{url}}/notifications/read
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

@@ -5,43 +5,72 @@ import styles from './Login.module.css';
 import { useActionState, useEffect } from 'react';
 import { login } from '@/actions/user';
 import { useRouter } from 'next/navigation';
-import { useSearchParams } from 'next/navigation';
 import useUserStore from '@/zustand/userStore';
+import useBookmarkStore from '@/zustand/bookmarkStore';
 import Link from 'next/link';
 
 export default function Login() {
   const [userState, formActions, isPending] = useActionState(login, null);
-  const router = useRouter();
-  const redirect = useSearchParams().get('redirect');
-  const setUser = useUserStore((state) => state.setUser);
+  //  폼을 제출하면 로그인 함수 실행. 로그인 결과를 userStage에 저장한다.
+  // userState: 로그인 결과(성공/실패), formAction: 폼이 제출될때 실행할 함수, isPending: 로그인 중인지 확인
 
-  //로그인 성공시...
+  const setUser = useUserStore((state) => state.setUser);
+  // Zustand에서 유저 정보 저장하는 함수 가져오기
+
+  const fetchBookmarks = useBookmarkStore((state) => state.fetchBookmarks);
+  // 로그인 성공하면 북마크 목록을 불러온다
+
+  const { user } = useUserStore();
+  const router = useRouter();
+  const accessToken = user?.token?.accessToken;
+  const hasHydrated = useUserStore((state) => state.hasHydrated);
+
   useEffect(() => {
-    if (userState?.ok === 1) {
-      setUser({
-        _id: userState.item._id,
-        email: userState.item.email,
-        name: userState.item.name,
-        region: userState.item.region,
-        age: userState.item.age,
-        gender: userState.item.gender,
-        image: userState.item.image,
-        comment: userState.item.comment,
-        bpm: userState.item.bpm,
-        token: {
-          accessToken: userState.item.token?.accessToken || '',
-          refreshToken: userState.item.token?.refreshToken || '',
-        },
-      });
-      router.push(redirect || '/');
+    if (!hasHydrated) return;
+    // 로컬 스토리지 복원 안끝났으면 아~무것도 안함
+
+    if (accessToken) {
+      router.replace('/');
     }
-  }, [userState, router, redirect, setUser]);
+    // 로그인 했으면 메인 페이지로 강제이동
+
+    const handleLoginSuccess = async () => {
+      if (userState?.ok === 1) {
+        const accessToken = userState.item.token?.accessToken || '';
+
+        setUser({
+          _id: userState.item._id,
+          email: userState.item.email,
+          name: userState.item.name,
+          region: userState.item.region,
+          age: userState.item.age,
+          gender: userState.item.gender,
+          image: userState.item.image,
+          comment: userState.item.comment,
+          bpm: userState.item.bpm,
+          token: {
+            accessToken,
+            refreshToken: userState.item.token?.refreshToken || '',
+          },
+        });
+
+        // 로그인 성공 시 북마크 목록 fetch
+        if (accessToken) {
+          await fetchBookmarks(accessToken);
+        }
+
+        router.push('/');
+      }
+    };
+
+    handleLoginSuccess();
+  }, [userState, router, setUser, fetchBookmarks, hasHydrated, accessToken]);
 
   return (
     <BlankLayout>
       <main className={styles['main']}>
         <div className={styles['login-wrap']}>
-          <button type="button" className={styles['back-btn']} aria-label="이전페이지" onClick={() => router.back()}>
+          <button type="button" className={styles['back-btn']} aria-label="메인으로 이동" onClick={() => router.push('/')}>
             <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M0.439367 8.09227C-0.146456 8.59433 -0.146456 9.40968 0.439367 9.91175L9.43761 17.6235C10.0234 18.1255 10.9748 18.1255 11.5606 17.6235C12.1465 17.1214 12.1465 16.306 11.5606 15.804L3.62156 9L11.5559 2.19603C12.1418 1.69396 12.1418 0.878612 11.5559 0.376548C10.9701 -0.125516 10.0187 -0.125516 9.43292 0.376548L0.43468 8.08825L0.439367 8.09227Z"

@@ -14,7 +14,7 @@ export async function getUserInfo(_id: string): Promise<UserInfoRes | ErrorRes> 
       headers: {
         'Client-Id': CLIENT_ID,
       },
-      cache: 'force-cache',
+      cache: 'no-store',
       next: {
         tags: [`users/${_id}`],
       },

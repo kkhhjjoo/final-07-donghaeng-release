@@ -3,9 +3,9 @@
   display: flex;
   flex-direction: column;
   max-width: 1760px;
-  margin: 0 auto;
+  justify-content: center;
   width: 100%;
-  padding: 45px 40px 185px 80px;
+  padding: 45px 40px 185px 40px;
   gap: 40px;
 }
 
@@ -66,7 +66,7 @@
 .categoryListDesktop {
   display: block;
   border: 5px solid var(--border-sky);
-  padding: 37px 89px 37px 50px;
+  padding: 37px 4vw 37px 2.5vw;
   border-radius: 25px;
 }
 
@@ -206,13 +206,12 @@
 
 .meetingBorder {
   border: 5px solid var(--border-lavender);
-  width: 100%;
   max-width: 1350px;
-  padding-top: 40px;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding: 40px;
   border-radius: 25px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 /* 모임 카드 그리드 */
@@ -227,6 +226,7 @@
 .card {
   width: 100%;
   max-width: 380px;
+  min-width: 0;
 }
 .meetingCard {
   background-color: var(--bg-white);
@@ -234,13 +234,12 @@
   max-width: 380px;
   height: auto;
   min-height: 350px;
-  padding-bottom: 20px;
+  padding: 10px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   transition: all 0.2s ease;
   cursor: pointer;
-  margin-bottom: 40px;
 }
 
 .meetingCard:hover {
@@ -276,7 +275,6 @@
 .cardTitle {
   font-family: var(--sub-font-medium);
   font-size: 24px;
-
   color: var(--text-navy);
   margin-top: 10px;
   margin-bottom: 7px;
@@ -305,8 +303,19 @@
 @media (max-width: 1024px) {
   .mainLayout {
     flex-direction: column;
-    padding: 20px 15px 100px 15px;
+    padding: 20px 10px 100px 10px;
     gap: 20px;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
+  .topHeader {
+    left: 0;
+    padding: 0 5px;
+  }
+
+  .breadcrumb {
+    margin-left: 0;
   }
 
   /* 데스크톱 사이드바 숨김 */
@@ -317,7 +326,16 @@
   .row {
     display: flex;
     flex-direction: column;
+    width: 100%;
   }
+
+  .meetingBorder {
+    /* width:; */
+    /* max-width: 100%; */
+    padding: 15px 10px;
+    border: none;
+  }
+
   .categoryList {
     flex-direction: column;
     flex-wrap: wrap;
@@ -347,47 +365,50 @@
 
   .meetingGrid {
     grid-template-columns: repeat(1, 1fr);
-  }
-
-  .cardImage {
     width: 100%;
-    aspect-ratio: 185 / 138;
+  }
+  .cardImage {
+    width: 40%;
+    min-width: 120px;
+    height: 100%;
+    flex-shrink: 0;
   }
 
   .meetingCard {
     flex-direction: row;
-    padding: 0px;
+    padding: 0;
     width: 100%;
-    flex-shrink: 1;
+    max-width: 100%;
     min-height: 138px;
     margin-bottom: 10px;
     align-items: flex-start;
   }
 
-  .cardImage {
-    width: 30%;
-    height: 100%;
-  }
-
   .cardTitle {
     margin-top: 5px;
+    font-size: 20px;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
+
   .cardContent {
     flex: 1;
-    padding-left: 15px;
+    padding: 10px;
+    padding-right: 40px;
     justify-content: center;
+    overflow: hidden;
   }
 
   .bookmarkIcon {
-    top: 48px;
-    right: -20px;
-  }
-  .cardHeader {
-    margin-top: 0;
+    width: 27px;
+    height: 25px;
+    top: 30px;
+    right: 100px;
   }
 
-  .cardTitle {
-    font-size: 24px;
+  .cardHeader {
+    margin-top: 0;
+    width: 100%;
   }
 
   .metadataLine {
@@ -396,54 +417,48 @@
 
   .card {
     height: 100%;
+    max-width: 100%;
   }
+
   .mainContent {
     gap: 10px;
   }
+
   .headerSection {
     margin-bottom: 5px;
-  }
-
-  .pageTitle {
-    text-align: left;
-  }
-  .sidebar {
-    width: 100%;
-  }
-  .categoryChip {
-    white-space: nowrap;
-  }
-  .headerSection {
     flex-direction: column;
     position: relative;
+    gap: 10px;
+    width: 100%;
   }
+
   .titleSection {
     display: flex;
     justify-content: space-between;
+    width: 100%;
   }
 
   .registerButton {
     width: 88px;
     height: 40px;
+    padding: 10px;
     position: absolute;
-    right: 15px;
+    right: 0;
     border-radius: 50px;
+    margin-left: 0;
   }
 
-  .meetingGrid {
-    grid-template-columns: repeat(1, 1fr);
+  .categoryChip {
+    white-space: nowrap;
   }
+
   .mobileText {
     color: var(--text-white);
+    display: inline;
   }
 
-  /* 768px 이하에서 텍스트 변경 */
   .desktopText {
     display: none;
-  }
-
-  .mobileText {
-    display: inline;
   }
 
   .filterBar {
@@ -452,7 +467,6 @@
 
   .filterButton {
     padding: 0.5rem 1rem;
-
     font-size: 0.85rem;
   }
 
@@ -460,26 +474,17 @@
     display: flex;
     flex-direction: column;
   }
-  .meetingBorder {
-    padding: 10px 15px;
-    border: none;
-  }
-
-  .card,
-  .meetingCard {
-    max-width: 100%;
-    height: 100%;
-  }
 }
 
 @media (max-width: 768px) {
   .mainLayout {
-    min-width: 320px;
-    padding: 1rem 0.75rem;
+    width: 100%;
+    padding: 1rem 0.5rem;
+    box-sizing: border-box;
   }
 
   .meetingBorder {
-    padding: 15px 10px;
+    padding: 10px 5px;
   }
 
   .filterButton,
@@ -492,17 +497,67 @@
 
   .card {
     margin-bottom: 20px;
-    padding-bottom: 0;
+
+    max-width: 100%;
   }
-  .meetingCard {
-    min-height: auto;
+
+  .cardImage {
+    width: 35%;
+    min-width: 100px;
+  }
+
+  .cardContent {
+    padding: 8px;
+    padding-right: 35px;
   }
 
   .cardTitle {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .metadataLine {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.none-data {
+  font-family: var(--sub-font-medium);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-height: 300px;
+  color: var(--text-gray);
+  padding-bottom: 40px;
+}
+
+@media (max-width: 480px) {
+  .mainLayout {
+    padding: 0.75rem 0.25rem;
+  }
+
+  .pageTitle {
+    font-size: 20px;
+  }
+
+  .cardImage {
+    width: 35%;
+    min-width: 90px;
+  }
+
+  .cardTitle {
     font-size: 16px;
+  }
+
+  .metadataLine {
+    font-size: 13px;
+  }
+
+  .bookmarkIcon {
+    top: 5px;
+    right: 0;
   }
 }

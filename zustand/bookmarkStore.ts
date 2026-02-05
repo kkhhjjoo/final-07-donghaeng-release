@@ -1,54 +1,100 @@
-'use client';
+import { Bookmarks } from '@/types/bookmarks';
+import { create, StateCreator } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { getUserBookmarksList } from '@/lib/bookmarks';
 
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+interface BookmarkStoreState {
+  bookmarks: Bookmarks[];
+  loading: boolean;
+  hasHydrated: boolean;
 
-// 모임 타입 정의
-export interface Meeting {
-  id: number;
-  title: string;
-  category: {
-    location: string;
-    theme: string;
-    age: string;
-    gender: string;
-    people: string;
-  };
-  date: string;
+  // 북마크 목록 설정
+  setBookmarks: (bookmarks: Bookmarks[]) => void;
+
+  // 북마크 삭제 (로컬 상태)
+  removeBookmark: (bookmarkId: number) => void;
+
+  // 특정 상품이 북마크되어 있는지 확인
+  isBookmarked: (targetId: number) => boolean;
+
+  // 북마크 ID 조회 (삭제 시 필요)
+  getBookmarkId: (targetId: number) => number | null;
+
+  // 로딩 상태 설정
+  setLoading: (loading: boolean) => void;
+
+  // 스토어 초기화 (로그아웃 시)
+  resetBookmark: () => void;
+
+  // 북마크 데이터 가져오기 (로그인 시 및 추가할때)
+  fetchBookmarks: (accessToken: string) => Promise<void>;
+
+  // hydration 완료 설정
+  setHasHydrated: (state: boolean) => void;
 }
 
-interface BookmarkState {
-  bookmarkedIds: number[];
-  addBookmark: (id: number) => void;
-  removeBookmark: (id: number) => void;
-  toggleBookmark: (id: number) => void;
-  isBookmarked: (id: number) => boolean;
-}
+const BookmarkStore: StateCreator<BookmarkStoreState> = (set, get) => ({
+  bookmarks: [],
+  loading: false,
+  hasHydrated: false,
 
-export const useBookmarkStore = create<BookmarkState>()(
-  persist(
-    (set, get) => ({
-      bookmarkedIds: [],
-      addBookmark: (id) =>
-        set((state) => ({
-          bookmarkedIds: [...state.bookmarkedIds, id],
-        })),
-      removeBookmark: (id) =>
-        set((state) => ({
-          bookmarkedIds: state.bookmarkedIds.filter((bookmarkId) => bookmarkId !== id),
-        })),
-      toggleBookmark: (id) => {
-        const isBookmarked = get().bookmarkedIds.includes(id);
-        if (isBookmarked) {
-          get().removeBookmark(id);
-        } else {
-          get().addBookmark(id);
-        }
-      },
-      isBookmarked: (id) => get().bookmarkedIds.includes(id),
-    }),
-    {
-      name: 'bookmark-storage', // localStorage key
+  setBookmarks: (bookmarks) => set({ bookmarks }),
+
+  setHasHydrated: (state) => set({ hasHydrated: state }),
+
+  removeBookmark: (bookmarkId) =>
+    set((state) => ({
+      bookmarks: state.bookmarks.filter((bookmark) => bookmark._id !== bookmarkId),
+    })),
+
+  isBookmarked: (targetId) => {
+    return get().bookmarks.some((bookmark) => bookmark.product._id === targetId);
+  },
+
+  getBookmarkId: (targetId) => {
+    const bookmark = get().bookmarks.find((b) => b.product._id === targetId);
+    return bookmark ? bookmark._id : null;
+  },
+
+  setLoading: (loading) => set({ loading }),
+
+  resetBookmark: () => {
+    // 이전 버전의 localStorage 데이터도 삭제
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('bookmark-storage');
     }
-  )
+    set({
+      bookmarks: [],
+      loading: false,
+    });
+  },
+
+  fetchBookmarks: async (accessToken: string) => {
+    console.log('fetchBookmarks 호출됨, token:', accessToken ? '있음' : '없음');
+    set({ loading: true });
+    try {
+      const result = await getUserBookmarksList(accessToken);
+      console.log('북마크 API 응답:', result);
+      if (result.ok && 'item' in result) {
+        console.log('북마크 저장:', result.item);
+        set({ bookmarks: result.item });
+      }
+    } catch (error) {
+      console.error('북마크 fetch 에러:', error);
+    } finally {
+      set({ loading: false });
+    }
+  },
+});
+
+const useBookmarkStore = create<BookmarkStoreState>()(
+  persist(BookmarkStore, {
+    name: 'bookmark-storage',
+    storage: createJSONStorage(() => localStorage),
+    onRehydrateStorage: () => (state) => {
+      state?.setHasHydrated(true);
+    },
+  })
 );
+
+export default useBookmarkStore;

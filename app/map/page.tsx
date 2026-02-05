@@ -36,7 +36,7 @@ export default function Map() {
 
   return (
     <>
-      <DefaultLayout>
+      <DefaultLayout hideFooter>
         <main className={styles['map-body']}>
           <div className={styles['filter-div']}>
             {/* onFilterChanges: 사용자가 정의한 함수명
@@ -53,7 +53,6 @@ export default function Map() {
               <ul>
                 {filteredMeetings.map((meeting) => (
                   // li 클릭 시 해당되는 모임 id 저장
-
                   <li
                     key={meeting._id}
                     onClick={() => {
@@ -78,7 +77,7 @@ export default function Map() {
             </div>
 
             {/* props로 필요한 정보들 전달 */}
-            <KakaoMap width="100%" height="700px" lat={37.5709} lng={126.978} className={styles.map} meetings={filteredMeetings} selectedId={selectedId} />
+            <KakaoMap width="100%" lat={37.5709} lng={126.978} className={styles.map} meetings={filteredMeetings} selectedId={selectedId} />
           </div>
         </main>
       </DefaultLayout>

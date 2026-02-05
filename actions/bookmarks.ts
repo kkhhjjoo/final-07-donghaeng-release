@@ -1,8 +1,10 @@
-import { BookmarksInfoRes, ErrorRes } from './../types/api';
+import { BookmarksInfoRes, ErrorRes } from '@/types/api';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID || '';
 
 type ActionState = ErrorRes | null;
+type AddBookmarkResult = BookmarksInfoRes | ErrorRes;
 
 /**
  * 북마크 추가
@@ -13,12 +15,16 @@ type ActionState = ErrorRes | null;
  * @description
  * 실패 시 에러 메시지를 반환
  */
-export async function addBookmarks(prevState: ActionState, formData: FormData): Promise<ActionState> {
+export async function addBookmarks(prevState: ActionState, formData: FormData): Promise<AddBookmarkResult> {
   const accessToken = formData.get('accessToken');
   formData.delete('accessToken');
 
-  // FormData를 일반 Object로 변환
-  const body = Object.fromEntries(formData.entries());
+  // FormData를 일반 Object로 변환하고 target_id를 숫자로 변환
+  const entries = Object.fromEntries(formData.entries());
+  const body = {
+    ...entries,
+    target_id: Number(entries.target_id),
+  };
 
   let res: Response;
   let data: BookmarksInfoRes | ErrorRes;
@@ -35,8 +41,7 @@ export async function addBookmarks(prevState: ActionState, formData: FormData): 
     });
 
     data = await res.json();
-    console.log(data);
-    console.log(accessToken);
+    console.log('Add Response Data', data);
   } catch (error) {
     // 네트워크 오류 처리
     console.error(error);
@@ -46,7 +51,7 @@ export async function addBookmarks(prevState: ActionState, formData: FormData): 
   // redirect()는 예외를 throw 해서 처리하는 방식이라서 try 문에서 사용하면 catch로 처리되므로 제대로 동작하지 않음
   // 따라서 try 문 밖에서 사용해야 함
   if (data.ok) {
-    return null; // 성공 시 null 반환
+    return data; // 성공 시 생성된 북마크 데이터 반환
   } else {
     return data; // 에러 응답 객체 반환
   }

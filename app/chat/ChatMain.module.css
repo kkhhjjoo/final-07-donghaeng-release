@@ -1,0 +1,37 @@
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.loadingText {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-navy);
+  font-family: var(--sub-font-medium);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--bg-white);
+  z-index: 0;
+  height: calc(100vh - 60px);
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .main {
+    height: calc(100vh - 100px);
+  }
+}

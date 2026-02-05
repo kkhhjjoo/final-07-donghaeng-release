@@ -80,3 +80,6 @@
 .section-wrapper.open {
   transform: translateX(0);
 }
+.logout-btn {
+  cursor: pointer;
+}

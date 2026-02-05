@@ -20,20 +20,40 @@ interface EditMeetingFormProps {
 
 export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
   const router = useRouter();
+  //강제로 다른 페이지로 보낼때 사용. 로그인 안돼있으면 /login으로 보내려고 넣어놓음
   const { user } = useUserStore();
+  // zustand에 저장된 로그인 사용자 정보 가져오기
 
   const initialState: ActionState | null = null;
+  //  서버 액션의 초기 결과값. 아직 서버에 요청을 보내지 않았으니까 null
   const [state, formAction] = useActionState(updateMeeting, initialState);
+  // updateMeeting: 서버에 모임수정 요청 보내는 서버액션, useActionState: 요청의 결과를 state로 받아 볼수 있게 해줌
+  // 결과적으로 formAction >> 서버에 수정 요청이 됨됨됨... state: 서버에서 응답 결과
+
   const [, startTransition] = useTransition();
+
+  const accessToken = user?.token?.accessToken;
+  const hasHydrated = useUserStore((state) => state.hasHydrated);
+  useEffect(() => {
+    if (!hasHydrated) return;
+    // 로컬 스토리지 복원 안끝났으면 아~무것도 안함
+
+    if (!accessToken) {
+      router.replace('/login');
+    }
+    // 로그인 안했으면 로그인페이지로 강제이동
+  }, [router, hasHydrated, accessToken]);
 
   // 인원 카운터
   const [count, setCount] = useState(initialData.quantity || 10);
 
   // 이미지 미리보기
   const [imagePreview, setImagePreview] = useState<string>(initialData.mainImages?.[0]?.path || '');
+  //    이미 등록된 모임 이미지를 보여줘야하니까 초기값이 initalData.mainImaes... 어어 모임이미지가 없으면 공백
   const [uploadedImage, setUploadedImage] = useState<{ path: string; name: string } | null>(initialData.mainImages?.[0] || null);
+  //  서버로 보낼 이미지 정보가 필요.
   const [isUploading, setIsUploading] = useState(false);
-  const [, setImgUrl] = useState<string>('');
+  //  이미지가 업로드 중인지 확인하기 위해서 사용
 
   // 이미지 업로드 핸들러
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +90,6 @@ export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
           path: result.item[0].path,
           name: result.item[0].name,
         });
-        setImgUrl(result.item[0].path);
       } else {
         alert('이미지 업로드에 실패했습니다.');
         setImagePreview('');
@@ -140,7 +159,7 @@ export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
         // public 폴더의 기본 이미지를 fetch로 가져오기
         const response = await fetch('/images/default-img.png');
         const blob = await response.blob();
-        const file = new File([blob], 'ldefault-img.png', { type: 'image/jpeg' });
+        const file = new File([blob], 'default-img.png', { type: 'image/jpeg' });
 
         // 서버에 업로드
         const result = await uploadFile(file);
@@ -196,10 +215,11 @@ export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
       alert(state.message);
     }
   }, [state]);
+  //  서버에 수정 요청을 보낸뒤, 결과를 사용자에게 반응해줌 값이 바뀔때만 effect를 실행하라....
 
   return (
     <DefaultLayout>
-      <div className={style['wrap']}>
+      <main className={style['wrap']}>
         <div className={style['Edit-wrap']}>
           <form className={style['meetings-create']} onSubmit={handleSubmit}>
             <div className={style['meetings-Edit']}>
@@ -263,7 +283,7 @@ export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
                     </div>
                   ) : imagePreview ? (
                     <div className={style['image-preview']} onClick={() => document.getElementById('meetings-img')?.click()} style={{ cursor: 'pointer' }}>
-                      <Image src={imagePreview} alt="미리보기" style={{ width: '100%', height: 'auto' }} width={100} height={100} />
+                      <Image src={imagePreview} alt="미리보기" style={{ objectFit: 'cover', objectPosition: 'center' }} width={100} height={100} />{' '}
                     </div>
                   ) : (
                     <div className={style['ractingle']} onClick={() => document.getElementById('meetings-img')?.click()} style={{ cursor: 'pointer' }}>
@@ -374,13 +394,15 @@ export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
               <button className={style['btn']} type="submit">
                 수정
               </button>
-              <button className={style['btn-2']} type="button">
-                <Link href={`/meetings/${meetingId}`}>취소</Link>
-              </button>
+              <Link href={`/meetings/${meetingId}`}>
+                <button className={style['btn-2']} type="button">
+                  취소
+                </button>
+              </Link>
             </div>
           </form>
         </div>
-      </div>
+      </main>
     </DefaultLayout>
   );
 }

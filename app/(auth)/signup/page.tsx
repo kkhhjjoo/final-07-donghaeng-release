@@ -2,12 +2,31 @@
 
 import BlankLayout from '@/app/components/BlankLayout';
 import style from './signup.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import useUserStore from '@/zustand/userStore';
 
 export default function Signup() {
+  const { user } = useUserStore();
+  const accessToken = user?.token?.accessToken;
+  const hasHydrated = useUserStore((state) => state.hasHydrated);
+  const router = useRouter();
+  useEffect(() => {
+    if (!hasHydrated) return;
+    // 로컬 스토리지 복원 안끝났으면 아~무것도 안함
+
+    if (accessToken) {
+      router.replace('/');
+    }
+    // 로그인 했으면 메인 페이지로 강제이동
+  }, [router, hasHydrated, accessToken]);
+
   const [currentStep, setCurrentStep] = useState(1);
+  // 지금 몇번째 페이지인지 저장하기 위해서 선언
+
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // 회원가입 버튼 눌렀을때 제출 중인지 체크
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -16,6 +35,7 @@ export default function Signup() {
     region: '',
     age: '',
     gender: '',
+    image: '/images/default-profile.png',
   });
 
   // 중복확인 상태 추가
@@ -33,6 +53,7 @@ export default function Signup() {
     region: '',
     age: '',
     gender: '',
+    image: '/images/default-profile.png',
   });
 
   // 성공 상태
@@ -41,7 +62,6 @@ export default function Signup() {
     name: '',
   });
 
-  const router = useRouter();
   // 이메일 중복확인
   const checkEmailDuplicate = async () => {
     if (!formData.email) {
@@ -49,7 +69,9 @@ export default function Signup() {
       return;
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    // 이메일 정규식
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(formData.email)) {
       setErrors({ ...errors, email: '올바른 이메일 형식이 아닙니다.' });
       return;
     }
@@ -67,22 +89,45 @@ export default function Signup() {
       const data = await res.json();
 
       console.log('이메일 중복확인 응답:', data);
-      console.log('data.ok:', data.ok);
+      console.log('응답 상태:', res.status);
 
+      // HTTP 상태 코드 먼저 체크
+      if (!res.ok) {
+        // 422, 409 등 에러 응답 처리
+        if (res.status === 409) {
+          setCheckStatus({ ...checkStatus, email: false });
+          // 중복확인 실패
+
+          setErrors({ ...errors, email: '이미 존재하는 이메일입니다.' });
+
+          setSuccessMessages({ ...successMessages, email: '' });
+          // 성공 메시지 지움
+        } else if (res.status === 422) {
+          setCheckStatus({ ...checkStatus, email: false });
+          setErrors({ ...errors, email: data.message || '유효하지 않은 이메일입니다.' });
+          setSuccessMessages({ ...successMessages, email: '' });
+        } else {
+          throw new Error(data.message || '이메일 확인 실패');
+          // 다른 에러가 뜬 경우 예상못한 에러를 catch로 보냄
+        }
+        return;
+      }
+
+      // 200 응답일 때만 data.ok 체크
       if (data.ok === 1) {
-        // 사용 가능한 이메일
         setCheckStatus({ ...checkStatus, email: true });
         setErrors({ ...errors, email: '' });
         setSuccessMessages({ ...successMessages, email: '중복확인 완료' });
-      } else if (res.status === 409) {
-        // 이미 사용중인 이메일
+      } else {
         setCheckStatus({ ...checkStatus, email: false });
-        setErrors({ ...errors, email: '이미 존재하는 이메일입니다.' });
+        setErrors({ ...errors, email: data.message || '사용할 수 없는 이메일입니다.' });
         setSuccessMessages({ ...successMessages, email: '' });
       }
     } catch (error) {
       console.error(error);
-      alert('중복확인에 실패했습니다.');
+      setCheckStatus({ ...checkStatus, email: false });
+      setErrors({ ...errors, email: '이메일 중복 확인에 실패했습니다.' });
+      setSuccessMessages({ ...successMessages, email: '' });
     }
   };
 
@@ -137,6 +182,7 @@ export default function Signup() {
       [name]: '',
     });
   };
+
   const validateStep1 = () => {
     const newErrors = { ...errors };
     let isValid = true;
@@ -255,6 +301,7 @@ export default function Signup() {
           region: formData.region,
           age: Number(formData.age),
           gender: formData.gender,
+          image: formData.image,
         }),
       });
 
@@ -363,23 +410,23 @@ export default function Signup() {
                     <br />
                     <select className={style['select']} name="region" value={formData.region} onChange={handleChange} id="region" required>
                       <option value="">지역을 선택해 주세요</option>
-                      <option value="seoul">서울특별시</option>
-                      <option value="busan">부산광역시</option>
-                      <option value="daegu">대구광역시</option>
-                      <option value="incheon">인천광역시</option>
-                      <option value="gwangju">광주광역시</option>
-                      <option value="daejeon">대전광역시</option>
-                      <option value="ulsan">울산광역시</option>
-                      <option value="sejong">세종특별자치시</option>
-                      <option value="gyeonggi">경기도</option>
-                      <option value="gangwon">강원특별자치도</option>
-                      <option value="chungbuk">충청북도</option>
-                      <option value="chungnam">충청남도</option>
-                      <option value="jeonbuk">전라북도</option>
-                      <option value="jeonnam">전라남도</option>
-                      <option value="gyeongbuk">경상북도</option>
-                      <option value="gyeongnam">경상남도</option>
-                      <option value="jeju">제주특별자치도</option>
+                      <option value="서울특별시">서울특별시</option>
+                      <option value="부산광역시">부산광역시</option>
+                      <option value="대구광역시">대구광역시</option>
+                      <option value="인천광역시">인천광역시</option>
+                      <option value="광주광역시">광주광역시</option>
+                      <option value="대전광역시">대전광역시</option>
+                      <option value="울산광역시">울산광역시</option>
+                      <option value="세종특별자치시">세종특별자치시</option>
+                      <option value="경기도">경기도</option>
+                      <option value="강원특별자치도">강원특별자치도</option>
+                      <option value="충청북도">충청북도</option>
+                      <option value="충청남도">충청남도</option>
+                      <option value="전라북도">전라북도</option>
+                      <option value="전라남도">전라남도</option>
+                      <option value="경상북도">경상북도</option>
+                      <option value="경상남도">경상남도</option>
+                      <option value="제주특별자치도">제주특별자치도</option>
                     </select>
                   </div>
                   <svg className={style['svg-1']} width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -423,8 +470,8 @@ export default function Signup() {
                       </label>
                       <select className={style['select']} name="gender" value={formData.gender} onChange={handleChange} id="gender" required>
                         <option value="">선택</option>
-                        <option value="m">남</option>
-                        <option value="f">여</option>
+                        <option value="남">남</option>
+                        <option value="여">여</option>
                       </select>
                     </div>
                     <svg className={style['svg-3']} width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">

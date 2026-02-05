@@ -1,0 +1,101 @@
+.container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  height: 100%;
+  border-right: 1px solid var(--border-lavender);
+  border-bottom: 1px solid var(--border-lavender);
+  flex-shrink: 0;
+  background-color: var(--bg-white);
+}
+
+.containerHidden {
+  display: none;
+}
+
+.header {
+  height: 64px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border-lavender);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg-lightlavender);
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-navy);
+  font-family: var(--main-font);
+}
+
+.searchContainer {
+  padding: 12px;
+}
+
+.searchInputWrapper {
+  position: relative;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 8px 12px 8px 36px;
+  background-color: var(--bg-white);
+  border: 1px solid var(--border-lavender);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-family: var(--sub-font-medium);
+  transition: box-shadow 0.2s;
+}
+
+.searchInput:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--bg-lavender);
+}
+
+.searchInput::placeholder {
+  color: var(--text-gray);
+}
+
+.searchIcon {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-lavender);
+  display: flex;
+}
+
+.roomList {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.emptyList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  color: var(--text-gray);
+  text-align: center;
+}
+
+.emptyText {
+  font-size: 0.875rem;
+  font-family: var(--sub-font-medium);
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .container {
+    width: 320px;
+  }
+
+  .containerHidden {
+    display: flex;
+  }
+}

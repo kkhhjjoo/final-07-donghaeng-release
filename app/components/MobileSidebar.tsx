@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import styles from './MobileSidebar.module.css';
 import useUserStore from '@/zustand/userStore';
+import useBookmarkStore from '@/zustand/bookmarkStore';
 
 interface MobileSidebarProps {
   isOpen: boolean;
@@ -12,7 +13,13 @@ export default function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
   const isLogin = useUserStore((state) => state.isLogin);
   const user = useUserStore((state) => state.user);
   const resetUser = useUserStore((state) => state.resetUser);
+  const resetBookmark = useBookmarkStore((state) => state.resetBookmark);
   const userName = user?.name ?? '사용자';
+
+  const handleLogout = () => {
+    resetUser();
+    resetBookmark();
+  };
   return (
     <>
       {/* 사이드바 열렸을 때 뒷배경을 검고 반투명 하게 할 장치 */}
@@ -46,7 +53,7 @@ export default function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
                 </li>
               </ul>
             </div>
-            <button className={styles[`logout-btn`]} onClick={resetUser}>
+            <button className={styles[`logout-btn`]} onClick={handleLogout}>
               로그아웃
             </button>
           </div>

@@ -1,4 +1,7 @@
+'use server';
+
 import { ErrorRes, MeetingsInfoRes } from '@/types/api';
+import { updateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -18,10 +21,13 @@ export type ActionState = { ok: 0 | 1; message: string } | null;
  */
 export async function createApply(prevState: ActionState, formData: FormData): Promise<ActionState> {
   const accessToken = formData.get('accessToken');
-  formData.delete('accessToken');
+  const productsStr = formData.get('products') as string;
+  const extraStr = formData.get('extra') as string;
 
-  // FormData를 일반 Object로 변환
-  const body = Object.fromEntries(formData.entries());
+  const body = {
+    products: productsStr ? JSON.parse(productsStr) : undefined,
+    extra: extraStr ? JSON.parse(extraStr) : undefined,
+  };
 
   let res: Response;
   let data: MeetingsInfoRes | ErrorRes;
@@ -46,10 +52,9 @@ export async function createApply(prevState: ActionState, formData: FormData): P
     return { ok: 0, message: '일시적인 네트워크 문제로 등록에 실패했습니다.' };
   }
 
-  // redirect()는 예외를 throw 해서 처리하는 방식이라서 try 문에서 사용하면 catch로 처리되므로 제대로 동작하지 않음
-  // 따라서 try 문 밖에서 사용해야 함
   if (data.ok) {
-    redirect(`/meetings`); // 모임 목록 페이지로 리다이렉트
+    updateTag('orders');
+    return { ok: 1, message: '신청이 완료되었습니다.' };
   } else {
     return data; // 에러 응답 객체 반환
   }
@@ -121,6 +126,8 @@ export async function createMeeting(prevState: ActionState, formData: FormData):
   }
 
   if (data.ok) {
+    updateTag('products');
+    updateTag('seller/products');
     redirect(`/meetings`); // 모임 목록 페이지로 리다이렉트
   } else {
     return data; // 에러 응답 객체 반환
@@ -177,7 +184,9 @@ export async function updateMeeting(prevState: ActionState, formData: FormData):
   }
 
   if (data.ok) {
-    redirect(`/meetings/${_id}`); // 보던 상세페이지로 이동
+    updateTag('products');
+    updateTag(`products/${_id}`);
+    redirect(`/meetings/${_id}`); // 모임 상세페이지로 리다이렉트
   } else {
     return data; // 에러 응답 객체 반환
   }
@@ -217,8 +226,42 @@ export async function deleteMeeting(prevState: ActionState, formData: FormData):
   }
 
   if (data.ok) {
+    updateTag('products');
+    updateTag(`products/${_id}`);
     redirect(`/meetings`); // 모임 목록 페이지로 리다이렉트
   } else {
     return data; // 에러 응답 객체 반환
+  }
+}
+
+/**
+ * 상품 buyQuantity 업데이트
+ * @param {string} accessToken - 인증 토큰
+ * @param {number} productId - 상품 ID
+ * @param {number} buyQuantity - 업데이트할 buyQuantity 값
+ * @returns {Promise<ActionState>} - 업데이트 결과 응답 객체
+ */
+export async function updateBuyQuantity(accessToken: string, productId: number, buyQuantity: number): Promise<ActionState> {
+  try {
+    const res = await fetch(`${API_URL}/seller/products/${productId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Client-Id': CLIENT_ID,
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ buyQuantity }),
+    });
+
+    const data = await res.json();
+    if (data.ok) {
+      updateTag('products');
+      updateTag(`products/${productId}`);
+      return { ok: 1, message: 'buyQuantity 업데이트 완료' };
+    }
+    return { ok: 0, message: data.message || 'buyQuantity 업데이트 실패' };
+  } catch (error) {
+    console.error(error);
+    return { ok: 0, message: '네트워크 오류로 buyQuantity 업데이트에 실패했습니다.' };
   }
 }

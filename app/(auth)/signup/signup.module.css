@@ -1,10 +1,10 @@
 .main {
-  margin: 30px 20px;
+  padding: 30px 20px;
 }
 
 .signup-wrap {
   margin: 0px auto;
-  min-width: 320px;
+  min-width: 280px;
   max-width: 577px;
 }
 
@@ -48,6 +48,7 @@
   position: absolute;
   right: 20px;
   top: 48px;
+  cursor: pointer;
 }
 
 .input,
@@ -102,6 +103,7 @@
   border-radius: 20px;
   margin: 15px 0 200px 0;
   font-family: var(--main-font);
+  cursor: pointer;
 }
 
 /* :global(.btn:nth-child(2)) {
@@ -154,6 +156,7 @@
 
 .select {
   width: 100%;
+  cursor: pointer;
 }
 
 @media (min-width: 1024px) {

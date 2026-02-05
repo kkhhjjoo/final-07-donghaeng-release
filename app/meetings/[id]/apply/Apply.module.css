@@ -54,12 +54,14 @@
 .btn-apply {
   background-color: var(--border-lavender);
   margin-bottom: 35px;
+  cursor: pointer;
 }
 
 /* 취소하기 */
 .btn-cancel {
   background-color: var(--bg-white);
   border: 5px solid var(--border-lavender);
+  cursor: pointer;
 }
 
 /* 데스크톱 (1024이상) */

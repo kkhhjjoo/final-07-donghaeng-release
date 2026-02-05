@@ -1,0 +1,15 @@
+meta {
+  name: 알림 메세지 한건 읽음 처리
+  type: http
+  seq: 18
+}
+
+patch {
+  url: {{url}}/notifications/14/read
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

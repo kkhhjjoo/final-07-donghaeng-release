@@ -1,30 +1,25 @@
-import styles from './Apply.module.css';
 import DefaultLayout from '@/app/components/DefaultLayout';
+import { getDetail } from '@/lib/meetings';
+import ApplyForm from './ApplyForm';
 
-export default function Apply() {
-  return (
-    <>
+export default async function Apply({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const res = await getDetail(id);
+
+  if (res.ok === 0) {
+    return (
       <DefaultLayout>
-        <form className={styles['apply-body']}>
-          <h1 className={styles['apply-title']}>모임 신청</h1>
-          <div className={styles['question-div']}>
-            <h3>질문 1</h3>
-            <textarea name="질문 1" id=""></textarea>
-          </div>
-          <div className={styles['question-div']}>
-            <h3>질문 2</h3>
-            <textarea name="질문 2" id=""></textarea>
-          </div>
-          <div className={styles['btn-div']}>
-            <button type="submit" className={styles['btn-apply']}>
-              신청하기
-            </button>
-            <button type="button" className={styles['btn-cancel']}>
-              취소하기
-            </button>
-          </div>
-        </form>
+        <p>해당 모임이 없습니다.</p>
       </DefaultLayout>
-    </>
+    );
+  }
+
+  const meeting = res.item;
+  console.log(meeting);
+
+  return (
+    <DefaultLayout>
+      <ApplyForm meeting={meeting} id={id} />
+    </DefaultLayout>
   );
 }

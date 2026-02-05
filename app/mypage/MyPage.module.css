@@ -39,6 +39,7 @@
     width: 135px;
     height: 135px;
     border-radius: 50%;
+    object-fit: cover;
   }
   .nickname {
     color: var(--text-navy);
@@ -126,6 +127,9 @@
     width: 100%;
     height: 80px;
     padding: 10px 20px;
+    /* 줄바꿈 */
+    white-space: pre-line;
+    overflow: scroll;
   }
 }
 
@@ -178,7 +182,7 @@
   justify-content: center;
   gap: 60px;
   width: 90%;
-  max-width: 360px;
+  max-width: 400px;
 
   /* Link 컴포넌트에서 렌더링하는 태그 */
   a {
@@ -189,7 +193,7 @@
   button {
     width: 100%;
     height: 45px;
-    color: var(--text-white);
+    color: var(--text-black);
     border-radius: 20px;
     cursor: pointer;
   }
@@ -198,6 +202,11 @@
 /* 북마크 배경 */
 .btn-bookmark {
   background-color: var(--bg-lavender);
+}
+
+/* 관리하기 배경 */
+.btn-manage {
+  background-color: var(--c-slateblue-300);
 }
 
 /* 참여 모임 배경 */
@@ -238,6 +247,9 @@
     font-size: 18px;
     color: var(--text-navy);
     margin-top: 15px;
+    line-height: 20px;
+    white-space: pre-line;
+    overflow: scroll;
   }
 
   .user-info-mobile,
@@ -299,7 +311,7 @@
 
   .history-button {
     font-size: 20px;
-    gap: 110px;
+    gap: 50px;
     max-width: 630px;
 
     a {
@@ -307,7 +319,7 @@
     }
 
     button {
-      width: 260px;
+      width: 100%;
       height: 60px;
     }
   }

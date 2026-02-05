@@ -26,6 +26,8 @@
 .profile-img {
   width: 165px;
   height: 165px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 /* 프로필 이미지와 카메라 버튼 묶는 div */
@@ -100,10 +102,12 @@
   margin-block: 30px;
   textarea {
     flex: 1;
-    padding-block: 20px;
+    padding-block: 10px;
     max-width: 300px;
     min-width: 150px;
     height: 100px;
+    line-height: 20px;
+    white-space: pre-line;
   }
 }
 
@@ -132,7 +136,7 @@
   }
 }
 
-/* 시, 구, 나이, 성별 */
+/* 지역, 시/군/구 나이, 성별 */
 .address-div,
 .etc-div {
   display: flex;

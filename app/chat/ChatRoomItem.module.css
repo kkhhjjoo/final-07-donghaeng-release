@@ -1,0 +1,178 @@
+.item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-bottom: 1px solid var(--border-gray);
+}
+
+.item:hover {
+  background-color: var(--bg-lightlavender);
+}
+
+.itemActive {
+  background-color: var(--bg-lavender);
+}
+
+.leaveButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px;
+  color: var(--text-gray);
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+
+.item:hover .leaveButton {
+  opacity: 1;
+}
+
+.leaveButton:hover {
+  color: var(--text-red);
+}
+
+.leaveButtonIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.avatarContainer {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--bg-lavender);
+  object-fit: cover;
+  border: 2px solid var(--border-lavender);
+}
+
+.onlineIndicator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  background-color: #22c55e;
+  border: 2px solid var(--bg-white);
+  border-radius: 50%;
+}
+
+.info {
+  margin-left: 16px;
+  flex: 1;
+  min-width: 0;
+}
+
+.infoHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  padding-right: 20px;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.name {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--text-navy);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--main-font);
+}
+
+.chatTypeBadge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  padding: 3px 6px 1px 6px;
+  border-radius: 10px;
+  border: 1px solid var(--border-lavender);
+  background-color: var(--bg-lightlavender);
+  color: var(--text-navy);
+  font-family: var(--main-font);
+  text-align: center;
+  line-height: 1.2;
+  vertical-align: baseline;
+}
+
+.time {
+  font-size: 10px;
+  color: var(--text-gray);
+  margin-left: 8px;
+  flex-shrink: 0;
+  font-family: var(--sub-font-medium);
+}
+
+.roomNameRow {
+  margin-bottom: 4px;
+  min-width: 0;
+}
+
+.roomName {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-navy);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  display: block;
+  font-family: var(--main-font);
+}
+
+.roomNameLabel {
+  color: var(--text-gray);
+  font-weight: 400;
+  margin-right: 4px;
+}
+
+.lastMessageRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lastMessage {
+  font-size: 0.75rem;
+  color: var(--text-dark-gray);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 8px;
+  font-family: var(--sub-font-medium);
+}
+
+.unreadBadge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-white);
+  background-color: var(--c-purple-300);
+  border-radius: 9999px;
+  font-family: var(--sub-font-bold);
+}

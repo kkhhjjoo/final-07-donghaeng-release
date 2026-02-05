@@ -1,10 +1,10 @@
 .main {
-  margin: 30px 20px;
+  padding: 30px 20px;
 }
 
 .login-wrap {
   margin: 0px auto;
-  min-width: 380px;
+  min-width: 280px;
   max-width: 577px;
 }
 
@@ -31,7 +31,7 @@
 
 .fieldset {
   width: 100%;
-  min-width: 380px;
+  min-width: 280px;
   max-width: 577px;
 }
 
@@ -45,6 +45,7 @@
   border: 5px solid var(--border-lavender);
   background: var(--bg-white);
   padding-left: 20px;
+  padding-right: 20px;
   color: var(--text-lavender);
   font-family: var(--sub-font-medium);
 }
@@ -77,6 +78,7 @@
   margin: 15px 0;
   color: var(--text-navy);
   font-family: var(--main-font);
+  cursor: pointer;
 }
 
 .a {

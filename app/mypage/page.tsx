@@ -1,10 +1,42 @@
+'use client';
+
 import profile from '@/public/icon/profile.svg';
 import pencil from '@/public/icon/pencil.svg';
 import styles from './MyPage.module.css';
-import DefaultLayout from '@/app/components/DefaultLayout';
 import Link from 'next/link';
+import Image from 'next/image';
+import DefaultLayout from '@/app/components/DefaultLayout';
+import useUserStore from '@/zustand/userStore';
+import useBookmarkStore from '@/zustand/bookmarkStore';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Mypage() {
+  // zustand에서 유저정보 가져오기
+  const { user } = useUserStore();
+
+  // zustand에서 북마크 가져오기
+  const { bookmarks } = useBookmarkStore();
+
+  // 토큰 가져오기
+  const accessToken = user?.token?.accessToken;
+  // 페이지 이동 처리
+  const router = useRouter();
+
+  // zustand의 복원 여부 확인
+  // 로컬스토리지 복원이 끝나기 전에 잘못된 리다이렉트가 발생하는 걸 방지
+  const hasHydrated = useUserStore((state) => state.hasHydrated);
+
+  // 토큰이 없는 경우 강제 이동
+  useEffect(() => {
+    // 로컬 스토리지 복원 안끝났으면 아~무것도 안함
+    if (!hasHydrated) return;
+
+    if (!accessToken) {
+      router.replace('/login');
+    }
+  }, [hasHydrated, accessToken, router]);
+
   return (
     <>
       <DefaultLayout>
@@ -13,17 +45,19 @@ export default function Mypage() {
           <div className={styles['profile-information-div']}>
             <div className={styles['profile-information']}>
               <div className={styles['profile-img-wrapper']}>
-                <img src={profile.src} alt="프로필이미지" className={styles['profile-img']} />
-                <Link href="/mypage/modify">
+                <Image src={user?.image || profile.src} alt="프로필이미지" width={135} height={135} className={styles['profile-img']} />
+                <Link href={`/mypage/modify/${user?._id}`}>
                   <button type="button" className={styles['pencil-btn']}>
                     <img src={pencil.src} alt="연필" />
                   </button>
                 </Link>
               </div>
               <div className={styles['user-info-mobile']}>
-                <p className={styles.nickname}>나폴리맛피자</p>
-                <p className={styles.email}>example@naver.com</p>
-                <p className={styles.etc}>남자 . 20대 . 서울특별시</p>
+                <p className={styles.nickname}>{user?.name}</p>
+                <p className={styles.email}>{user?.email}</p>
+                <p className={styles.etc}>
+                  {user?.gender} . {user?.age}대 . {user?.region}
+                </p>
 
                 <figure>
                   <svg width="57" height="51" viewBox="0 0 57 51" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -41,9 +75,11 @@ export default function Mypage() {
               <div className={styles['user-info-desktop']}>
                 <div className={styles['user-info-top']}>
                   <div>
-                    <p className={styles.nickname}>나폴리맛피자</p>
-                    <p className={styles.email}>example@naver.com</p>
-                    <p className={styles.etc}>남자 . 20대 . 서울특별시</p>
+                    <p className={styles.nickname}>{user?.name}</p>
+                    <p className={styles.email}>{user?.email}</p>
+                    <p className={styles.etc}>
+                      {user?.gender} . {user?.age}대 . {user?.region}
+                    </p>
                   </div>
 
                   <figure>
@@ -54,25 +90,25 @@ export default function Mypage() {
                       />
                     </svg>
                     <figcaption>
-                      70 <br />
+                      {user?.bpm || 70} <br />
                       bpm
                     </figcaption>
                   </figure>
                 </div>
                 <div className={styles['my-introduce-desktop']}>
-                  <p>pc 버전일때 내가 적은 소개를 보는 공간</p>
+                  <p>{user?.comment || '소개를 적는 공간'}</p>
                 </div>
               </div>
             </div>
 
             <div className={styles['my-introduce-mobile']}>
               <dt>소개</dt>
-              <dd>모바일 버전일때 나의 소개를 보는 공간</dd>
+              <dd>{user?.comment || '소개를 적는 공간'}</dd>
             </div>
             <div className={styles['history-meetings']}>
               <p>
                 <span className={styles['meetings-text']}>관심 모임 </span>
-                <span className={styles['meetings-number']}>10</span>
+                <span className={styles['meetings-number']}>{bookmarks.length}</span>
               </p>
 
               <span>|</span>
@@ -87,9 +123,14 @@ export default function Mypage() {
                   북마크
                 </button>
               </Link>
+              <Link href="/manage">
+                <button type="button" className={styles['btn-manage']}>
+                  관리하기
+                </button>
+              </Link>
               <Link href="/history">
                 <button type="button" className={styles['btn-attend-meetings']}>
-                  내가 참여한 모임
+                  참여 모임
                 </button>
               </Link>
             </div>

@@ -14,6 +14,8 @@ import 'swiper/css/pagination';
 
 type Step = 'intro' | 'age' | 'gender' | 'preference1' | 'preference2' | 'preference3' | 'result';
 
+const surveySteps: Step[] = ['age', 'gender', 'preference1', 'preference2', 'preference3'];
+
 function MeetingCard({ meeting }: { meeting: Meetings }) {
   return (
     <article className={styles.card}>
@@ -134,7 +136,7 @@ export default function AiRecommendModal({ open, onClose }: { open: boolean; onC
         <div className={styles.modal}>
           {/* 뒤로가기 + 닫기 버튼 */}
           <div className={styles[`btn-wrapper`]}>
-            {step !== 'intro' && (
+            {step !== 'intro' && step !== 'result' && (
               <button className={styles[`back-btn`]} type="button" onClick={goBack} aria-label="뒤로가기">
                 <Image src="/icon/left.svg" alt="" width={11} height={20} />
               </button>
@@ -148,6 +150,18 @@ export default function AiRecommendModal({ open, onClose }: { open: boolean; onC
           <div className={styles[`logo-image`]}>
             <Image src="/logo/logo.svg" alt="Moa 로고" width={125} height={100} />
           </div>
+
+          {/* 설문 진행 바 */}
+          {step !== 'intro' && step !== 'result' && (
+            <div className={styles[`progress-wrapper`]}>
+              <div className={styles[`progress-bar`]}>
+                <div className={`${styles[`progress-fill`]} ${styles[`step${surveySteps.indexOf(step) + 1}`]}`} />
+              </div>
+              <span className={styles[`progress-text`]}>
+                {surveySteps.indexOf(step) + 1} / {surveySteps.length}
+              </span>
+            </div>
+          )}
 
           {/* Step: intro */}
           {step === 'intro' && (

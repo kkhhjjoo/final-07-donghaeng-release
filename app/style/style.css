@@ -20,10 +20,14 @@
 
   --c-pink-200: #fcbaff;
   --c-lilac-50: #f2efff;
+  --c-gray: #eee;
   --c-gray-100: #949494;
+  --c-gray-100: #949494;
+  --c-gray-200: #555;
 
   /* Background */
   --bg-lavender: var(--c-lavender-200);
+  --bg-darklavender: var(--c-purple-300);
   --bg-navy: var(--c-indigo-900);
   --bg-white: var(--c-white);
   --bg-lightlavender: var(--c-lilac-50);
@@ -41,11 +45,14 @@
   --text-lavender: var(--c-lavender-200);
   --text-darksky: var(--c-slateblue-300);
   --text-gray: var(--c-gray-100);
+  --text-dark-gray: var(--c-gray-200);
   --text-pink: var(--c-pink-200);
   --text-sky: var(--c-blue-200);
 
   /* Border */
   --border-lavender: var(--c-lavender-200);
+  --border-white: var(--c-white);
+  --border-gray: var(--c-gray);
   --border-navy: var(--c-indigo-900);
   --border-sky: var(--c-blue-200);
   --border-darksky: var(--c-slateblue-300);

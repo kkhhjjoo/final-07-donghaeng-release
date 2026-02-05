@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styles from './Filter.module.css';
+import { regionData } from '@/docs/regionData';
 
 // onFilterChanges prop을 받아오는데 props의 타입은 key: string, value: string 형태로 받아온다.
 /*
@@ -9,7 +10,11 @@ showCategory는 카테고리를 보여줄지 감출지 선택할 수 있게 만�
 전달하지 않을 경우 기본값으로 true를 사용한다.
  */
 export default function Filter({ onFilterChanges, showCategory = true }: { onFilterChanges: (key: string, value: string) => void; showCategory?: boolean }) {
+  // 선택한 날짜를 저장하는 state
   const [date, setDate] = useState('');
+
+  // 선택한 지역을 저장하는 state
+  const [region, setRegion] = useState('');
 
   // 날짜 포맷 변환 (2026-01-28 -> 01.28)
   const formatDate = (dateString: string) => {
@@ -72,6 +77,7 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
             }}
           />
         </div>
+        {/* 성별 선택 */}
         <div className={styles.wrapper}>
           <select name="성별" id="" defaultValue="" onChange={(e) => onFilterChanges('gender', e.target.value)}>
             <option value="">성별</option>
@@ -86,6 +92,7 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
             />
           </svg>
         </div>
+        {/* 나이대 선택 */}
         <div className={styles.wrapper}>
           <select name="나이대" id="" defaultValue="" onChange={(e) => onFilterChanges('age', e.target.value)}>
             <option value="">나이대</option>
@@ -101,33 +108,24 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
             />
           </svg>
         </div>
+        {/* 지역 선택 후 시/군/구 선택 */}
         <div className={styles.wrapper}>
-          <select name="지역" id="" defaultValue="" onChange={(e) => onFilterChanges('region', e.target.value)}>
+          {/* 선택한 지역에 따라 state 변경 및 필터 진행 */}
+          <select
+            name="지역"
+            onChange={(e) => {
+              setRegion(e.target.value);
+              onFilterChanges('region', e.target.value);
+              onFilterChanges('district', '');
+            }}
+          >
+            {/* Object.keys로 regionData의 key만 추출 후 map을 통해 요소 반환*/}
             <option value="">지역</option>
-            <option value="종로구">종로구</option>
-            <option value="강남구">강남구</option>
-            <option value="송파구">송파구</option>
-            <option value="마포구">마포구</option>
-            <option value="관악구">관악구</option>
-            <option value="중구">중구</option>
-            <option value="용산구">용산구</option>
-            <option value="성동구">성동구</option>
-            <option value="광진구">광진구</option>
-            <option value="동대문구">동대문구</option>
-            <option value="중랑구">중랑구</option>
-            <option value="성북구">성북구</option>
-            <option value="강북구">강북구</option>
-            <option value="도봉구">도봉구</option>
-            <option value="노원구">노원구</option>
-            <option value="은평구">은평구</option>
-            <option value="서대문구">서대문구</option>
-            <option value="양천구">양천구</option>
-            <option value="강서구">강서구</option>
-            <option value="구로구">구로구</option>
-            <option value="금천구">금천구</option>
-            <option value="영등포구">영등포구</option>
-            <option value="동작구">동작구</option>
-            <option value="서초구">서초구</option>
+            {Object.keys(regionData).map((region) => (
+              <option key={region} value={region}>
+                {region}
+              </option>
+            ))}
           </select>
           <svg width="13" height="9" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -136,6 +134,27 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
             />
           </svg>
         </div>
+        <div className={styles.wrapper}>
+          {/* 지역을 선택하지 않으면 시/군/구 select는 disabled 상태 
+          region을 통해 선택한 지역을 파악한 후 객체의 키를 통해 해당하는 배열을 가져와서 출력
+          */}
+          <select key={region} disabled={!region} onChange={(e) => onFilterChanges('district', e.target.value)}>
+            <option value="">{region ? '시/군/구' : '지역을 선택해주세요'}</option>
+            {region &&
+              regionData[region].map((regionDetail) => (
+                <option key={regionDetail} value={regionDetail}>
+                  {regionDetail}
+                </option>
+              ))}
+          </select>
+          <svg width="13" height="9" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M8.09227 11.5606C8.59433 12.1465 9.40968 12.1465 9.91175 11.5606L17.6235 2.56239C18.1255 1.97657 18.1255 1.02519 17.6235 0.439367C17.1214 -0.146456 16.306 -0.146456 15.804 0.439367L9 8.37844L2.19603 0.444053C1.69396 -0.14177 0.878612 -0.14177 0.376548 0.444053C-0.125516 1.02988 -0.125516 1.98125 0.376548 2.56708L8.08825 11.5653L8.09227 11.5606Z"
+              fill="#c4d9ff"
+            />
+          </svg>
+        </div>
+        {/* 모임 인원 선택 */}
         <div className={styles.wrapper}>
           <select name="인원" id="" defaultValue="" onChange={(e) => onFilterChanges('quantity', e.target.value)}>
             <option value="">인원</option>

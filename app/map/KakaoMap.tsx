@@ -17,7 +17,7 @@ import { KakaoMapProps } from '@/types/kakaomap';
 /*
   props로 width, height, lat(위도), lng(경도), css클래스명, 모임 배열, 모임 개인 id를 받아옴
  */
-export default function KakaoMap({ width = '100%', height = '500px', lat = 37.5709, lng = 126.978, className, meetings = [], selectedId }: KakaoMapProps) {
+export default function KakaoMap({ width = '100%', lat = 37.5709, lng = 126.978, className, meetings = [], selectedId }: KakaoMapProps) {
   const router = useRouter();
   // 로딩 판별 state
   const [isLoaded, setIsLoaded] = useState(false);
@@ -31,6 +31,9 @@ export default function KakaoMap({ width = '100%', height = '500px', lat = 37.57
 
   // 지도 중심 좌표를 저장하는 state
   const [center, setCenter] = useState({ lat, lng });
+
+  // 모바일 여부를 판단하는 state
+  const [isMobile, setIsMobile] = useState(false);
 
   // 페이지 재방문 시 이미 로드된 SDK 감지
   // sdk 로드 감지 useEffect
@@ -98,9 +101,65 @@ export default function KakaoMap({ width = '100%', height = '500px', lat = 37.57
     }
   }, [selectedId, markerData]);
 
+  // 화면의 크기를 체크하는 useEffect
+  useEffect(() => {
+    // 화면 크기가 1024 미만인 경우 모바일로 판단
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    // 컴포넌트 처음 렌더링될 때 화면 크기 체크
+    checkMobile();
+    // 창 크기에 따라 다시 체크하는 이벤트 등록
+    window.addEventListener('resize', checkMobile);
+    // 컴포넌트가 사라질 때 이벤트 정리
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
+
+  // 오버레이 내용을 변수화하기(데스크탑, 모바일 공통)
+  const overlayMap = selectedMarker && (
+    <div className={styles['marker-info-window']}>
+      {/* X 닫기 버튼 - 우측 상단 */}
+      <div className={styles['btn-close']}>
+        <svg onClick={() => setSelectedMarker(null)} width="15" height="15" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M19.6137 2.34438C20.2022 1.73728 20.1084 0.83557 19.4001 0.331147C18.6919 -0.173276 17.6399 -0.0929259 17.0514 0.514168L10 7.76804L2.94859 0.514168C2.3601 -0.0929259 1.30812 -0.173276 0.599854 0.331147C-0.108412 0.83557 -0.202153 1.73728 0.386332 2.34438L7.82833 10L0.386332 17.6556C-0.202153 18.2627 -0.108412 19.1644 0.599854 19.6689C1.30812 20.1733 2.3601 20.0929 2.94859 19.4858L10 12.232L17.0514 19.4858C17.6399 20.0929 18.6919 20.1733 19.4001 19.6689C20.1084 19.1644 20.2022 18.2627 19.6137 17.6556L12.1717 10L19.6137 2.34438Z"
+            fill="#323577"
+          />
+        </svg>
+      </div>
+      <div className={styles['marker-info-content']}>
+        {/* 모임 사진 */}
+        <Image src={selectedMarker.meeting.mainImages[0]?.path || logo.src} alt="모임 사진" width={80} height={70} className={styles['marker-img']} />
+
+        <div className={styles['marker-info']}>
+          {/* 모임 제목 */}
+          <h3 className={styles['marker-title']}>{selectedMarker.meeting.name}</h3>
+          {/* 모임 정보 */}
+          <p>
+            <Image src={tag.src} alt="태그" width={14} height={12} />
+            {selectedMarker.meeting.extra.category}
+          </p>
+          <p>
+            <Image src={calender.src} alt="캘린더" width={14} height={12} />
+            {selectedMarker.meeting.extra.date}
+          </p>
+        </div>
+      </div>
+      {/* 화살표 버튼 - 우측 하단 */}
+      <div className={styles['btn-arrow']}>
+        <svg onClick={() => router.push(`/meetings/${selectedMarker.meeting._id}`)} width="18" height="12" viewBox="0 0 17 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M16.7233 5.70592C17.0922 5.31548 17.0922 4.6814 16.7233 4.29096L12.9454 0.292831C12.5764 -0.0976105 11.9773 -0.0976105 11.6083 0.292831C11.2394 0.683273 11.2394 1.31735 11.6083 1.70779L13.7747 4.00047H0.944485C0.422067 4.00047 0 4.44713 0 5C0 5.55287 0.422067 5.99953 0.944485 5.99953H13.7747L11.6083 8.29221C11.2394 8.68265 11.2394 9.31673 11.6083 9.70717C11.9773 10.0976 12.5764 10.0976 12.9454 9.70717L16.7233 5.70904V5.70592Z"
+            fill="black"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+
   return (
     // 컴포넌트를 감싸는 div
-    <div className={className} style={{ width, height, overflow: 'hidden' }}>
+    <div className={className} style={{ width, overflow: 'hidden' }}>
       {/* Script: 외부 스크립트의 로딩 우선순위를 최적화하여 페이지 성능을 향상시키는 도구 */}
       {/* strategy: 로딩 동작을 미세 조정, afterInteractive: 페이지 일부가 수화된 후 일찍 스크립트를 로드 */}
       <Script
@@ -117,53 +176,17 @@ export default function KakaoMap({ width = '100%', height = '500px', lat = 37.57
           {markerData.map((item, index) => (
             <MapMarker key={index} position={item.coords} onClick={() => setSelectedMarker(item)} />
           ))}
-          {selectedMarker && (
+          {selectedMarker && !isMobile && (
             <CustomOverlayMap position={selectedMarker.coords} yAnchor={1.3}>
-              <div className={styles['marker-info-window']}>
-                {/* X 닫기 버튼 - 우측 상단 */}
-                <div className={styles['btn-close']}>
-                  <svg onClick={() => setSelectedMarker(null)} width="15" height="15" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M19.6137 2.34438C20.2022 1.73728 20.1084 0.83557 19.4001 0.331147C18.6919 -0.173276 17.6399 -0.0929259 17.0514 0.514168L10 7.76804L2.94859 0.514168C2.3601 -0.0929259 1.30812 -0.173276 0.599854 0.331147C-0.108412 0.83557 -0.202153 1.73728 0.386332 2.34438L7.82833 10L0.386332 17.6556C-0.202153 18.2627 -0.108412 19.1644 0.599854 19.6689C1.30812 20.1733 2.3601 20.0929 2.94859 19.4858L10 12.232L17.0514 19.4858C17.6399 20.0929 18.6919 20.1733 19.4001 19.6689C20.1084 19.1644 20.2022 18.2627 19.6137 17.6556L12.1717 10L19.6137 2.34438Z"
-                      fill="#323577"
-                    />
-                  </svg>
-                </div>
-                <div className={styles['marker-info-content']}>
-                  {/* 모임 사진 */}
-                  <Image src={selectedMarker.meeting.mainImages[0]?.path || logo.src} alt="모임 사진" width={80} height={70} className={styles['marker-img']} />
-
-                  <div className={styles['marker-info']}>
-                    {/* 모임 제목 */}
-                    <h3 className={styles['marker-title']}>{selectedMarker.meeting.name}</h3>
-                    {/* 모임 정보 */}
-                    <p>
-                      <Image src={tag.src} alt="태그" width={14} height={12} />
-                      {selectedMarker.meeting.extra.category}
-                    </p>
-                    <p>
-                      <Image src={calender.src} alt="캘린더" width={14} height={12} />
-                      {selectedMarker.meeting.extra.date}
-                    </p>
-                  </div>
-                </div>
-                {/* 화살표 버튼 - 우측 하단 */}
-                <div className={styles['btn-arrow']}>
-                  <svg onClick={() => router.push(`/meetings/${selectedMarker.meeting._id}`)} width="18" height="12" viewBox="0 0 17 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M16.7233 5.70592C17.0922 5.31548 17.0922 4.6814 16.7233 4.29096L12.9454 0.292831C12.5764 -0.0976105 11.9773 -0.0976105 11.6083 0.292831C11.2394 0.683273 11.2394 1.31735 11.6083 1.70779L13.7747 4.00047H0.944485C0.422067 4.00047 0 4.44713 0 5C0 5.55287 0.422067 5.99953 0.944485 5.99953H13.7747L11.6083 8.29221C11.2394 8.68265 11.2394 9.31673 11.6083 9.70717C11.9773 10.0976 12.5764 10.0976 12.9454 9.70717L16.7233 5.70904V5.70592Z"
-                      fill="black"
-                    />
-                  </svg>
-                </div>
-              </div>
+              {overlayMap}
             </CustomOverlayMap>
           )}
-          <ZoomControl position={'RIGHT'} />
         </Map>
       ) : (
         <div style={{ width: '100%', height: '100%', background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>지도 로딩중...</div>
       )}
+      {/* 모바일 화면 하단에 고정하는 오버레이 */}
+      {selectedMarker && isMobile && <div className={styles['mobile-overlay']}>{overlayMap}</div>}
     </div>
   );
 }

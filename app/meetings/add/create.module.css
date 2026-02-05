@@ -1,5 +1,5 @@
 .wrap {
-  padding: 25px clamp(20px, 10vw, 75px);
+  padding: 25px clamp(10px, 7vw, 75px);
   overflow-x: hidden;
 }
 .add-wrap {
@@ -78,6 +78,10 @@
 }
 .category-div {
   position: relative;
+
+  svg {
+    pointer-events: none;
+  }
 }
 
 .category-fieldset svg {
@@ -106,6 +110,7 @@
   border: 5px solid var(--border-lavender);
   border-radius: 25px;
   margin-top: 20px;
+  overflow: hidden;
 }
 
 .tag-input {
@@ -126,11 +131,13 @@
   text-align: center;
   font-size: 14px;
   margin-bottom: 20px;
+  cursor: pointer;
 }
 
 .btn {
   background-color: var(--bg-lavender) !important;
   display: inline-block;
+  cursor: pointer;
 }
 
 .field-parent-wrap {
@@ -170,7 +177,7 @@
 }
 
 .region-fieldset label {
-  width: 26px;
+  width: 30px;
   line-height: 20px;
   /* font-size: 3.2vw; */
 }
@@ -178,6 +185,10 @@
 .age-fieldset {
   position: relative;
   display: flex;
+
+  svg {
+    pointer-events: none;
+  }
 }
 
 .age-fieldset label {
@@ -199,6 +210,10 @@
 .gender-fieldset {
   position: relative;
   display: flex;
+
+  svg {
+    pointer-events: none;
+  }
 }
 
 .gender-fieldset label {
@@ -223,7 +238,7 @@
 }
 
 .date-fieldset label {
-  width: 26px;
+  width: 30px;
   display: flex;
   align-items: center;
 }
@@ -290,7 +305,7 @@
   width: 100%;
   max-width: 874px;
   height: 130px;
-  text-align: center;
+  text-align: left;
   padding: 10px 35px;
 }
 
@@ -313,6 +328,7 @@
   font-family: var(--sub-font-bold);
   text-align: center;
   padding: 5px;
+  cursor: pointer;
 }
 
 .btn-wrap {
@@ -474,5 +490,20 @@
   .btn-2 {
     width: 250px;
     margin-right: 0;
+  }
+}
+
+@media (max-width: 350px) {
+  .age-fieldset {
+    justify-content: center;
+  }
+
+  .age-select {
+    position: relative;
+  }
+
+  .age-select svg {
+    position: absolute;
+    left: 63px;
   }
 }
