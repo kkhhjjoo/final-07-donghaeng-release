@@ -1,36 +1,29 @@
 'use client';
 
 import Link from 'next/link';
-import style from './edit.module.css';
+import style from './create.module.css';
 import DefaultLayout from '@/app/components/DefaultLayout';
 import { useActionState, useEffect, useState, useTransition } from 'react';
 import useUserStore from '@/zustand/userStore';
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { ActionState, updateMeeting } from '@/actions/meetings';
+import { ActionState, createMeeting } from '@/actions/meetings';
 import { uploadFile } from '@/actions/file';
-import { Meetings } from '@/types/meetings';
 import { ClipLoader } from 'react-spinners';
 
-interface EditMeetingFormProps {
-  initialData: Meetings;
-  meetingId: string;
-}
-
-export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
+export default function Add() {
   const router = useRouter();
-  //강제로 다른 페이지로 보낼때 사용. 로그인 안돼있으면 /login으로 보내려고 넣어놓음
   const { user } = useUserStore();
-  // zustand에 저장된 로그인 사용자 정보 가져오기
 
   const initialState: ActionState | null = null;
-  //  서버 액션의 초기 결과값. 아직 서버에 요청을 보내지 않았으니까 null
-  const [state, formAction] = useActionState(updateMeeting, initialState);
-  // updateMeeting: 서버에 모임수정 요청 보내는 서버액션, useActionState: 요청의 결과를 state로 받아 볼수 있게 해줌
-  // 결과적으로 formAction >> 서버에 수정 요청이 됨됨됨... state: 서버에서 응답 결과
+  // 초기값 설정. 타입지정...
+
+  const [state, formAction] = useActionState(createMeeting, initialState);
+  // 폼 제출하면 createMeeting 실행
 
   const [, startTransition] = useTransition();
+  // 폼 제출할때 화면 멈추는것을 방지하기 위해...
 
   const accessToken = user?.token?.accessToken;
   const hasHydrated = useUserStore((state) => state.hasHydrated);
@@ -45,15 +38,13 @@ export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
   }, [router, hasHydrated, accessToken]);
 
   // 인원 카운터
-  const [count, setCount] = useState(initialData.quantity || 10);
+  const [count, setCount] = useState(10);
 
   // 이미지 미리보기
-  const [imagePreview, setImagePreview] = useState<string>(initialData.mainImages?.[0]?.path || '');
-  //    이미 등록된 모임 이미지를 보여줘야하니까 초기값이 initalData.mainImaes... 어어 모임이미지가 없으면 공백
-  const [uploadedImage, setUploadedImage] = useState<{ path: string; name: string } | null>(initialData.mainImages?.[0] || null);
-  //  서버로 보낼 이미지 정보가 필요.
+  const [imagePreview, setImagePreview] = useState<string>('');
+  const [uploadedImage, setUploadedImage] = useState<{ path: string; name: string } | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  //  이미지가 업로드 중인지 확인하기 위해서 사용
+  const [, setImgUrl] = useState<string>('');
 
   // 이미지 업로드 핸들러
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,6 +81,7 @@ export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
           path: result.item[0].path,
           name: result.item[0].name,
         });
+        setImgUrl(result.item[0].path);
       } else {
         alert('이미지 업로드에 실패했습니다.');
         setImagePreview('');
@@ -181,7 +173,6 @@ export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
 
     // FormData 재구성
     const submitData = new FormData();
-    submitData.append('_id', meetingId);
     submitData.append('accessToken', user.token.accessToken);
     submitData.append('name', formData.get('meetings-title') as string);
     submitData.append('content', formData.get('meetings-content') as string);
@@ -209,30 +200,29 @@ export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
     if (!state) return;
 
     if (state.ok) {
-      alert('모임이 성공적으로 수정되었습니다.');
+      alert('모임이 성공적으로 등록되었습니다.');
       // redirect는 Server Action에서 처리됨
     } else if (state.message) {
       alert(state.message);
     }
   }, [state]);
-  //  서버에 수정 요청을 보낸뒤, 결과를 사용자에게 반응해줌 값이 바뀔때만 effect를 실행하라....
 
   return (
-    <main className={style['wrap']}>
-      <div className={style['Edit-wrap']}>
+    <div className={style['wrap']}>
+      <div className={style['add-wrap']}>
         <form className={style['meetings-create']} onSubmit={handleSubmit}>
-          <div className={style['meetings-Edit']}>
-            <h2>모임 수정</h2>
+          <div className={style['meetings-add']}>
+            <h2>모임 등록</h2>
             <fieldset className={style['title-fieldset']}>
               <label htmlFor="meetings-title">모임 제목</label>
-              <input className={style['title-input']} maxLength={40} type="text" id="meetings-title" name="meetings-title" defaultValue={initialData.name} />
+              <input className={style['title-input']} maxLength={40} type="text" id="meetings-title" name="meetings-title" placeholder="모임 제목을 입력해주세요." />
             </fieldset>
 
             <fieldset className={style['category-fieldset']}>
               <label htmlFor="category">카테고리</label>
 
               <div className={style['category-div']}>
-                <select className={style['category-select']} name="category" id="category" required defaultValue={initialData.extra?.category || ''}>
+                <select className={style['category-select']} name="category" id="category" required defaultValue="">
                   <option value="" disabled>
                     선택
                   </option>
@@ -267,7 +257,7 @@ export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
             <fieldset className={style['context-fieldset']}>
               <label htmlFor="meetings-content">모임 설명</label>
 
-              <textarea className={style['content-input']} id="meetings-content" name="meetings-content" defaultValue={initialData.content} />
+              <textarea className={style['content-input']} id="meetings-content" name="meetings-content" placeholder="10글자 이상 입력해야합니다." />
             </fieldset>
 
             <fieldset className={style['img-fieldset']}>
@@ -282,7 +272,7 @@ export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
                   </div>
                 ) : imagePreview ? (
                   <div className={style['image-preview']} onClick={() => document.getElementById('meetings-img')?.click()} style={{ cursor: 'pointer' }}>
-                    <Image src={imagePreview} alt="미리보기" style={{ objectFit: 'cover', objectPosition: 'center' }} width={100} height={100} />{' '}
+                    <Image src={imagePreview} alt="미리보기" style={{ objectFit: 'cover', objectPosition: 'center' }} width={100} height={100} />
                   </div>
                 ) : (
                   <div className={style['ractingle']} onClick={() => document.getElementById('meetings-img')?.click()} style={{ cursor: 'pointer' }}>
@@ -301,20 +291,20 @@ export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
               <fieldset className={style['date-fieldset']}>
                 <label htmlFor="date">날짜</label>
 
-                <input type="date" className={style['date-input']} id="date" name="date" required min={new Date().toISOString().split('T')[0]} defaultValue={initialData.extra?.date} />
+                <input type="date" className={style['date-input']} id="date" name="date" required min={new Date().toISOString().split('T')[0]} />
               </fieldset>
 
               <fieldset className={style['region-fieldset']}>
                 <label htmlFor="region" className={style['region-label']}>
                   장소
                 </label>
-                <input className={`${style['region-input']} `} maxLength={40} type="text" name="region" id="region" placeholder="모임 장소를 입력해주세요" required defaultValue={initialData.extra?.region}></input>
+                <input className={`${style['region-input']} `} maxLength={40} type="text" name="region" id="region" placeholder="모임 장소를 입력해주세요" required></input>
               </fieldset>
 
               <fieldset className={style['gender-fieldset']}>
                 <label htmlFor="gender">성별</label>
                 <div>
-                  <select className={style['select-btn']} required id="gender" name="gender" defaultValue={initialData.extra?.gender || ''}>
+                  <select className={style['select-btn']} required id="gender" name="gender">
                     <option value="" disabled defaultValue=""></option>
                     <option value="남">남</option>
                     <option value="여">여</option>
@@ -331,8 +321,8 @@ export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
 
               <fieldset className={style['age-fieldset']}>
                 <label htmlFor="age">나이</label>
-                <div>
-                  <select required id="age" name="age" className={style['select-btn']} defaultValue={initialData.extra?.age?.toString() || ''}>
+                <div className={style['age-select']}>
+                  <select required id="age" name="age" className={style['select-btn']}>
                     <option value="" disabled defaultValue=""></option>
                     <option value="10">10대</option>
                     <option value="20">20대</option>
@@ -379,21 +369,21 @@ export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
             <div className={style['question']}>
               <fieldset className={style['question-1-field']}>
                 <label htmlFor="question-1">1번 질문</label>
-                <input type="text" name="question-1" id="question-1" placeholder="신청자에게 물어볼 질문을 작성하세요" defaultValue={initialData.extra?.survey1} required />
+                <input type="text" name="question-1" id="question-1" placeholder="신청자에게 물어볼 질문을 작성하세요" required />
               </fieldset>
 
               <fieldset className={style['question-2-field']}>
                 <label htmlFor="question-2">2번 질문</label>
-                <input type="text" name="question-2" id="question-2" placeholder="신청자에게 물어볼 질문을 작성하세요" defaultValue={initialData.extra?.survey2} required />
+                <input type="text" name="question-2" id="question-2" placeholder="신청자에게 물어볼 질문을 작성하세요" required />
               </fieldset>
             </div>
           </div>
           <br />
           <div className={style['btn-wrap']}>
             <button className={style['btn']} type="submit">
-              수정
+              등록
             </button>
-            <Link href={`/meetings/${meetingId}`}>
+            <Link href={'/meetings'}>
               <button className={style['btn-2']} type="button">
                 취소
               </button>
@@ -401,6 +391,6 @@ export default function Edit({ initialData, meetingId }: EditMeetingFormProps) {
           </div>
         </form>
       </div>
-    </main>
+    </div>
   );
 }

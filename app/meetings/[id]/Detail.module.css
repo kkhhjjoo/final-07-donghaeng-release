@@ -14,12 +14,17 @@
   padding: 40px 240px 108px 240px;
 }
 
+.mainHeader {
+  margin: 0 auto;
+}
+
 /* ===== 콘텐츠 카드 ===== */
 .contentCard {
   background-color: var(--bg-white);
   border: 5px solid var(--border-lavender);
   border-radius: 20px;
   padding: 35px;
+  width: 100%;
   position: relative;
 }
 
@@ -44,6 +49,7 @@
 
 .characterImage {
   object-fit: cover;
+  width: 100%;
 }
 
 /* 타이틀 + meetingInfo 영역 */
@@ -56,7 +62,7 @@
 }
 
 .title {
-  margin-top: 58px;
+  width: 80%;
   font-family: var(--main-font);
   font-size: 28px;
   color: var(--text-black);
@@ -72,28 +78,28 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--text-black);
 }
 
 /* | 구분선 */
 .meetingInfoDivider {
-  color: var(--text-navy);
-  opacity: 0.5;
+  color: var(--text-black);
+  opacity: 0.7;
   margin: 0 4px;
 }
 
 /* · 구분선 */
 .meetingInfoDot {
-  color: var(--text-gray);
-  opacity: 0.5;
+  color: var(--text-black);
+  opacity: 0.7;
 }
 
 /* 북마크 버튼 - 카드 우측 상단 고정 */
 .bookmarkPart {
   position: absolute;
-  top: 70px;
-  right: 0;
+  top: 65px;
+  right: -20px;
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
@@ -107,13 +113,14 @@
 
 .contentBody p {
   color: var(--text-black);
-  white-space: wrap;
+  white-space: pre-wrap;
 }
 
 /* ===== 호스트 정보 섹션 (bottomSection) ===== */
 .bottomSection {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
   max-width: 1440px;
   min-height: 110px;
   background-color: var(--bg-lightlavender);
@@ -121,7 +128,8 @@
   padding: 45px;
   margin-top: 50px;
   position: relative;
-  gap: 30px;
+  gap: 20px;
+  width: 100%;
 }
 
 /* 호스트 캐릭터 이미지 */
@@ -131,7 +139,7 @@
 }
 
 .userCharacterImage {
-  width: 170px;
+  width: 150px;
   height: 150px;
   background: url('/images/img2.png') center/cover;
   border-radius: 25px;
@@ -143,11 +151,8 @@
 /* 호스트 정보 영역 (이름 + BPM + 상태메시지) */
 .hostInfo {
   flex: 1;
-  display: flex;
-  align-items: flex-start;
-
-  gap: 4px;
-  min-width: 0;
+  align-self: flex-start;
+  /* gap: 12px; */
 }
 .statusRow {
   display: flex;
@@ -171,8 +176,6 @@
 .statusText {
   font-size: 18px;
   color: var(--text-navy);
-  white-space: wrap;
-  justify-content: flex-end;
   opacity: 0.7;
 }
 
@@ -180,7 +183,7 @@
 .userStatus {
   display: flex;
   align-items: flex-start;
-  gap: 6px;
+  gap: 4px;
 }
 
 .heartIcon {
@@ -214,15 +217,9 @@
 
 /* 채팅 버튼 - 우측 끝 고정 */
 .chatButton {
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin-left: auto;
-  flex-shrink: 0;
   transition: transform 0.2s ease;
-  position: absolute;
-  top: 40%;
-  right: 40px;
+
+  cursor: pointer;
 }
 
 .chatButton:hover {
@@ -252,14 +249,13 @@
   min-width: 120px;
   height: 80px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s ease;
 }
 
 .applyBtn,
 .adminBtn {
   background-color: var(--bg-sky);
   color: var(--text-navy);
-  transition: all 0.2s ease;
   white-space: nowrap;
 }
 
@@ -277,19 +273,12 @@
   background-color: var(--text-gray);
   color: var(--text-navy);
   cursor: not-allowed;
-  transition: all 0.2s ease;
   white-space: nowrap;
-}
-
-.adminBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .editBtn {
   background-color: var(--bg-lavender);
   color: var(--text-navy);
-  transition: all 0.2s ease;
   white-space: nowrap;
 }
 
@@ -305,9 +294,8 @@
 
 .deleteBtn {
   background-color: var(--bg-white);
-  border: 5px solid var(--border-lavender);
+  box-shadow: inset 0 0 0 5px var(--border-lavender);
   color: var(--text-navy);
-  transition: all 0.2s ease;
   white-space: nowrap;
 }
 
@@ -329,6 +317,18 @@
   margin-right: 0;
 }
 
+.hostMode > * {
+  flex: 1;
+}
+
+.hostMode form {
+  display: flex;
+}
+
+.hostMode form > button {
+  flex: 1;
+}
+
 /* 신청하기 버튼 - 오른쪽 정렬, 넓은 폭 */
 .userMode {
   display: flex;
@@ -336,26 +336,37 @@
   width: 100%;
 }
 
+.title {
+  width: 80%;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+}
+
 /* ===== 반응형 - 1024px 이하 ===== */
 @media (max-width: 1024px) {
   .main {
-    padding: 40px;
-    margin-right: -40px;
+    padding: 20px;
+  }
+  .mainHeader {
+    width: 100%;
   }
   .contentCard {
     display: flex;
     flex-direction: column;
-    width: 84vw;
-    min-width: 300px;
-    padding-top: 0;
+    min-width: 280px;
     margin-right: 0;
     word-wrap: break-word;
     position: relative;
     padding: 0;
     overflow: hidden;
+    width: 100%;
   }
   .headerContent {
     z-index: 10;
+    width: 90%;
+    margin: 50px 30px 0 25px;
   }
   .cardHeader {
     flex-direction: column;
@@ -365,7 +376,7 @@
     height: 200px;
   }
   .characterWrapper {
-    width: 82.5vw;
+    width: 100%;
     min-width: 270px;
     height: 300px;
     position: absolute;
@@ -377,81 +388,75 @@
   }
   .title {
     margin-left: 20px;
+    margin-top: 0px;
+    font-size: 24px;
+    line-height: 1.5;
   }
   .meetingInfo {
-    margin-left: 20px;
+    margin: 0px 20px;
   }
-
   .contentBody {
     width: 100%;
-    height: 300px;
     padding: 20px;
     position: relative;
-    top: -35px;
+    top: 0;
     z-index: 20;
     background-color: var(--bg-white);
-    border-radius: 25px;
+    /* border-radius: 25px; */
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
     display: block;
   }
-
   .bottomSection {
-    flex-wrap: wrap;
-    width: 84vw;
-    padding: 30px;
+    flex-wrap: nowrap;
+    width: 100%;
+    padding: 20px;
   }
-
   .userCharacterImage {
     width: 140px;
-    height: 120px;
+    height: 140px;
   }
-
   .userName {
     font-size: 24px;
   }
-
   .statusText {
     font-size: 16px;
   }
-  .heartIcon {
-    width: 3.5vw;
-    height: 3.5vh;
-  }
-  .chatButton {
-    width: 4.5vw;
-    height: 4.5vh;
-    top: 30%;
-  }
-  .buttonContainer {
-    margin-right: 10%;
-  }
-  .title {
-    margin-top: 0px;
-    font-size: 24px;
-  }
+
   .bookmarkPart {
     top: 125px;
+    right: 10px;
+  }
+  .userMode {
+    width: 100%;
   }
 }
 @media (max-width: 768px) {
   .headerContent {
-    width: 90%;
-    margin: 50px 30px 25px 30px;
+    width: 100%;
+    margin: 10px 30px 25px 30px;
   }
-  .statusRow {
-    gap: 0;
-  }
-  .chatButton {
-    position: absolute;
-    top: 30%;
-    right: 50px;
-  }
+
   .statusText {
     width: 100%;
   }
+
+  .hostNameRow {
+    gap: 12px;
+  }
+  .userMode {
+    width: 100%;
+  }
 }
+@media (max-width: 535px) {
+  .hostNameRow {
+    flex-direction: column;
+  }
+}
+
 @media (max-width: 480px) {
   .userCharacterImage {
-    width: 100px;
+    width: 80px;
     height: 80px;
   }
   .title {
@@ -461,28 +466,23 @@
     margin-left: -10px;
   }
   .bottomSection {
-    padding: 20px;
-    height: 100px;
+    padding: 20px 10px;
+    height: 150px;
+    gap: 15px;
+    width: 100%;
   }
-  .chatButton img {
-    width: 40px !important;
-    height: 40px !important;
-  }
-  .bpm p {
-    font-size: 12px;
+
+  .bpm .font {
+    font-size: 10px;
   }
 
   .heartIcon {
     width: 25px;
     height: 25px;
-    /* margin-top: 8px; */
-  }
-  .chatButton {
-    right: 28px;
   }
   .chatButton img {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
   .hostMode {
     display: flex;
@@ -492,38 +492,47 @@
   }
   .adminBtn,
   .editBtn,
-  .deleteBtn,
-  .applyBtn,
-  .appliedBtn {
-    min-width: 25vw;
-    width: 100%;
+  .deleteBtn {
+    min-width: 0;
     height: 50px;
     font-size: 14px;
   }
   .applyBtn,
   .appliedBtn {
-    width: 100px;
+    height: 50px;
+    font-size: 14px;
+    width: auto;
+    min-width: 120px;
   }
   .title {
     margin-top: 0px;
-    width: 80%;
-    font-size: 24px;
+    font-size: 20px;
   }
   .bookmarkPart {
     top: 110px;
+  }
+
+  .statusText {
+    width: 80%;
+  }
+  .userName {
+    font-size: 20px;
+  }
+  .hostNameRow {
+    flex-wrap: wrap;
+    gap: 8px;
   }
 }
 
 @media (max-width: 320px) {
   .contentCard {
-    width: calc(100vw - 40px);
+    width: 100%;
     min-width: unset;
-    margin-left: -15px;
+    margin-left: 0px;
   }
 
   .title {
     margin-top: 0px;
-    margin-left: -10px;
     font-size: 20px;
   }
 
@@ -535,24 +544,16 @@
 
   /* bottomSection 전체 재구성 */
   .bottomSection {
-    width: calc(100vw - 40px);
+    width: 100%;
     min-width: unset;
-    margin-left: -15px;
-    gap: 12px;
+    margin-left: 0;
+    gap: 8px;
   }
   /* 호스트 캐릭터 이미지 축소 */
   .userCharacterImage {
     width: 80px;
-    height: 70px;
+    height: 80px;
   }
-
-  /* 호스트 정보 영역 전체폭 차지 */
-  .hostInfo {
-    width: 100%;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
   .statusRow {
     width: 100%;
   }
@@ -568,7 +569,6 @@
   }
 
   .statusText {
-    width: 90%;
     font-size: 14px;
   }
 
@@ -576,6 +576,6 @@
     font-size: 12px;
   }
   .userMode {
-    margin-right: -25px;
+    right: 0px;
   }
 }

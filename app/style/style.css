@@ -26,6 +26,7 @@
   --c-gray-200: #555;
 
   /* Background */
+  --bg-red: var(--c-red-600);
   --bg-lavender: var(--c-lavender-200);
   --bg-darklavender: var(--c-purple-300);
   --bg-navy: var(--c-indigo-900);

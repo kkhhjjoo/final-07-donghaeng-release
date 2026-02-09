@@ -25,17 +25,21 @@ export default function MeetingItem({ meeting }: { meeting: Meetings }) {
               <div className={style.cardHeader}>
                 <h3 className={style.cardTitle}>{meeting.name}</h3>
                 <div className={style.bookmarkIcon}>
-                  <BookmarkButton width={27} height={35} meetingId={meeting._id} />
+                  <BookmarkButton desktopWidth={27} desktopHeight={35} meetingId={meeting._id} />
                 </div>
               </div>
-              <div className={style.cardMetadata}>
-                <p className={style.metadataLine}>
-                  {meeting.extra.region}. {formatDate(meeting.extra.date)}
-                </p>
-                <p className={style.metadataLine}>
-                  {meeting.extra.gender}. {meeting.extra.age}대
-                </p>
-              </div>
+              <ul className={style.cardMetadata}>
+                <div className={style.rowWrap}>
+                  <li className={style.metadataLine}>{formatDate(meeting.extra.date)}</li>
+                  <li className={style.divider}></li>
+                  <li className={style.metadataLine}>{meeting.extra.gender}</li>
+                  <li className={style.divider}></li>
+                  <li className={style.metadataLine}>{meeting.extra.age}대</li>
+                </div>
+                <div className={style.rowWrap}>
+                  <li className={style.metadataLine2}>{meeting.extra.region}</li>
+                </div>
+              </ul>
             </figcaption>
           </figure>
         </Link>

@@ -108,6 +108,24 @@
     height: 100px;
     line-height: 20px;
     white-space: pre-line;
+    resize: none;
+
+    &::-webkit-scrollbar {
+      width: 30px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--bg-sky);
+      border-radius: 20px;
+      border: 10px solid transparent;
+      background-clip: padding-box;
+      min-height: 50px;
+    }
+
+    &::-webkit-scrollbar-button {
+      display: block;
+      height: 3px;
+    }
   }
 }
 

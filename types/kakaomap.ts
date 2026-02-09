@@ -9,4 +9,5 @@ export interface KakaoMapProps {
   className?: string;
   meetings?: Meetings[];
   selectedId?: number | null;
+  mapPage?: boolean;
 }

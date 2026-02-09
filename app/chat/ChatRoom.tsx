@@ -3,11 +3,11 @@ import useChat from '@/hooks/useChat';
 import useUserStore from '@/zustand/userStore';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './ChatRoom.module.css';
 
 export default function ChatRoom() {
-  const messagesEndRef = useRef<HTMLDivElement>(null); // 채팅창 하단 스크롤을 위한 Ref
+  const messagesContainerRef = useRef<HTMLDivElement>(null); // 메시지 컨테이너 스크롤 제어용 Ref
   const router = useRouter();
   const pathname = usePathname();
   const [inputText, setInputText] = useState(''); // 메시지 입력창 상태
@@ -15,10 +15,13 @@ export default function ChatRoom() {
   const { activeRoomId, setActiveRoomId, rooms, messages, sendMessage, leaveRoom } = useChat();
   const user = useUserStore((state) => state.user); // 현재 로그인한 사용자 정보
 
-  // 메시지 변경 시 실행
-  // useEffect(() => {
-  //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  // }, [messages]);
+  // 메시지 변경 시 메시지 컨테이너만 하단으로 스크롤
+  useEffect(() => {
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  }, [messages]);
 
   if (!user) return null;
 
@@ -91,7 +94,7 @@ export default function ChatRoom() {
           </div>
 
           {/* 중간 영역: 채팅 메시지들이 표시되는 스크롤 영역 */}
-          <div className={styles.messagesContainer}>
+          <div ref={messagesContainerRef} className={styles.messagesContainer}>
             {!activeRoom || !messages.length ? (
               <div className={styles.emptyMessages}>
                 <p className={styles.emptyMessagesText}>아직 대화가 없습니다.</p>
@@ -100,7 +103,6 @@ export default function ChatRoom() {
             ) : (
               messages.map((msg, index) => <MessageBubble key={msg._id || index} message={msg} isMe={String(msg.senderId) === String(user._id)} sender={partner || undefined} />)
             )}
-            <div ref={messagesEndRef} />
           </div>
 
           {/* 하단 영역: 메시지 입력 폼 */}

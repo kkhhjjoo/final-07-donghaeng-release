@@ -21,7 +21,7 @@ export function useNoti() {
     if (!userId || notiSocket || isConnecting) return;
 
     // 싱글톤 패턴: globalNotiSocket을 사용하여 컴포넌트가 리렌더링되더라도
-    // 소켓이 불필요하게 여러 번 생성되지 않도록 관리함
+    // 소켓이 불필요하게 여러 번 생성되지 않도록 관리함(이미 연결된 소켓이 있으면 재사용)
     if (globalNotiSocket) {
       setNotiSocket(globalNotiSocket);
       return;
@@ -77,8 +77,10 @@ export function useNoti() {
     // 전체 읽음 처리
     const result = await notiAllRead(accessToken);
     if (result.ok) {
+      // 소켓으로 다른 사용자에게 전체 읽음 처리 알림 전달
       notiSocket.emit('markAllRead', userId);
-      // Optimistic update (optional)
+
+      // 로컬에서 전체 읽음 처리
       const updatedNotis = notifications.map((n) => ({ ...n, isRead: true }));
       setNotifications(updatedNotis);
     }
@@ -89,11 +91,18 @@ export function useNoti() {
     if (!accessToken) return;
 
     // 서버에 개별 읽음 처리 요청
-    notiOneRead(accessToken, notiId);
-
-    // 해당 알림만 읽음 처리
-    const updatedNotis = notifications.map((n) => (n._id === notiId ? { ...n, isRead: true } : n));
-    setNotifications(updatedNotis);
+    const result = await notiOneRead(accessToken, notiId);
+    // 성공, 실패 여부에 따른 알림 처리
+    // 서버에서 업데이트 되었다는 응답일 때 성공 처리
+    if (result.ok) {
+      // 해당 알림만 읽음 처리
+      const updatedNotis = notifications.map((n) => (n._id === notiId ? { ...n, isRead: true } : n));
+      setNotifications(updatedNotis);
+      console.log('개별 읽음 처리 성공:', updatedNotis);
+    } else {
+      // 실패 처리
+      console.log('개별 읽음 처리 실패:', result);
+    }
   };
 
   // 알림 목록, 전체 읽음, 개별 읽음 반환

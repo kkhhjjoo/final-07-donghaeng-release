@@ -50,24 +50,13 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
               <option value="반려동물">반려동물</option>
               <option value="자동차 / 바이크">자동차 / 바이크</option>
             </select>
-            <svg width="13" height="9" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M8.09227 11.5606C8.59433 12.1465 9.40968 12.1465 9.91175 11.5606L17.6235 2.56239C18.1255 1.97657 18.1255 1.02519 17.6235 0.439367C17.1214 -0.146456 16.306 -0.146456 15.804 0.439367L9 8.37844L2.19603 0.444053C1.69396 -0.14177 0.878612 -0.14177 0.376548 0.444053C-0.125516 1.02988 -0.125516 1.98125 0.376548 2.56708L8.08825 11.5653L8.09227 11.5606Z"
-                fill="#c4d9ff"
-              />
-            </svg>
           </div>
         )}
 
         {/* 커스텀 날짜 선택 */}
         <div className={`${styles.wrapper} ${styles['date-wrapper']}`}>
           <span>{formatDate(date)}</span>
-          <svg width="13" height="9" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M8.09227 11.5606C8.59433 12.1465 9.40968 12.1465 9.91175 11.5606L17.6235 2.56239C18.1255 1.97657 18.1255 1.02519 17.6235 0.439367C17.1214 -0.146456 16.306 -0.146456 15.804 0.439367L9 8.37844L2.19603 0.444053C1.69396 -0.14177 0.878612 -0.14177 0.376548 0.444053C-0.125516 1.02988 -0.125516 1.98125 0.376548 2.56708L8.08825 11.5653L8.09227 11.5606Z"
-              fill="#c4d9ff"
-            />
-          </svg>
+
           <input
             type="date"
             className={styles.dateInput}
@@ -85,12 +74,6 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
             <option value="여">여</option>
             <option value="남녀무관">남녀무관</option>
           </select>
-          <svg width="13" height="9" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M8.09227 11.5606C8.59433 12.1465 9.40968 12.1465 9.91175 11.5606L17.6235 2.56239C18.1255 1.97657 18.1255 1.02519 17.6235 0.439367C17.1214 -0.146456 16.306 -0.146456 15.804 0.439367L9 8.37844L2.19603 0.444053C1.69396 -0.14177 0.878612 -0.14177 0.376548 0.444053C-0.125516 1.02988 -0.125516 1.98125 0.376548 2.56708L8.08825 11.5653L8.09227 11.5606Z"
-              fill="#c4d9ff"
-            />
-          </svg>
         </div>
         {/* 나이대 선택 */}
         <div className={styles.wrapper}>
@@ -101,12 +84,6 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
             <option value="30대">30대</option>
             <option value="40대 이상">40대 이상</option>
           </select>
-          <svg width="13" height="9" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M8.09227 11.5606C8.59433 12.1465 9.40968 12.1465 9.91175 11.5606L17.6235 2.56239C18.1255 1.97657 18.1255 1.02519 17.6235 0.439367C17.1214 -0.146456 16.306 -0.146456 15.804 0.439367L9 8.37844L2.19603 0.444053C1.69396 -0.14177 0.878612 -0.14177 0.376548 0.444053C-0.125516 1.02988 -0.125516 1.98125 0.376548 2.56708L8.08825 11.5653L8.09227 11.5606Z"
-              fill="#c4d9ff"
-            />
-          </svg>
         </div>
         {/* 지역 선택 후 시/군/구 선택 */}
         <div className={styles.wrapper}>
@@ -127,12 +104,6 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
               </option>
             ))}
           </select>
-          <svg width="13" height="9" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M8.09227 11.5606C8.59433 12.1465 9.40968 12.1465 9.91175 11.5606L17.6235 2.56239C18.1255 1.97657 18.1255 1.02519 17.6235 0.439367C17.1214 -0.146456 16.306 -0.146456 15.804 0.439367L9 8.37844L2.19603 0.444053C1.69396 -0.14177 0.878612 -0.14177 0.376548 0.444053C-0.125516 1.02988 -0.125516 1.98125 0.376548 2.56708L8.08825 11.5653L8.09227 11.5606Z"
-              fill="#c4d9ff"
-            />
-          </svg>
         </div>
         <div className={styles.wrapper}>
           {/* 지역을 선택하지 않으면 시/군/구 select는 disabled 상태 
@@ -147,12 +118,6 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
                 </option>
               ))}
           </select>
-          <svg width="13" height="9" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M8.09227 11.5606C8.59433 12.1465 9.40968 12.1465 9.91175 11.5606L17.6235 2.56239C18.1255 1.97657 18.1255 1.02519 17.6235 0.439367C17.1214 -0.146456 16.306 -0.146456 15.804 0.439367L9 8.37844L2.19603 0.444053C1.69396 -0.14177 0.878612 -0.14177 0.376548 0.444053C-0.125516 1.02988 -0.125516 1.98125 0.376548 2.56708L8.08825 11.5653L8.09227 11.5606Z"
-              fill="#c4d9ff"
-            />
-          </svg>
         </div>
         {/* 모임 인원 선택 */}
         <div className={styles.wrapper}>
@@ -163,12 +128,6 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
             <option value="21 ~ 30명">21 ~ 30명</option>
             <option value="30명 이상">30명 이상</option>
           </select>
-          <svg width="13" height="9" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M8.09227 11.5606C8.59433 12.1465 9.40968 12.1465 9.91175 11.5606L17.6235 2.56239C18.1255 1.97657 18.1255 1.02519 17.6235 0.439367C17.1214 -0.146456 16.306 -0.146456 15.804 0.439367L9 8.37844L2.19603 0.444053C1.69396 -0.14177 0.878612 -0.14177 0.376548 0.444053C-0.125516 1.02988 -0.125516 1.98125 0.376548 2.56708L8.08825 11.5653L8.09227 11.5606Z"
-              fill="#c4d9ff"
-            />
-          </svg>
         </div>
       </div>
     </>

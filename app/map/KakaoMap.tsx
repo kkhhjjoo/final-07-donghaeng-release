@@ -17,7 +17,7 @@ import { KakaoMapProps } from '@/types/kakaomap';
 /*
   props로 width, height, lat(위도), lng(경도), css클래스명, 모임 배열, 모임 개인 id를 받아옴
  */
-export default function KakaoMap({ width = '100%', lat = 37.5709, lng = 126.978, className, meetings = [], selectedId }: KakaoMapProps) {
+export default function KakaoMap({ width = '100%', lat = 37.5709, lng = 126.978, className, meetings = [], selectedId, mapPage = false }: KakaoMapProps) {
   const router = useRouter();
   // 로딩 판별 state
   const [isLoaded, setIsLoaded] = useState(false);
@@ -115,9 +115,14 @@ export default function KakaoMap({ width = '100%', lat = 37.5709, lng = 126.978,
     };
   }, []);
 
+  // 필터 변경 시 오버레이 닫기
+  useEffect(() => {
+    setSelectedMarker(null);
+  }, [meetings]);
+
   // 오버레이 내용을 변수화하기(데스크탑, 모바일 공통)
   const overlayMap = selectedMarker && (
-    <div className={styles['marker-info-window']}>
+    <div className={mapPage ? styles['marker-info-window'] : styles['marker-info-window-main']}>
       {/* X 닫기 버튼 - 우측 상단 */}
       <div className={styles['btn-close']}>
         <svg onClick={() => setSelectedMarker(null)} width="15" height="15" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -176,7 +181,7 @@ export default function KakaoMap({ width = '100%', lat = 37.5709, lng = 126.978,
           {markerData.map((item, index) => (
             <MapMarker key={index} position={item.coords} onClick={() => setSelectedMarker(item)} />
           ))}
-          {selectedMarker && !isMobile && (
+          {selectedMarker && (!mapPage || !isMobile) && (
             <CustomOverlayMap position={selectedMarker.coords} yAnchor={1.3}>
               {overlayMap}
             </CustomOverlayMap>
@@ -186,7 +191,7 @@ export default function KakaoMap({ width = '100%', lat = 37.5709, lng = 126.978,
         <div style={{ width: '100%', height: '100%', background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>지도 로딩중...</div>
       )}
       {/* 모바일 화면 하단에 고정하는 오버레이 */}
-      {selectedMarker && isMobile && <div className={styles['mobile-overlay']}>{overlayMap}</div>}
+      {selectedMarker && isMobile && mapPage && <div className={styles['mobile-overlay']}>{overlayMap}</div>}
     </div>
   );
 }

@@ -4,16 +4,24 @@ import styles from '../Main.module.css';
 import BookmarkButton from '@/app/components/BookmarkButton';
 import { Meetings } from '@/types/meetings';
 
+const categoryCodeMap: Record<string, string> = {
+  '운동': 'health',
+  '요리 / 제조': 'cook',
+  '문화 / 공연 / 축제': 'festival',
+  '게임 / 오락': 'arcade',
+};
+
 interface CategorySectionProps {
   title: string;
   meetings: Meetings[];
 }
 
 export default function CategorySection({ title, meetings }: CategorySectionProps) {
+  const categoryCode = categoryCodeMap[title] ?? title;
   return (
     <section className={styles[`section-meetings-wrapper`]}>
       <div className={styles[`section-link`]}>
-        <Link href="/meetings" className={styles[`section-link-text`]}>
+        <Link href={`/meetings?category=${categoryCode}`} className={styles[`section-link-text`]}>
           {title}
           <Image src="/icon/right.svg" width={12} height={20} alt="오른쪽화살표" style={{ height: 'auto' }} />
         </Link>

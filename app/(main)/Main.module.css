@@ -1,8 +1,8 @@
 .banner {
   width: 100%;
   height: auto;
-  aspect-ratio: 500 / 230;
-  background-image: url('/images/banner-mobile.png');
+  aspect-ratio: 640 / 360;
+  background-image: url('/images/moa_mobile_640x360.png');
   background-size: cover;
   background-position: center;
 }
@@ -106,14 +106,6 @@
   .map {
     height: 300px;
   }
-
-  .map-image {
-    height: auto;
-    aspect-ratio: 500 / 270;
-    background-image: url('/images/map-mobile.png');
-    background-size: cover;
-    background-position: center;
-  }
 }
 .section-link {
   display: inline-flex;
@@ -152,13 +144,17 @@
 
     .meetings-image-box {
       position: relative;
-      background: gray;
       aspect-ratio: 1 / 1;
+      border: 1px solid var(--border-lavender);
+      border-radius: 25px;
+      overflow: hidden;
 
       img {
         object-fit: cover;
+        z-index: -1;
       }
     }
+
     .meetings-title {
       display: flex;
       width: fit-content;
@@ -173,8 +169,8 @@
 @media (min-width: 1024px) {
   .banner {
     height: auto;
-    aspect-ratio: 1920 / 400;
-    background-image: url('/images/banner-desktop.png');
+    aspect-ratio: 1920 / 600;
+    background-image: url('/images/moa_desktop_1920x600.png');
   }
 
   .search-ai-wrapper {

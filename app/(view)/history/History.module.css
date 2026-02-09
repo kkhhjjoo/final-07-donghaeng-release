@@ -41,6 +41,7 @@
   justify-content: flex-end;
 }
 
+.allBtn,
 .beforeBtn,
 .afterBtn {
   width: 75px;
@@ -50,12 +51,16 @@
   font-weight: 700;
   cursor: pointer;
 }
-.beforeBtn {
+.allBtn {
   margin-right: 15px;
   background-color: var(--bg-lightsky);
 }
-.afterBtn {
+.beforeBtn {
+  margin-right: 15px;
   background-color: var(--bg-sky);
+}
+.afterBtn {
+  background-color: var(--bg-lavender);
 }
 
 /* 카드드드드드드 */

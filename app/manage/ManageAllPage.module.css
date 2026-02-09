@@ -162,9 +162,9 @@
 .empty {
   display: flex;
   justify-self: center;
-  /* align-items: center; */
+  align-items: center;
   height: 300px;
-  padding: 20px 0 50px 0;
+  padding: 0 0 50px 0;
   font-family: var(--danger-font);
 }
 

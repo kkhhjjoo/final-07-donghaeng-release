@@ -66,7 +66,7 @@ export default function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
               <Link href="/signup">회원가입</Link>
             </li>
             <li>
-              <Link href="/meetings">리스트</Link>
+              <Link href="/meetings">모임</Link>
             </li>
             <li>
               <Link href="/map">모임 지도</Link>

@@ -2,10 +2,11 @@
 .mypage-body {
   width: 100%;
   max-width: 500px;
-  min-width: 320px;
+  min-width: 280px;
   height: 800px;
   margin-block: 25px;
   margin-inline: auto;
+  padding-inline: 20px;
 
   h1 {
     font-family: var(--main-font);
@@ -31,13 +32,13 @@
 .profile-information {
   display: grid;
   grid-template-columns: auto 1fr;
+  margin-inline: 10px;
   align-items: center;
-  padding-inline: 65px;
   padding-block: 40px 20px;
 
   .profile-img {
-    width: 135px;
-    height: 135px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     object-fit: cover;
   }
@@ -49,9 +50,14 @@
   .email {
     color: var(--text-lavender);
     margin-block: 5px;
+    overflow-wrap: anywhere;
   }
   .etc {
     color: var(--text-darksky);
+
+    span {
+      margin-inline: 3%;
+    }
   }
 
   figure {
@@ -98,11 +104,6 @@
   }
 }
 
-/* 사용자 정보 - 모바일 */
-.user-info-mobile {
-  width: 100%;
-}
-
 /* 사용자 정보 - 데스크탑 */
 .user-info-desktop {
   display: none;
@@ -113,7 +114,7 @@
   font-size: 14px;
   width: 90%;
   max-width: 410px;
-  min-width: 320px;
+  min-width: 260px;
   dt {
     font-size: 16px;
     width: 100%;
@@ -129,7 +130,7 @@
     padding: 10px 20px;
     /* 줄바꿈 */
     white-space: pre-line;
-    overflow: scroll;
+    overflow-y: scroll;
   }
 }
 
@@ -145,7 +146,7 @@
   border-radius: 25px;
   width: 90%;
   max-width: 410px;
-  min-width: 320px;
+  min-width: 260px;
   height: 100px;
 
   p {
@@ -180,7 +181,7 @@
   font-family: var(--main-font);
   display: flex;
   justify-content: center;
-  gap: 60px;
+  gap: 20px;
   width: 90%;
   max-width: 400px;
 
@@ -214,6 +215,47 @@
   background-color: var(--bg-sky);
 }
 
+/* 스크롤 바 */
+.my-introduce-mobile {
+  dd {
+    &::-webkit-scrollbar {
+      width: 30px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--bg-sky);
+      border-radius: 20px;
+      border: 10px solid transparent;
+      background-clip: padding-box;
+      min-height: 50px;
+    }
+
+    &::-webkit-scrollbar-button {
+      display: block;
+      height: 3px;
+    }
+  }
+}
+
+.my-introduce-desktop {
+  &::-webkit-scrollbar {
+    width: 30px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--bg-sky);
+    border-radius: 20px;
+    border: 10px solid transparent;
+    background-clip: padding-box;
+    min-height: 50px;
+  }
+
+  &::-webkit-scrollbar-button {
+    display: block;
+    height: 8px;
+  }
+}
+
 /* 1024px 이상 반응형 */
 @media (min-width: 1024px) {
   .mypage-body {
@@ -243,13 +285,13 @@
     height: 110px;
     border: 5px solid var(--border-lavender);
     border-radius: 50px 50px 50px 0;
-    padding: 20px;
+    padding: 15px 0 15px 30px;
     font-size: 18px;
     color: var(--text-navy);
     margin-top: 15px;
     line-height: 20px;
     white-space: pre-line;
-    overflow: scroll;
+    overflow-y: scroll;
   }
 
   .user-info-mobile,

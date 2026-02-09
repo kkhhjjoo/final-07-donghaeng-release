@@ -39,19 +39,10 @@ export default function NavigateButton({ meeting }: { meeting: Meetings }) {
         const response = await getMyMeetings(user.token.accessToken);
 
         if (response.ok === 1 && 'item' in response) {
-          //디버깅용 로그
-          console.log('내 신청 목록 전체:', response.item);
           console.log('현재 모임 ID:', meeting._id);
           //item이 배열인지 확인
           const items = Array.isArray(response.item) ? response.item : [response.item];
-          console.log('items 배열:', items);
-          console.log(
-            '각 items의 product_id와 state:',
-            items.map((o) => ({
-              product_id: o.product_id,
-              state: o.state,
-            }))
-          );
+
           //현재 모임에 신청했는지 확인 (상태 상관없이)
           const applied = items.some((order) => Number(order.products?.[0]?._id) === Number(meeting._id));
           console.log('applied 결과:', applied);
