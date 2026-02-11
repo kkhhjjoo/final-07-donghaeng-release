@@ -24,7 +24,7 @@
   font-family: var(--sub-font-medium);
   width: 100%;
   height: 535px;
-  box-shadow: 0 4px 15px var(--c-lavender-200);
+  box-shadow: 0 4px 15px var(--bg-lavender);
   border-radius: 25px;
 }
 
@@ -91,7 +91,7 @@
   bottom: 5px;
   right: 0px;
   border-radius: 50%;
-  background-color: white;
+  background-color: var(--bg-white);
   border: 3px solid var(--border-navy);
   display: flex;
   align-items: center;
@@ -158,7 +158,7 @@
 
   /* p태그 바로 다음에 오는(직계자식) span을 뜻함 */
   > span {
-    color: var(--border-lavender);
+    color: var(--text-lavender);
     font-size: 40px;
     font-weight: 100px;
   }
@@ -185,18 +185,16 @@
   width: 90%;
   max-width: 400px;
 
-  /* Link 컴포넌트에서 렌더링하는 태그 */
   a {
     flex: 1;
     max-width: 150px;
-  }
-
-  button {
-    width: 100%;
     height: 45px;
     color: var(--text-black);
     border-radius: 20px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -207,7 +205,7 @@
 
 /* 관리하기 배경 */
 .btn-manage {
-  background-color: var(--c-slateblue-300);
+  background-color: var(--bg-darksky);
 }
 
 /* 참여 모임 배경 */
@@ -358,10 +356,6 @@
 
     a {
       max-width: 260px;
-    }
-
-    button {
-      width: 100%;
       height: 60px;
     }
   }

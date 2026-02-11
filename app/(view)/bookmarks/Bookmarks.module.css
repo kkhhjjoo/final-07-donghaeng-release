@@ -60,13 +60,11 @@
 /* 카드드드드드드 */
 .article-wrapper {
   position: relative;
-  /* max-width: 740px; */
   margin: 0 auto;
 }
 
 .card {
   width: calc(100% - 30px);
-  /* max-width: 740px; */
   height: 225px;
   background-color: var(--bg-sky);
   border: 5px solid var(--border-darksky);
@@ -118,6 +116,7 @@
 }
 
 .cardTitle {
+  max-width: 50vw;
   font-family: var(--main-font);
   font-size: 20px;
   color: var(--text-black);

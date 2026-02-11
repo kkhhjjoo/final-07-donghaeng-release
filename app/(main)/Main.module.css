@@ -1,10 +1,10 @@
 .banner {
   width: 100%;
   height: auto;
-  aspect-ratio: 640 / 360;
-  background-image: url('/images/moa_mobile_640x360.png');
-  background-size: cover;
-  background-position: center;
+  aspect-ratio: 1280 / 600;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .search-ai-wrapper {
@@ -22,7 +22,7 @@
 
   .search-bar-wrapper {
     display: inline-flex;
-    border: 2px solid var(--border-navy);
+    border: 3px solid var(--border-navy);
     border-radius: 50px;
     height: 48px;
     width: calc(100% - 50px);
@@ -67,7 +67,7 @@
     font-family: var(--sub-font-medium);
     font-size: 16px;
     color: var(--text-lavender);
-    border: 2px solid var(--border-navy);
+    border: 3px solid var(--border-navy);
     border-radius: 50%;
     width: 50px;
     aspect-ratio: 1 / 1;
@@ -145,7 +145,7 @@
     .meetings-image-box {
       position: relative;
       aspect-ratio: 1 / 1;
-      border: 1px solid var(--border-lavender);
+      border: 2px solid var(--border-lavender);
       border-radius: 25px;
       overflow: hidden;
 
@@ -168,9 +168,7 @@
 
 @media (min-width: 1024px) {
   .banner {
-    height: auto;
     aspect-ratio: 1920 / 600;
-    background-image: url('/images/moa_desktop_1920x600.png');
   }
 
   .search-ai-wrapper {
@@ -252,4 +250,8 @@
       }
     }
   }
+}
+
+.loading-skeleton {
+  min-height: 1200px;
 }

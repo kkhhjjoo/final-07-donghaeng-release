@@ -145,7 +145,7 @@
 .toast-btn-confirm {
   padding: 6px 16px;
   background-color: var(--bg-navy);
-  color: white;
+  color: var(--text-white);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -154,7 +154,7 @@
 .toast-btn-reject {
   padding: 6px 16px;
   background-color: var(--bg-red);
-  color: white;
+  color: var(--text-white);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -162,8 +162,8 @@
 
 .toast-btn-cancel {
   padding: 6px 16px;
-  background-color: #e5e7eb;
-  color: #374151;
+  background-color: var(--c-gray-25);
+  color: var(--c-navy-300);
   border: none;
   border-radius: 4px;
   cursor: pointer;

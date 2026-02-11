@@ -15,6 +15,8 @@ export default function MeetingItem({ meeting }: { meeting: Meetings }) {
           <figure className={style.meetingCard}>
             <div
               className={style.cardImage}
+              role="img"
+              aria-label={`${meeting.name} 모임 이미지`}
               style={{
                 backgroundImage: meeting.mainImages?.[0]?.path ? `url(${meeting.mainImages[0].path})` : 'none',
                 backgroundSize: 'cover',

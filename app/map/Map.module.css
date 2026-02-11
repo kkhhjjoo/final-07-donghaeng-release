@@ -66,7 +66,6 @@
   right: 0;
   z-index: 3;
   padding: 10px;
-  max-width: 500px;
 }
 
 /* 카카오맵 info-window 컴포넌트 CSS */
@@ -87,11 +86,11 @@
 
   .marker-info-content {
     height: 60px;
-    gap: 5px;
+    gap: 10px;
 
     .marker-img {
-      min-width: 8vw;
-      height: 60px;
+      min-width: 7vw;
+      height: 70px;
     }
   }
 
@@ -116,7 +115,11 @@
   z-index: 10;
 
   .marker-info-content {
-    gap: 10px;
+    gap: 20px;
+
+    .marker-img {
+      min-width: 120px;
+    }
   }
 
   .marker-info {
@@ -144,7 +147,7 @@
     object-fit: cover;
     height: 100px;
     width: 30vw;
-    max-width: 130px;
+    max-width: 150px;
   }
 }
 
@@ -206,7 +209,7 @@
     position: relative;
     max-width: 1470px;
     margin: 0 auto;
-    padding-left: 10px;
+    padding-left: 20px;
   }
 
   .map-meeting-div {
@@ -214,7 +217,7 @@
     align-items: flex-start;
     justify-content: center;
     margin-bottom: 2%;
-    padding-left: 10px;
+    padding-inline: 20px;
   }
 
   .meeting-list {
@@ -316,9 +319,9 @@
     margin-inline: 5%;
 
     .marker-img {
-      min-width: 100px;
+      min-width: 120px;
       height: 80px;
-      margin-inline: 5%;
+      margin-left: 5%;
       object-fit: cover;
     }
   }

@@ -1,3 +1,22 @@
+/* 본문 바로가기 링크 */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  z-index: 9999;
+  padding: 12px 24px;
+  background-color: var(--accent, var(--bg-navy));
+  color: var(--text-white);
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 0 0 8px 0;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
 /* 숨김 콘텐츠 */
 .sr-only {
   position: absolute;
@@ -13,8 +32,9 @@
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--border-lavender);
   outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* 기본 인터랙션 */

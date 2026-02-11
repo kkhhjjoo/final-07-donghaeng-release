@@ -1,4 +1,4 @@
-import { getRoomInfo } from '@/app/chat/api/chat';
+import { getRoomInfo } from '@/lib/chat';
 import useChatStore from '@/zustand/chatStore';
 import useUserStore from '@/zustand/userStore';
 import { useCallback, useEffect, useMemo } from 'react';
@@ -44,7 +44,7 @@ export default function useChat() {
 
       try {
         // 1. 조건에 맞는 채팅방 정보를 서버에 요청 (없으면 서버에서 생성하여 반환)
-        const targetRoom = await getRoomInfo({ accessToken, resourceType, resourceId });
+        const targetRoom = await getRoomInfo({ resourceType, resourceId });
 
         // 2. 채팅방 활성화 및 과거 메시지 설정
         setActiveRoomId(targetRoom._id);

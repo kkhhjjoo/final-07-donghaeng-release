@@ -1,18 +1,20 @@
 /* 수정 페이지 전체 div */
+.modify-form {
+  width: 100%;
+  padding: 20px;
+}
 .modify-div {
   width: 100%;
   max-width: 500px;
-  min-width: 320px;
-  height: 700px;
-  box-shadow: 0 0 15px var(--c-lavender-200);
+  min-width: 280px;
+  box-shadow: 0 0 15px var(--bg-lavender);
   border-radius: 25px;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-block: 50px 25px;
   padding: 20px;
   font-size: 14px;
   font-family: var(--sub-font-medium);
   box-sizing: border-box;
-  margin-bottom: 25px;
 }
 
 /* 프로필, 버튼을 묶는 div */
@@ -136,10 +138,12 @@
 .etc-div {
   span {
     display: inline-block;
-    font-size: 20px;
+    font-size: 18px;
     font-family: var(--main-font);
     color: var(--text-gray);
     width: 70px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   input,
@@ -160,7 +164,7 @@
   display: flex;
   align-items: center;
   margin-block: 20px;
-  gap: 30px;
+  gap: 20px;
 
   select {
     flex: 1;
@@ -170,33 +174,67 @@
   }
 }
 
+.district-label {
+  font-size: 16px !important;
+}
+
 .address-div > div,
 .etc-div > div {
-  position: relative;
   display: flex;
   align-items: center;
   flex: 1;
   min-width: 100px;
 }
 
-.address-div img,
-.etc-div img {
-  cursor: pointer;
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 15px;
-  height: 10px;
-  pointer-events: none;
+.select-wrapper {
+  position: relative;
+  flex: 1;
+  max-width: 220px;
+
+  select {
+    width: 100%;
+  }
+
+  img {
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 15px;
+    height: 10px;
+    pointer-events: none;
+  }
+}
+
+/* react-select 컨테이너 */
+.city,
+.district,
+.age,
+.gender {
+  flex: 1;
+  min-width: 120px;
 }
 
 /* 360px 이하일때 반응형 */
-@media (max-width: 360px) {
+@media (max-width: 460px) {
   .btn-div {
     flex-direction: column-reverse;
     justify-content: start;
     align-items: end;
+  }
+
+  .address-div,
+  .etc-div {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin: 0 0 10px 0;
+  }
+
+  .address-div > div,
+  .etc-div > div {
+    width: 70%;
   }
 }
 

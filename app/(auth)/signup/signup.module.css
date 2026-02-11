@@ -22,7 +22,7 @@
 .label {
   color: var(--text-black);
   text-align: center;
-  font-family: 'Cafe24 Ssurround';
+  font-family: var(--main-font);
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
@@ -60,7 +60,7 @@
   height: 55px;
   border-radius: 20px;
   border: 5px solid var(--border-lavender);
-  background: #fff;
+  background: var(--bg-white);
   padding: 0 20px;
   font-size: 14px;
 }
@@ -68,7 +68,7 @@
 .input::placeholder,
 .select {
   color: var(--text-lavender);
-  font-family: 'Gmarket Sans TTF';
+  font-family: var(--sub-font-medium);
   font-size: 14x;
   font-style: normal;
   font-weight: 400;
@@ -78,7 +78,7 @@
 .field-message {
   color: var(--text-red);
   text-align: left;
-  font-family: 'Noto Sans KR';
+  font-family: var(--danger-font);
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -106,10 +106,6 @@
   cursor: pointer;
 }
 
-/* :global(.btn:nth-child(2)) {
-  margin-top: 50px;
-} */
-
 .a {
   display: flex;
   width: 100%;
@@ -127,19 +123,6 @@
   right: 20px;
   position: absolute;
   top: 60px;
-}
-
-.signup-help {
-  color: var(--text-navy);
-  text-align: center;
-  font-family: 'Gmarket Sans TTF';
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 300;
-  line-height: normal;
-  text-decoration: underline;
-  text-underline-offset: 10px;
-  text-decoration-thickness: 1px;
 }
 
 .field-div {
@@ -160,6 +143,10 @@
 }
 
 @media (min-width: 1024px) {
+  .first-btn {
+    display: none;
+  }
+
   .input,
   .select,
   .btn,

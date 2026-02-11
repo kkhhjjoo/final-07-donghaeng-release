@@ -5,7 +5,6 @@
   background: var(--bg-white);
   font-size: 14px;
   color: var(--text-gray);
-  /* border-top: 1px solid var(--border-gray); */
 
   @media (min-width: 1024px) {
     padding: 40px 24px 30px;

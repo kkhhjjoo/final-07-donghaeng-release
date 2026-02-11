@@ -4,12 +4,15 @@
    * ========================= */
   --c-red-600: #e60000;
 
+  --c-green-500: #22c55e;
+
   --c-sky-50: #e8f9ff;
 
   --c-blue-200: #c4d9ff;
   --c-lavender-200: #c5baff;
   --c-purple-300: #b09ef2;
 
+  --c-navy-300: #374151;
   --c-indigo-900: #323577;
   --c-black-900: #101010;
 
@@ -21,6 +24,7 @@
   --c-pink-200: #fcbaff;
   --c-lilac-50: #f2efff;
   --c-gray: #eee;
+  --c-gray-25: #e5e7eb;
   --c-gray-100: #949494;
   --c-gray-100: #949494;
   --c-gray-200: #555;
@@ -35,6 +39,8 @@
   --bg-lightsky: var(--c-sky-50);
   --bg-sky: var(--c-blue-200);
   --bg-pink: var(--c-pink-200);
+  --bg-darksky: var(--c-slateblue-300);
+  --bg-gray: var(--c-gray);
 
   /* Text */
   --text-red: var(--c-red-600);

@@ -151,13 +151,11 @@
 /* 호스트 정보 영역 (이름 + BPM + 상태메시지) */
 .hostInfo {
   flex: 1;
-  align-self: flex-start;
-  /* gap: 12px; */
 }
 .statusRow {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 }
 /* 이름과 하트 BPM이 같은 줄 */
 .hostNameRow {
@@ -402,7 +400,6 @@
     top: 0;
     z-index: 20;
     background-color: var(--bg-white);
-    /* border-radius: 25px; */
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
     display: block;
@@ -467,7 +464,7 @@
   }
   .bottomSection {
     padding: 20px 10px;
-    height: 150px;
+    height: 180px;
     gap: 15px;
     width: 100%;
   }
@@ -514,6 +511,7 @@
 
   .statusText {
     width: 80%;
+    font-size: 13px;
   }
   .userName {
     font-size: 20px;
@@ -522,9 +520,12 @@
     flex-wrap: wrap;
     gap: 8px;
   }
+  .bpm .beatPoint {
+    font-size: 10px;
+  }
 }
 
-@media (max-width: 320px) {
+@media (max-width: 319px) {
   .contentCard {
     width: 100%;
     min-width: unset;
@@ -560,7 +561,7 @@
 
   .hostNameRow {
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 5px;
   }
 
   .userName {
@@ -569,11 +570,11 @@
   }
 
   .statusText {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .bpm p {
-    font-size: 12px;
+    font-size: 10px;
   }
   .userMode {
     right: 0px;

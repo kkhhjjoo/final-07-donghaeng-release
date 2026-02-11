@@ -94,7 +94,6 @@ export default function KakaoMap({ width = '100%', lat = 37.5709, lng = 126.978,
 
     // find를 통해 markerData와 같은 모임 id를 찾아 found에 저장
     const found = markerData.find((item) => item.meeting._id === selectedId);
-    console.log('찾은 결과:', found);
     if (found) {
       setSelectedMarker(found);
       setCenter(found.coords);
@@ -168,7 +167,7 @@ export default function KakaoMap({ width = '100%', lat = 37.5709, lng = 126.978,
       {/* Script: 외부 스크립트의 로딩 우선순위를 최적화하여 페이지 성능을 향상시키는 도구 */}
       {/* strategy: 로딩 동작을 미세 조정, afterInteractive: 페이지 일부가 수화된 후 일찍 스크립트를 로드 */}
       <Script
-        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY}&libraries=services&autoload=false`}
+        src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY}&libraries=services&autoload=false`}
         strategy="afterInteractive"
         onLoad={() => {
           window.kakao.maps.load(() => {
@@ -179,7 +178,14 @@ export default function KakaoMap({ width = '100%', lat = 37.5709, lng = 126.978,
       {isLoaded ? (
         <Map center={center} style={{ width: '100%', height: '100%' }} level={7}>
           {markerData.map((item, index) => (
-            <MapMarker key={index} position={item.coords} onClick={() => setSelectedMarker(item)} />
+            <MapMarker
+              key={index}
+              position={item.coords}
+              onClick={() => {
+                setSelectedMarker(item);
+                setCenter(item.coords);
+              }}
+            />
           ))}
           {selectedMarker && (!mapPage || !isMobile) && (
             <CustomOverlayMap position={selectedMarker.coords} yAnchor={1.3}>

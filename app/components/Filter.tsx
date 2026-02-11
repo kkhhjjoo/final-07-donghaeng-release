@@ -29,7 +29,8 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
         {showCategory && (
           <div className={`${styles.wrapper} ${styles['category-display']}`}>
             {/* onChange 이벤트를 통해 선택이 바뀔 때 마다 onFilterChanges를 호출하여 실행 */}
-            <select name="카테고리" id="" defaultValue="" onChange={(e) => onFilterChanges('category', e.target.value)}>
+            <label htmlFor="filter-category" className="sr-only">카테고리</label>
+            <select name="카테고리" id="filter-category" defaultValue="" onChange={(e) => onFilterChanges('category', e.target.value)}>
               <option value="">카테고리</option>
               <option value="운동">운동</option>
               <option value="요리 / 제조">요리 / 제조</option>
@@ -55,10 +56,11 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
 
         {/* 커스텀 날짜 선택 */}
         <div className={`${styles.wrapper} ${styles['date-wrapper']}`}>
-          <span>{formatDate(date)}</span>
-
+          <span aria-hidden="true">{formatDate(date)}</span>
+          <label htmlFor="filter-date" className="sr-only">날짜</label>
           <input
             type="date"
+            id="filter-date"
             className={styles.dateInput}
             min="2026-01-28"
             onChange={(e) => {
@@ -68,7 +70,8 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
         </div>
         {/* 성별 선택 */}
         <div className={styles.wrapper}>
-          <select name="성별" id="" defaultValue="" onChange={(e) => onFilterChanges('gender', e.target.value)}>
+          <label htmlFor="filter-gender" className="sr-only">성별</label>
+          <select name="성별" id="filter-gender" defaultValue="" onChange={(e) => onFilterChanges('gender', e.target.value)}>
             <option value="">성별</option>
             <option value="남">남</option>
             <option value="여">여</option>
@@ -77,7 +80,8 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
         </div>
         {/* 나이대 선택 */}
         <div className={styles.wrapper}>
-          <select name="나이대" id="" defaultValue="" onChange={(e) => onFilterChanges('age', e.target.value)}>
+          <label htmlFor="filter-age" className="sr-only">나이대</label>
+          <select name="나이대" id="filter-age" defaultValue="" onChange={(e) => onFilterChanges('age', e.target.value)}>
             <option value="">나이대</option>
             <option value="10대">10대</option>
             <option value="20대">20대</option>
@@ -88,8 +92,10 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
         {/* 지역 선택 후 시/군/구 선택 */}
         <div className={styles.wrapper}>
           {/* 선택한 지역에 따라 state 변경 및 필터 진행 */}
+          <label htmlFor="filter-region" className="sr-only">지역</label>
           <select
             name="지역"
+            id="filter-region"
             onChange={(e) => {
               setRegion(e.target.value);
               onFilterChanges('region', e.target.value);
@@ -109,7 +115,8 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
           {/* 지역을 선택하지 않으면 시/군/구 select는 disabled 상태 
           region을 통해 선택한 지역을 파악한 후 객체의 키를 통해 해당하는 배열을 가져와서 출력
           */}
-          <select key={region} disabled={!region} onChange={(e) => onFilterChanges('district', e.target.value)}>
+          <label htmlFor="filter-district" className="sr-only">시/군/구</label>
+          <select key={region} id="filter-district" disabled={!region} onChange={(e) => onFilterChanges('district', e.target.value)}>
             <option value="">{region ? '시/군/구' : '지역을 선택해주세요'}</option>
             {region &&
               regionData[region].map((regionDetail) => (
@@ -121,7 +128,8 @@ export default function Filter({ onFilterChanges, showCategory = true }: { onFil
         </div>
         {/* 모임 인원 선택 */}
         <div className={styles.wrapper}>
-          <select name="인원" id="" defaultValue="" onChange={(e) => onFilterChanges('quantity', e.target.value)}>
+          <label htmlFor="filter-quantity" className="sr-only">인원</label>
+          <select name="인원" id="filter-quantity" defaultValue="" onChange={(e) => onFilterChanges('quantity', e.target.value)}>
             <option value="">인원</option>
             <option value="1 ~ 10명">1 ~ 10명</option>
             <option value="11 ~ 20명">11 ~ 20명</option>

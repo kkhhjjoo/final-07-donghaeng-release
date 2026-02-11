@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 import Link from 'next/link';
 import styles from './MobileSidebar.module.css';
 import useUserStore from '@/zustand/userStore';
@@ -20,11 +21,21 @@ export default function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
     resetUser();
     resetBookmark();
   };
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   return (
     <>
       {/* 사이드바 열렸을 때 뒷배경을 검고 반투명 하게 할 장치 */}
-      <div className={`${styles.overlay} ${isOpen ? styles.open : ''}`} onClick={onClose} />
-      <section className={`${styles['section-wrapper']} ${isOpen ? styles.open : ''}`}>
+      <div className={`${styles.overlay} ${isOpen ? styles.open : ''}`} onClick={onClose} role="button" tabIndex={isOpen ? 0 : -1} aria-label="사이드바 닫기" onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClose(); }} />
+      <nav aria-label="모바일 메뉴" className={`${styles['section-wrapper']} ${isOpen ? styles.open : ''}`} aria-hidden={!isOpen}>
         {isLogin ? (
           <div className={styles[`sidebar-wrapper`]}>
             <div className={styles[`menu-username-wrapper`]}>
@@ -73,7 +84,7 @@ export default function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
             </li>
           </ul>
         )}
-      </section>
+      </nav>
     </>
   );
 }

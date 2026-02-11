@@ -25,7 +25,7 @@
   right: 0;
   width: 50vw; /* 화면의 반만 채우게 함*/
   height: 100vh;
-  background-color: white;
+  background-color: var(--bg-white);
   display: inline-flex;
   transform: translateX(100%); /* 화면 밖 오른쪽에 숨겨놓음 */
   transition: transform 0.3s ease; /* 모달 클릭시 오른쪽에서 서서히 나옴*/

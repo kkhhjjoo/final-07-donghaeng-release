@@ -40,9 +40,18 @@ export default function Map({ meetings }: MapProps) {
                   // li 클릭 시 해당되는 모임 id 저장
                   <li
                     key={meeting._id}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`${meeting.name} 선택`}
                     onClick={() => {
                       console.log('클릭한 모임 id:', meeting._id);
                       setSelectedId(meeting._id);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setSelectedId(meeting._id);
+                      }
                     }}
                   >
                     <Image src={meeting.mainImages[0]?.path || logo.src} className={styles['meeting-img']} alt="모임 사진" width={90} height={80} />

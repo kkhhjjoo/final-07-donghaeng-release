@@ -1,3 +1,4 @@
+import DefaultLayout from '@/app/components/DefaultLayout';
 import EditForm from './Edit';
 import { getDetail } from '@/lib/meetings';
 import { notFound } from 'next/navigation';
@@ -10,5 +11,9 @@ export default async function EditMeetingPage({ params }: { params: { id: string
     notFound();
   }
 
-  return <EditForm initialData={response.item} meetingId={id} />;
+  return (
+    <DefaultLayout>
+      <EditForm initialData={response.item} meetingId={id} />
+    </DefaultLayout>
+  );
 }

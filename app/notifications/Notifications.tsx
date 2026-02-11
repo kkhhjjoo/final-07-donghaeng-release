@@ -1,9 +1,9 @@
 'use client';
 
 import DefaultLayout from '@/app/components/DefaultLayout';
-import styles from './notifications.module.css';
+import styles from './Notifications.module.css';
 import { useNoti } from '@/hooks/useNoti';
-import NotificationItem from '@/app/components/NotificationItem';
+import NotificationItem from './NotificationItem';
 import useUserStore from '@/zustand/userStore';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -41,16 +41,18 @@ export default function Notifications() {
           <div className={styles['btn']}>
             <button onClick={markAllRead}>전체 읽음</button>
           </div>
-          {notifications.length > 0 ? (
-            <div className={styles['notifications-wrap']}>
-              {/* 맵을 생성하면서 알림 아이템 컴포넌트 불러오기 */}
-              {notifications.map((noti) => (
-                <NotificationItem key={noti._id} notification={noti} isRead={noti.isRead} markOneRead={markOneRead} />
-              ))}
-            </div>
-          ) : (
-            <p>알림이 없습니다.</p>
-          )}
+          <div aria-live="polite">
+            {notifications.length > 0 ? (
+              <div className={styles['notifications-wrap']}>
+                {/* 맵을 생성하면서 알림 아이템 컴포넌트 불러오기 */}
+                {notifications.map((noti) => (
+                  <NotificationItem key={noti._id} notification={noti} isRead={noti.isRead} markOneRead={markOneRead} />
+                ))}
+              </div>
+            ) : (
+              <p>알림이 없습니다.</p>
+            )}
+          </div>
         </div>
       </main>
     </DefaultLayout>

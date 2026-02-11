@@ -11,7 +11,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 import useUserStore from '@/zustand/userStore';
-import { getMyMeetings } from '@/lib/meetings';
+import { getMyMeetingsAccess } from '@/lib/meetings';
 import { Apply } from '@/types/apply';
 import MeetingCard from '@/app/(view)/history/MeetingCard';
 import { useRouter } from 'next/navigation'; //next/router면 안됨 사유 우리는 App Router를 쓰니깐@@!
@@ -35,7 +35,7 @@ export default function HistoryPage() {
   hasHydrated가 false면 복원중이기때문에 기다려야함
   이게 없을경우? 새로고침시 user가 null이 되어서 로그인 페이지로 영원히...간다
   */
-  const [filter, setFilter] = useState<'all' | 'before' | 'after'>('all');
+  const [filter, setFilter] = useState<'all' | 'before' | 'after'>('before');
   // 참여 전후 필터 상태. 버튼클릭하면 상태가 변경
 
   const isPastMeeting = (meetingDate: string) => {
@@ -98,7 +98,7 @@ export default function HistoryPage() {
     // 로그인 안했으면 로그인 페이지로 강제이동
 
     const fetchMeetings = async () => {
-      const res = await getMyMeetings(accessToken || ' '); // 내목록 가져와잇
+      const res = await getMyMeetingsAccess(accessToken || ' '); // 내목록 가져와잇
       if (!res || res.ok === 0) return;
       // api 호출 실패하면 함수종료
 

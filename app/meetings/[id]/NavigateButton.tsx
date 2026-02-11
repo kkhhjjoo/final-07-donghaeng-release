@@ -35,6 +35,7 @@ export default function NavigateButton({ meeting }: { meeting: Meetings }) {
         return;
       }
 
+      setIsLoading(true);
       try {
         const response = await getMyMeetings(user.token.accessToken);
 
@@ -88,8 +89,8 @@ export default function NavigateButton({ meeting }: { meeting: Meetings }) {
                 신청완료
               </button>
             ) : (
-              <button onClick={handleApplyClick} className={style.applyBtn}>
-                신청하기
+              <button onClick={handleApplyClick} className={isLoading ? style.appliedBtn : style.applyBtn} disabled={isLoading}>
+                {isLoading ? '확인 중...' : '신청하기'}
               </button>
             )}
           </div>

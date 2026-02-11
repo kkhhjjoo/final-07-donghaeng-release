@@ -2,28 +2,34 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  max-width: 1760px;
   margin: 0 auto;
   justify-content: center;
   width: 100%;
-  padding: 45px 50px 185px 40px;
+  padding: 40px;
   gap: 40px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .topHeader {
   position: relative;
   top: 0;
-  left: 10px;
-  max-width: 1760px;
 }
 .row {
   display: flex;
-  gap: 40px;
+  justify-content: space-between;
 }
 
 /* 사이드바 스타일 */
 .sidebar {
-  width: 250px;
+  width: 200px;
   flex-shrink: 0;
   background-color: var(--bg-white);
   border: var(--border-sky);
@@ -39,8 +45,7 @@
 }
 
 .categoryItem {
-  padding: 1rem;
-  padding-left: 0;
+  padding-block: 1rem;
   font-family: var(--sub-font-medium);
   font-size: 1rem;
   width: 150px;
@@ -66,8 +71,9 @@
 /* 데스크톱 카테고리 (768px 초과에서만 표시) */
 .categoryListDesktop {
   display: block;
+  width: 225px;
   border: 5px solid var(--border-sky);
-  padding: 37px 4vw 37px 2.5vw;
+  padding: 20px;
   border-radius: 25px;
 }
 
@@ -162,7 +168,6 @@
 
 .registerButton {
   padding: 22px 50px;
-  margin-right: 10px;
   width: 220px;
   height: 70px;
   background-color: var(--bg-lavender);
@@ -179,7 +184,6 @@
   white-space: nowrap;
   transition: all 0.2s ease;
   flex-shrink: 0;
-  margin-left: 20px;
 }
 
 .registerButton:hover {
@@ -201,16 +205,16 @@
 .filterBar {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 50px;
 }
+
 .filterBar div {
   display: flex;
 }
 
 .meetingBorder {
   border: 5px solid var(--border-lavender);
-  max-width: 1380px;
-  padding: 40px;
+  max-width: 75%;
+  padding: 20px;
   border-radius: 25px;
   box-sizing: border-box;
   display: flex;
@@ -259,7 +263,7 @@
   background-size: cover;
   background-position: center;
   flex-shrink: 0;
-  border: 1px solid var(--border-lavender);
+  border: 2px solid var(--border-lavender);
   border-radius: 25px;
 }
 
@@ -282,7 +286,7 @@
   font-family: var(--sub-font-medium);
   font-size: 24px;
   color: var(--text-navy);
-  margin-top: 10px;
+  margin-top: 8px;
   margin-bottom: 7px;
   line-height: 1.2;
   flex: 1;
@@ -290,9 +294,7 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   width: 80%;
-  /* white-space: nowrap; */
   overflow: hidden;
-  /* text-overflow: ellipsis; */
 }
 
 .bookmarkIcon {
@@ -300,20 +302,24 @@
   top: 70px;
   right: 0px;
 }
+
 .rowWrap {
   display: flex;
   gap: 7px;
 }
+
 .cardMetadata {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .metadataLine {
   font-size: 18px;
   color: var(--text-gray);
   white-space: nowrap;
 }
+
 .metadataLine2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -325,6 +331,7 @@
   color: var(--text-gray);
   margin: 0;
 }
+
 .divider {
   width: 1px;
   height: 18px;
@@ -332,6 +339,7 @@
   opacity: 0.7;
   align-self: center;
 }
+
 /* 태블릿 (1024px 이하) */
 @media (max-width: 1024px) {
   .mainLayout {
@@ -346,6 +354,7 @@
     left: 0;
     padding: 0;
   }
+
   .home {
     margin-left: 5px;
   }
@@ -366,8 +375,8 @@
   }
 
   .meetingBorder {
-    /* width:; */
-    /* max-width: 100%; */
+    width: 100%;
+    max-width: 100%;
     padding: 15px 10px;
     border: none;
   }
@@ -403,6 +412,7 @@
     grid-template-columns: repeat(1, 1fr);
     width: 100%;
   }
+
   .cardImage {
     width: 30%;
     min-width: 120px;
@@ -422,7 +432,6 @@
   }
 
   .cardTitle {
-    margin-top: 5px;
     font-size: 20px;
   }
 
@@ -441,6 +450,7 @@
     top: 35px;
     right: 0;
   }
+
   .bookmark-btn {
     width: 18px;
     height: 23px;
@@ -470,14 +480,11 @@
   .headerSection {
     margin-bottom: 5px;
     position: relative;
-    gap: 10px;
-    width: 100%;
   }
 
   .registerButton {
     width: 88px;
     height: 40px;
-    padding: 10px;
     right: 0;
     border-radius: 50px;
     margin-left: 0;
@@ -497,7 +504,7 @@
   }
 
   .filterBar {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
 
   .filterButton {
@@ -532,30 +539,26 @@
 
   .card {
     margin-bottom: 20px;
-
     max-width: 100%;
   }
 
   .cardImage {
     width: 35%;
     min-width: 100px;
-    /* height: auto;
-    min-height: 150px; */
   }
 
   .cardContent {
-    padding: 8px;
-    padding-right: 35px;
+    padding: 0 35px 8px 8px;
   }
 
   .cardTitle {
     width: 85%;
     font-size: 18px;
+    line-height: 20px;
   }
 
   .metadataLine2 {
     font-size: 13px;
-    /* overflow: hidden; */
   }
 }
 
@@ -578,6 +581,7 @@
   .pageTitle {
     font-size: 20px;
   }
+
   .cardContent {
     min-height: 140px;
   }
@@ -587,15 +591,19 @@
     min-width: 100px;
     aspect-ratio: 1/1;
   }
+
   .cardHeader {
     width: 85%;
   }
+
   .cardTitle {
     font-size: 16px;
   }
+
   .cardMetadata {
     gap: 0;
   }
+
   .metadataLine {
     font-size: 13px;
   }

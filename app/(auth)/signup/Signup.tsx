@@ -1,6 +1,5 @@
 'use client';
 
-import BlankLayout from '@/app/components/BlankLayout';
 import style from './signup.module.css';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -328,7 +327,7 @@ export default function Signup() {
           {/* ==================== 첫 번째 페이지 ==================== */}
           {currentStep === 1 && (
             <section className={style['signup-step']}>
-              <button type="button" className={style['back-btn']} onClick={handlePrevStep} aria-label="이전페이지">
+              <button type="button" className={`${style['back-btn']} ${style['first-btn']}`} onClick={handlePrevStep} aria-label="이전페이지">
                 <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M0.439367 8.09227C-0.146456 8.59433 -0.146456 9.40968 0.439367 9.91175L9.43761 17.6235C10.0234 18.1255 10.9748 18.1255 11.5606 17.6235C12.1465 17.1214 12.1465 16.306 11.5606 15.804L3.62156 9L11.5559 2.19603C12.1418 1.69396 12.1418 0.878612 11.5559 0.376548C10.9701 -0.125516 10.0187 -0.125516 9.43292 0.376548L0.43468 8.08825L0.439367 8.09227Z"
@@ -343,29 +342,29 @@ export default function Signup() {
                   <label className={style['label']} htmlFor="email">
                     이메일
                   </label>
-                  <input className={style['input']} name="email" value={formData.email} onChange={handleChange} type="email" id="email" placeholder="이메일을 입력해 주세요" required />
+                  <input className={style['input']} name="email" value={formData.email} onChange={handleChange} type="email" id="email" placeholder="이메일을 입력해 주세요" required aria-describedby={errors.email ? 'signup-email-error' : successMessages.email ? 'signup-email-success' : undefined} />
                 </div>
                 <button type="button" className={style['check-btn']} onClick={checkEmailDuplicate}>
                   중복확인
                 </button>
-                {errors.email && <span className={`${style['field-message']} ${style['field-email']}`}>{errors.email}</span>}
-                {successMessages.email && <span className={`${style['ok-message']} ${style['field-email']}`}>{successMessages.email}</span>}
+                {errors.email && <span id="signup-email-error" role="alert" className={`${style['field-message']} ${style['field-email']}`}>{errors.email}</span>}
+                {successMessages.email && <span id="signup-email-success" className={`${style['ok-message']} ${style['field-email']}`}>{successMessages.email}</span>}
               </fieldset>
 
               <fieldset className={style['password-fieldset']}>
                 <label className={style['label']} htmlFor="password">
                   비밀번호
                 </label>
-                <input className={style['input']} name="password" value={formData.password} onChange={handleChange} type="password" id="password" placeholder="비밀번호를 입력해 주세요" required />
-                {errors.password && <span className={`${style['field-message']} ${style['field-password']}`}>{errors.password}</span>}
+                <input className={style['input']} name="password" value={formData.password} onChange={handleChange} type="password" id="password" placeholder="비밀번호를 입력해 주세요" required aria-describedby={errors.password ? 'signup-password-error' : undefined} />
+                {errors.password && <span id="signup-password-error" role="alert" className={`${style['field-message']} ${style['field-password']}`}>{errors.password}</span>}
               </fieldset>
 
               <fieldset className={style['password-fieldset']}>
                 <label className={style['label']} htmlFor="password-check">
                   비밀번호 확인
                 </label>
-                <input className={style['input']} name="passwordCheck" value={formData.passwordCheck} onChange={handleChange} type="password" id="password-check" placeholder="비밀번호를 한번 더 입력해 주세요" required />
-                {errors.passwordCheck && <span className={`${style['field-message']} ${style['field-password']}`}>{errors.passwordCheck}</span>}
+                <input className={style['input']} name="passwordCheck" value={formData.passwordCheck} onChange={handleChange} type="password" id="password-check" placeholder="비밀번호를 한번 더 입력해 주세요" required aria-describedby={errors.passwordCheck ? 'signup-passwordcheck-error' : undefined} />
+                {errors.passwordCheck && <span id="signup-passwordcheck-error" role="alert" className={`${style['field-message']} ${style['field-password']}`}>{errors.passwordCheck}</span>}
               </fieldset>
 
               <button type="button" onClick={handleNextStep} className={style['btn']}>
@@ -392,13 +391,13 @@ export default function Signup() {
                   <label className={style['label']} htmlFor="nickname">
                     닉네임
                   </label>
-                  <input className={style['input']} name="name" value={formData.name} onChange={handleChange} type="text" id="nickname" placeholder="닉네임을 입력해 주세요" required />
+                  <input className={style['input']} name="name" value={formData.name} onChange={handleChange} type="text" id="nickname" placeholder="닉네임을 입력해 주세요" required aria-describedby={errors.name ? 'signup-name-error' : successMessages.name ? 'signup-name-success' : undefined} />
                 </div>
                 <button type="button" className={style['check-btn']} onClick={checkNameDuplicate}>
                   중복확인
                 </button>
-                {errors.name && <span className={`${style['field-message']} ${style['field-nickname']}`}>{errors.name}</span>}
-                {successMessages.name && <span className={`${style['ok-message']} ${style['field-nickname']}`}>{successMessages.name}</span>}
+                {errors.name && <span id="signup-name-error" role="alert" className={`${style['field-message']} ${style['field-nickname']}`}>{errors.name}</span>}
+                {successMessages.name && <span id="signup-name-success" className={`${style['ok-message']} ${style['field-nickname']}`}>{successMessages.name}</span>}
               </fieldset>
 
               <fieldset className={style['region-fieldset']}>
@@ -407,7 +406,7 @@ export default function Signup() {
                     지역
                   </label>
                   <br />
-                  <select className={style['select']} name="region" value={formData.region} onChange={handleChange} id="region" required>
+                  <select className={style['select']} name="region" value={formData.region} onChange={handleChange} id="region" required aria-describedby={errors.region ? 'signup-region-error' : undefined}>
                     <option value="">지역을 선택해 주세요</option>
                     <option value="서울특별시">서울특별시</option>
                     <option value="부산광역시">부산광역시</option>
@@ -435,7 +434,7 @@ export default function Signup() {
                   />
                 </svg>
               </fieldset>
-              {errors.region && <span className={style['field-message']}>{errors.region}</span>}
+              {errors.region && <span id="signup-region-error" role="alert" className={style['field-message']}>{errors.region}</span>}
 
               <div className={style['fieldset-wrap']}>
                 <fieldset className={style['age-fieldset']}>
@@ -444,7 +443,7 @@ export default function Signup() {
                       나이
                     </label>
                     <div>
-                      <select className={style['select']} name="age" value={formData.age} onChange={handleChange} id="age" required>
+                      <select className={style['select']} name="age" value={formData.age} onChange={handleChange} id="age" required aria-describedby={errors.age ? 'signup-age-error' : undefined}>
                         <option value="">선택</option>
                         <option value="10">10대</option>
                         <option value="20">20대</option>
@@ -460,14 +459,14 @@ export default function Signup() {
                     </svg>
                   </div>
                 </fieldset>
-                {errors.age && <span className={style['field-message']}>{errors.age}</span>}
+                {errors.age && <span id="signup-age-error" role="alert" className={style['field-message']}>{errors.age}</span>}
 
                 <fieldset className={style['gender-fieldset']}>
                   <div className={style['field-div']}>
                     <label className={style['label']} htmlFor="gender">
                       성별
                     </label>
-                    <select className={style['select']} name="gender" value={formData.gender} onChange={handleChange} id="gender" required>
+                    <select className={style['select']} name="gender" value={formData.gender} onChange={handleChange} id="gender" required aria-describedby={errors.gender ? 'signup-gender-error' : undefined}>
                       <option value="">선택</option>
                       <option value="남">남</option>
                       <option value="여">여</option>
@@ -480,7 +479,7 @@ export default function Signup() {
                     />
                   </svg>
                 </fieldset>
-                {errors.gender && <span className={style['field-message']}>{errors.gender}</span>}
+                {errors.gender && <span id="signup-gender-error" role="alert" className={style['field-message']}>{errors.gender}</span>}
               </div>
 
               <button type="submit" className={style['btn']} disabled={isSubmitting}>

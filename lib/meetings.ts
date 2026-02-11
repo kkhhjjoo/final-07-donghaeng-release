@@ -118,16 +118,41 @@ export async function getDetail(_id: string): Promise<MeetingsInfoRes | ErrorRes
   }
 }
 /**
- * 사용자가 했던 모임 리스트 조회
+ * 사용자가 신청했던 모임 리스트 증 승인완료된 모임 조회
  * @param {string} accessToken - 인증 토큰
  * @returns {Promise<ApplyListRes | ErrorRes>} - 모임 목록 응답 객체
  */
-export async function getMyMeetings(accessToken: string): Promise<ApplyListRes | ErrorRes> {
+export async function getMyMeetingsAccess(accessToken: string): Promise<ApplyListRes | ErrorRes> {
   try {
     const custom = encodeURIComponent(JSON.stringify({ state: 'OS040' }));
     // state 파라미터가 없어서 찾아보니 custom query를 사용하면 된다고함.
     // 객체를 문자열로 변환후에 URL로 인코딩하여 전달하니 원하는대로 나오게 되었다.
     const res = await fetch(`${API_URL}/orders?custom=${custom}`, {
+      headers: {
+        'Client-Id': CLIENT_ID,
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: 'no-store',
+      next: {
+        tags: [`orders`],
+      },
+    });
+    return res.json();
+  } catch (error) {
+    // 네트워크 오류 처리
+    console.error(error);
+    return { ok: 0, message: '일시적인 네트워크 문제로 사용자 모임 목록 조회에 실패했습니다.' };
+  }
+}
+/**
+ * 사용자가 신청한 모임 리스트 조회
+ * @param {string} accessToken - 인증 토큰
+ * @returns {Promise<ApplyListRes | ErrorRes>} - 모임 목록 응답 객체
+ */
+
+export async function getMyMeetings(accessToken: string): Promise<ApplyListRes | ErrorRes> {
+  try {
+    const res = await fetch(`${API_URL}/orders`, {
       headers: {
         'Client-Id': CLIENT_ID,
         Authorization: `Bearer ${accessToken}`,

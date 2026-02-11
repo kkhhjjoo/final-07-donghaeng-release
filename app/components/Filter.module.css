@@ -2,7 +2,7 @@
 .filter-div {
   display: flex;
   flex-wrap: nowrap;
-  width: 95vw;
+  width: 100%;
   /* 화면보다 넓은 경우 가로 스크롤 */
   overflow-x: auto;
   /* 터치로 스크롤 */
@@ -34,7 +34,7 @@
   color: var(--text-navy);
   line-height: 20px;
   width: 100px;
-  margin-right: 3px;
+  margin-right: 2%;
   margin-block: 10px;
   overflow: hidden;
 

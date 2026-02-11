@@ -1,8 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import style from './create.module.css';
-import DefaultLayout from '@/app/components/DefaultLayout';
+import style from './Create.module.css';
 import { useActionState, useEffect, useState, useTransition } from 'react';
 import useUserStore from '@/zustand/userStore';
 
@@ -261,7 +260,7 @@ export default function Add() {
             </fieldset>
 
             <fieldset className={style['img-fieldset']}>
-              <label htmlFor="meetings-img-label">모임 이미지</label>
+              <label htmlFor="meetings-img">모임 이미지</label>
 
               <div className={style['ractingle-wrap']}>
                 <input type="file" id="meetings-img" name="meetings-img" accept="image/*" onChange={handleImageChange} disabled={isUploading} hidden />
@@ -271,18 +270,18 @@ export default function Add() {
                     <ClipLoader size={50} color="#323577" />
                   </div>
                 ) : imagePreview ? (
-                  <div className={style['image-preview']} onClick={() => document.getElementById('meetings-img')?.click()} style={{ cursor: 'pointer' }}>
+                  <button type="button" className={style['image-preview']} onClick={() => document.getElementById('meetings-img')?.click()} style={{ cursor: 'pointer' }} aria-label="이미지 변경">
                     <Image src={imagePreview} alt="미리보기" style={{ objectFit: 'cover', objectPosition: 'center' }} width={100} height={100} />
-                  </div>
+                  </button>
                 ) : (
-                  <div className={style['ractingle']} onClick={() => document.getElementById('meetings-img')?.click()} style={{ cursor: 'pointer' }}>
+                  <button type="button" className={style['ractingle']} onClick={() => document.getElementById('meetings-img')?.click()} style={{ cursor: 'pointer' }} aria-label="이미지 추가">
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
                         d="M10.2857 1.28571C10.2857 0.574554 9.71116 0 9 0C8.28884 0 7.71429 0.574554 7.71429 1.28571V7.71429H1.28571C0.574554 7.71429 0 8.28884 0 9C0 9.71116 0.574554 10.2857 1.28571 10.2857H7.71429V16.7143C7.71429 17.4254 8.28884 18 9 18C9.71116 18 10.2857 17.4254 10.2857 16.7143V10.2857H16.7143C17.4254 10.2857 18 9.71116 18 9C18 8.28884 17.4254 7.71429 16.7143 7.71429H10.2857V1.28571Z"
                         fill="#fff"
                       />
                     </svg>
-                  </div>
+                  </button>
                 )}
               </div>
             </fieldset>
@@ -383,10 +382,8 @@ export default function Add() {
             <button className={style['btn']} type="submit">
               등록
             </button>
-            <Link href={'/meetings'}>
-              <button className={style['btn-2']} type="button">
-                취소
-              </button>
+            <Link href="/meetings" className={style['btn-2']}>
+              취소
             </Link>
           </div>
         </form>

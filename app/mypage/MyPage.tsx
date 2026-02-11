@@ -8,8 +8,9 @@ import Image from 'next/image';
 import DefaultLayout from '@/app/components/DefaultLayout';
 import useUserStore from '@/zustand/userStore';
 import useBookmarkStore from '@/zustand/bookmarkStore';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { getMyMeetings } from '@/lib/meetings';
 
 export default function MyPage() {
   // zustand에서 유저정보 가져오기
@@ -26,6 +27,55 @@ export default function MyPage() {
   // zustand의 복원 여부 확인
   // 로컬스토리지 복원이 끝나기 전에 잘못된 리다이렉트가 발생하는 걸 방지
   const hasHydrated = useUserStore((state) => state.hasHydrated);
+
+  // 참여 완료 모임 수 상태
+  const [completedCount, setCompletedCount] = useState(0);
+
+  // 모임 날짜가 과거인지 확인하는 함수
+  const isPastMeeting = (meetingDate: string) => {
+    // 날짜가 없으면 false 반환
+    if (!meetingDate) return false;
+    // 오늘 날짜 받기
+    const today = new Date();
+    // 시간을 00:00:00.000으로 설정
+    today.setHours(0, 0, 0, 0);
+    // 모임 날짜 받기
+    const meeting = new Date(meetingDate);
+    // 시간을 00:00:00.000으로 설정
+    meeting.setHours(0, 0, 0, 0);
+    // 시간을 00으로 설정하는 이유는 같은날 시간이 다르더라도 날짜비교를 위해 시간을 제외
+    // 오늘 날짜보다 모임 날짜가 작으면 true 반환
+    return meeting < today;
+  };
+
+  // 참여 완료 모임 수 가져오기
+  useEffect(() => {
+    // 로컬 스토리지 복원 안끝났으면 아무것도 하지 않고 반환
+    if (!hasHydrated || !accessToken) return;
+
+    // 참여 완료 모임 수 가져오기
+    const fetchCompletedCount = async () => {
+      const res = await getMyMeetings(accessToken);
+      if (!res || res.ok === 0) return;
+
+      // 참여 완료(과거) 모임 수 계산
+      // 참여 모임 수 초기화
+      let count = 0;
+      // 참여 모임 수 계산
+      res.item.forEach((apply) => {
+        apply.products.forEach((meeting) => {
+          // 모임이 과거인 경우 카운트 증가
+          if (isPastMeeting(meeting.extra?.date || '')) {
+            count++;
+          }
+        });
+      });
+      // 참여 완료 모임 수 상태 업데이트
+      setCompletedCount(count);
+    };
+
+    fetchCompletedCount();
+  }, [hasHydrated, accessToken]);
 
   // 토큰이 없는 경우 강제 이동
   useEffect(() => {
@@ -46,10 +96,8 @@ export default function MyPage() {
             <div className={styles['profile-information']}>
               <div className={styles['profile-img-wrapper']}>
                 <Image src={user?.image || profile.src} alt="프로필이미지" width={135} height={135} className={styles['profile-img']} />
-                <Link href={`/mypage/modify/${user?._id}`}>
-                  <button type="button" className={styles['pencil-btn']}>
-                    <img src={pencil.src} alt="연필" />
-                  </button>
+                <Link href={`/mypage/modify/${user?._id}`} className={styles['pencil-btn']} aria-label="프로필 수정">
+                  <img src={pencil.src} alt="" />
                 </Link>
               </div>
               <div className={styles['user-info-mobile']}>
@@ -114,24 +162,18 @@ export default function MyPage() {
               <span>|</span>
               <p>
                 <span className={styles['meetings-text']}>참여 완료</span>
-                <span className={styles['meetings-number']}>365</span>
+                <span className={styles['meetings-number']}>{completedCount}</span>
               </p>
             </div>
             <div className={styles['history-button']}>
-              <Link href="/bookmarks">
-                <button type="button" className={styles['btn-bookmark']}>
-                  북마크
-                </button>
+              <Link href="/bookmarks" className={styles['btn-bookmark']}>
+                북마크
               </Link>
-              <Link href="/manage">
-                <button type="button" className={styles['btn-manage']}>
-                  관리하기
-                </button>
+              <Link href="/manage" className={styles['btn-manage']}>
+                관리하기
               </Link>
-              <Link href="/history">
-                <button type="button" className={styles['btn-attend-meetings']}>
-                  참여 모임
-                </button>
+              <Link href="/history" className={styles['btn-attend-meetings']}>
+                참여 모임
               </Link>
             </div>
           </div>

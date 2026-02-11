@@ -6,9 +6,38 @@ import { getDetail } from '@/lib/meetings';
 import NavigateButton from '@/app/meetings/[id]/NavigateButton';
 import { formatDate } from '@/lib/common';
 import { getUserInfo } from '@/lib/user';
-import Author from '@/app/components/ui/Author';
+import Author from '@/app/components/Author';
+import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const res = await getDetail(id);
+
+  if (res.ok === 0) {
+    return { title: '모임을 찾을 수 없습니다' };
+  }
+
+  const meeting = res.item;
+  const imageUrl = meeting.mainImages?.[0]?.path;
+
+  return {
+    title: meeting.name,
+    description: `${meeting.extra.category} · ${meeting.extra.region} · ${meeting.extra.age}대 · ${meeting.extra.gender} · ${meeting.content?.slice(0, 100)}`,
+    openGraph: {
+      title: `${meeting.name} | Moa`,
+      description: meeting.content?.slice(0, 150),
+      ...(imageUrl && { images: [{ url: imageUrl, width: 600, height: 400, alt: meeting.name }] }),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: meeting.name,
+      description: meeting.content?.slice(0, 150),
+      ...(imageUrl && { images: [imageUrl] }),
+    },
+  };
+}
 
 export default async function Detail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -45,8 +74,28 @@ export default async function Detail({ params }: { params: Promise<{ id: string 
   console.log('hostUser.comment:', hostUser.comment);
   console.log('hostUser.bpm', hostUser.bpm);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: meeting.name,
+    description: meeting.content,
+    startDate: meeting.extra.date,
+    location: {
+      '@type': 'Place',
+      name: meeting.extra.region,
+    },
+    organizer: {
+      '@type': 'Person',
+      name: hostUser.name,
+    },
+    ...(meeting.mainImages?.[0]?.path && { image: meeting.mainImages[0].path }),
+    maximumAttendeeCapacity: meeting.quantity,
+    remainingAttendeeCapacity: meeting.quantity - meeting.buyQuantity,
+  };
+
   return (
     <DefaultLayout>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <main className={style.main}>
         <div className={style.mainHeader}>
           <div className={style.contentCard}>

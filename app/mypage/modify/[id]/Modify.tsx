@@ -109,7 +109,7 @@ export default function Modify() {
   return (
     <>
       <DefaultLayout>
-        <form action={formAction}>
+        <form className={styles['modify-form']} action={formAction}>
           {/* 서버에 보내기 위한 토큰과 id 값 */}
           <input type="hidden" name="accessToken" value={user?.token?.accessToken || ''} />
           <input type="hidden" name="_id" value={user?._id || ''} />
@@ -150,58 +150,66 @@ export default function Modify() {
               <div className={styles['address-div']}>
                 <div>
                   <span>지역 </span>
-                  <select
-                    value={selectedCity}
-                    onChange={(e) => {
-                      setSelectedCity(e.target.value);
-                      setSelectedDistrict('');
-                    }}
-                    className={styles['city']}
-                  >
-                    <option value="">지역</option>
-                    {Object.keys(regionData).map((city) => (
-                      <option key={city} value={city}>
-                        {city}
-                      </option>
-                    ))}
-                  </select>
-                  <img src={down.src} alt="화살표" />
+                  <div className={styles['select-wrapper']}>
+                    <select
+                      value={selectedCity}
+                      onChange={(e) => {
+                        setSelectedCity(e.target.value);
+                        setSelectedDistrict('');
+                      }}
+                      className={styles['city']}
+                    >
+                      <option value="">지역</option>
+                      {Object.keys(regionData).map((city) => (
+                        <option key={city} value={city}>
+                          {city}
+                        </option>
+                      ))}
+                    </select>
+                    <img src={down.src} alt="화살표" />
+                  </div>
                 </div>
 
                 <div>
-                  <span>시/군/구 </span>
-                  <select value={selectedDistrict} disabled={!selectedCity} className={styles['district']} onChange={(e) => setSelectedDistrict(e.target.value)}>
-                    <option value="">{selectedCity ? '시/군/구' : '지역을 선택해주세요'}</option>
-                    {selectedCity &&
-                      regionData[selectedCity]?.map((district) => (
-                        <option key={district} value={district}>
-                          {district}
-                        </option>
-                      ))}
-                  </select>
-                  <img src={down.src} alt="화살표" />
+                  <span className={styles['district-label']}>시/군/구 </span>
+                  <div className={styles['select-wrapper']}>
+                    <select value={selectedDistrict} disabled={!selectedCity} className={styles['district']} onChange={(e) => setSelectedDistrict(e.target.value)}>
+                      <option value="">{selectedCity ? '시/군/구' : '지역을 선택해주세요'}</option>
+                      {selectedCity &&
+                        regionData[selectedCity]?.map((district) => (
+                          <option key={district} value={district}>
+                            {district}
+                          </option>
+                        ))}
+                    </select>
+                    <img src={down.src} alt="화살표" />
+                  </div>
                 </div>
               </div>
 
               <div className={styles['etc-div']}>
                 <div>
                   <span>나이</span>
-                  <select name="age" defaultValue={user?.age || ''}>
-                    <option value="10">10대</option>
-                    <option value="20">20대</option>
-                    <option value="30">30대</option>
-                    <option value="40">40대 이상</option>
-                  </select>
-                  <img src={down.src} alt="화살표" />
+                  <div className={styles['select-wrapper']}>
+                    <select name="age" defaultValue={user?.age || ''}>
+                      <option value="10">10대</option>
+                      <option value="20">20대</option>
+                      <option value="30">30대</option>
+                      <option value="40">40대 이상</option>
+                    </select>
+                    <img src={down.src} alt="화살표" />
+                  </div>
                 </div>
 
                 <div>
                   <span>성별</span>
-                  <select name="gender" defaultValue={user?.gender || '성별'}>
-                    <option value="남">남</option>
-                    <option value="여">여</option>
-                  </select>
-                  <img src={down.src} alt="화살표" />
+                  <div className={styles['select-wrapper']}>
+                    <select name="gender" defaultValue={user?.gender || '성별'}>
+                      <option value="남">남</option>
+                      <option value="여">여</option>
+                    </select>
+                    <img src={down.src} alt="화살표" />
+                  </div>
                 </div>
               </div>
             </div>

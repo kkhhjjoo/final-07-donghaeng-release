@@ -58,7 +58,6 @@
 }
 
 /* 카드드드드드드 */
-
 .card {
   position: relative;
   width: calc(100% - 30px);
@@ -108,6 +107,7 @@
 }
 
 .cardTitle {
+  max-width: 50vw;
   font-family: var(--main-font);
   font-size: 20px;
   color: var(--text-black);

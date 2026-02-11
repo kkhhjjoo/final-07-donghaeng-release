@@ -1,6 +1,5 @@
 'use client';
 
-import BlankLayout from '@/app/components/BlankLayout';
 import styles from './Login.module.css';
 import { useActionState, useEffect } from 'react';
 import { login } from '@/actions/user';
@@ -8,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import useUserStore from '@/zustand/userStore';
 import useBookmarkStore from '@/zustand/bookmarkStore';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Login() {
   const [userState, formActions, isPending] = useActionState(login, null);
@@ -77,7 +77,9 @@ export default function Login() {
             />
           </svg>
         </button>
-        <div className={styles['logo-img']}></div>
+        <div className={styles['logo-img']}>
+          <Image src="/logo/logo.svg" alt="Moa 로고" width={220} height={192} priority />
+        </div>
         <form className={styles['form']} action={formActions}>
           <fieldset className={styles['email-fieldset fieldset']}>
             <label htmlFor="email" className={styles['label']}>
@@ -92,10 +94,10 @@ export default function Login() {
               비밀번호
             </label>
             <br />
-            <input className={styles['input']} name="password" type="password" id="password" placeholder="비밀번호를 입력해 주세요" required />
+            <input className={styles['input']} name="password" type="password" id="password" placeholder="비밀번호를 입력해 주세요" required aria-describedby={userState?.ok === 0 ? 'login-password-error' : undefined} />
 
             {/* 에러메시지 */}
-            {userState?.ok === 0 && <span className={styles['field-message']}>비밀번호를 다시 입력해 주세요</span>}
+            {userState?.ok === 0 && <span id="login-password-error" role="alert" className={styles['field-message']}>비밀번호를 다시 입력해 주세요</span>}
           </fieldset>
 
           <button type="submit" className={styles['btn']} disabled={isPending}>
